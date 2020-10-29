@@ -23,7 +23,7 @@ public class UserController {
     public String login() { return "/user/loginForm"; }
 
     @PostMapping("loginProc")
-    public ResponseEntity<?> loginProc(UserDto userDto, HttpServletRequest req) {
+    public ResponseEntity<?> loginProc(@RequestBody UserDto userDto, HttpServletRequest req) {
 
         HttpSession httpSession = req.getSession();
         UserDto checkUserDto = userService.getUserInfo(userDto);
@@ -43,10 +43,10 @@ public class UserController {
     public String signIn() { return "/user/signUpForm"; }
 
     @PostMapping("signUpProc")
-    public String signInProc() {
+    public String signUpProc(@RequestBody UserDto userDto) {
 
+        userService.insertUserInfo(userDto);
 
-        return "";
+        return "/user/login";
     }
-
 }
