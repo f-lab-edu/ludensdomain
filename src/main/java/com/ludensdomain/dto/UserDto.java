@@ -1,8 +1,12 @@
 package com.ludensdomain.dto;
 
-import lombok.Value;
+import lombok.*;
 
-@Value
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class UserDto {
 
     String id;
@@ -11,4 +15,5 @@ public class UserDto {
     String email;
     String dateOfBirth;
     String phoneNo;
+    String role;
 }

@@ -20,25 +20,31 @@ public class UserController {
     }
 
     @GetMapping("login")
-    public String login() { return "/user/login"; }
+    public String login() { return "/user/loginForm"; }
 
     @PostMapping("loginProc")
     public ResponseEntity<?> loginProc(UserDto userDto, HttpServletRequest req) {
 
         HttpSession httpSession = req.getSession();
+        UserDto checkUserDto = userService.getUserInfo(userDto);
 
         if( httpSession != null ){
-            httpSession.setAttribute("dto", userDto);
+            if( userDto.getId().equals(checkUserDto.getId()) && userDto.getPassword().equals(checkUserDto.getPassword()) ) {
+                httpSession.setAttribute("dto", userDto);
+
+                return new ResponseEntity<>("success", HttpStatus.OK);
+            }
         }
 
-        return new ResponseEntity<>("Success", HttpStatus.OK);
+        return new ResponseEntity<>("fail", HttpStatus.OK);
     }
 
-    @GetMapping("signIn")
-    public String signIn() { return "/user/signIn"; }
+    @GetMapping("signUp")
+    public String signIn() { return "/user/signUpForm"; }
 
-    @PostMapping("signInProc")
+    @PostMapping("signUpProc")
     public String signInProc() {
+
 
         return "";
     }
