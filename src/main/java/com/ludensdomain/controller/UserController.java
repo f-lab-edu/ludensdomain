@@ -19,10 +19,10 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("login") // 로그인 화면으로 이동
+    @GetMapping("login")
     public String login() { return "/user/loginForm"; }
 
-    @PostMapping("loginProc") // 로그인 프로세스
+    @PostMapping("loginProc") 
     public ResponseEntity<?> loginProc(UserDto userDto, HttpServletRequest req) {
 
         HttpSession httpSession = req.getSession();
