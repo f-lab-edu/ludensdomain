@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -20,9 +20,11 @@ public class UserController {
     }
 
     @GetMapping("login")
-    public String login() { return "/user/loginForm"; }
+    public void login() {
 
-    @PostMapping("loginProc")
+    }
+
+    @PostMapping("login")
     public ResponseEntity<?> loginProc(@RequestBody UserDto userDto, HttpServletRequest req) {
 
         HttpSession httpSession = req.getSession();
@@ -40,11 +42,12 @@ public class UserController {
     }
 
     @GetMapping("signUp")
-    public String signIn() { return "/user/signUpForm"; }
+    public void signIn() {
 
-    @PostMapping("signUpProc")
+    }
+
+    @PostMapping("signUp")
     public String signUpProc(@RequestBody UserDto userDto) {
-
         userService.insertUserInfo(userDto);
 
         return "/user/login";
