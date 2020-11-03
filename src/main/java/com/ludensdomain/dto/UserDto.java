@@ -2,18 +2,16 @@ package com.ludensdomain.dto;
 
 import lombok.*;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
+import java.util.Date;
+
+@Value
 public class UserDto {
 
-    String id;
+    Long id;
     String name;
     String password;
     String email;
-    String dateOfBirth;
+    Date dateOfBirth;
     String phoneNo;
     String role;
 }
