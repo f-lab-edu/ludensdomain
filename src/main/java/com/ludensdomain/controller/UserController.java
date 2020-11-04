@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
@@ -20,7 +21,7 @@ public class UserController {
     }
 
     @PostMapping("login")
-    public ResponseEntity<?> loginProc(@RequestBody UserDto userDto, HttpServletRequest req) {
+    public ResponseEntity<?> loginProc(@RequestBody @Valid UserDto userDto, HttpServletRequest req) {
 
         HttpSession httpSession = req.getSession();
         UserDto checkUserDto = userService.getUserInfo(userDto);
