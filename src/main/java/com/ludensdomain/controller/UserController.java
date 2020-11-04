@@ -2,7 +2,7 @@ package com.ludensdomain.controller;
 
 import com.ludensdomain.dto.UserDto;
 import com.ludensdomain.service.UserService;
-import org.springframework.http.HttpStatus;
+import com.ludensdomain.util.ResponseEntityStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,11 +34,11 @@ public class UserController {
             if( userDto.getId().equals(checkUserDto.getId()) && userDto.getPassword().equals(checkUserDto.getPassword()) ) {
                 httpSession.setAttribute("dto", userDto);
 
-                return new ResponseEntity<>("success", HttpStatus.OK);
+                return ResponseEntityStatus.SUCCESS;
             }
         }
 
-        return new ResponseEntity<>("fail", HttpStatus.OK);
+        return ResponseEntityStatus.FAIL;
     }
 
     @GetMapping("signUp")
