@@ -19,11 +19,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("login")
-    public void login() {
-
-    }
-
     @PostMapping("login")
     public ResponseEntity<?> loginProc(@RequestBody UserDto userDto, HttpServletRequest req) {
 
@@ -41,13 +36,8 @@ public class UserController {
         return ResponseEntityStatus.FAIL;
     }
 
-    @GetMapping("signUp")
-    public void signIn() {
-
-    }
-
     @PostMapping("signUp")
-    public String signUpProc(@RequestBody UserDto userDto) {
+    public String signUp(@RequestBody UserDto userDto) {
         userService.insertUserInfo(userDto);
 
         return "/user/login";
