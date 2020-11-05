@@ -3,6 +3,7 @@ package com.ludensdomain.controller;
 import com.ludensdomain.dto.UserDto;
 import com.ludensdomain.service.UserService;
 import com.ludensdomain.util.ResponseEntityStatus;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+@Log4j2
 @RestController
 @RequestMapping("/users")
 public class UserController {
