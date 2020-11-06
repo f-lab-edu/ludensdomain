@@ -4,6 +4,8 @@ import com.ludensdomain.dto.UserDto;
 import com.ludensdomain.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
 
@@ -13,7 +15,7 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
-    public UserDto getUserInfo(UserDto userDto) {
+    public Optional<UserDto> getUserInfo(long id, String password) {
         return userMapper.getUserInfo();
     }
 

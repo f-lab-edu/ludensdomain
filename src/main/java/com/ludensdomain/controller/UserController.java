@@ -7,12 +7,13 @@ import com.ludensdomain.dto.UserDto;
 import com.ludensdomain.service.UserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-
+import java.util.Optional;
 
 @Log4j2
 @RestController
@@ -26,26 +27,22 @@ public class UserController {
     }
 
     @PostMapping("login")
-    public ResponseEntity<?> login(@RequestBody @Valid UserDto userDto, HttpServletRequest req) {
+    public ResponseEntity<Void> login(@Valid long id, String password) {
+        ResponseEntity<Void> result;
+        Optional<UserDto> user = userService.getUserInfo(id, password);
 
-        HttpSession httpSession = req.getSession();
-        UserDto checkUserDto = userService.getUserInfo(userDto);
-
-        if( httpSession != null ){
-            if( userDto.getId().equals(checkUserDto.getId()) && userDto.getPassword().equals(checkUserDto.getPassword()) ) {
-                httpSession.setAttribute("dto", userDto);
-
-                return RESPONSE_OK;
-            }
+        if (!user.isPresent()) {
+            result = RESPONSE_NO_CONTENT;
+        } else {
+            result = RESPONSE_OK;
         }
-
-        return RESPONSE_NO_CONTENT;
+        return result;
     }
 
     @PostMapping("signUp")
-    public String signUp(@RequestBody UserDto userDto) {
+    public ResponseEntity<Void> signUp(@RequestBody UserDto userDto) {
         userService.insertUserInfo(userDto);
 
-        return "/user/login";
+        return RESPONSE_OK;
     }
 }
