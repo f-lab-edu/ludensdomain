@@ -5,14 +5,16 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.Date;
 
 @Value
 public class UserDto {
 
+    @NotNull
     @NotEmpty(message = "아이디를 입력하세요.")
-    Long id;
+    long id;
 
     @NotEmpty(message = "이름을 입력하세요.")
     String name;
