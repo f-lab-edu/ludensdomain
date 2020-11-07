@@ -1,6 +1,6 @@
 package com.ludensdomain.controller;
 
-import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_NO_CONTENT;
+import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_BAD_REQUEST;
 import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_OK;
 
 import com.ludensdomain.dto.UserDto;
@@ -32,7 +32,7 @@ public class UserController {
         Optional<UserDto> user = userService.getUserInfo(id, password);
 
         if (!user.isPresent()) {
-            result = RESPONSE_NO_CONTENT;
+            result = RESPONSE_BAD_REQUEST;
         } else {
             result = RESPONSE_OK;
         }
