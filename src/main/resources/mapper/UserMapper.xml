@@ -10,32 +10,32 @@
                email,
                date_of_birth as dateOfBirth,
                phone_num as phoneNum,
-               role,
-          FROM user
-         WHERE id = #{id}
-           AND password = #{password}
+               role
+        FROM user
+        WHERE id = #{id}
+        AND password = #{password}
     </select>
 
     <insert id="insertUserInfo" parameterType="com.ludensdomain.dto.UserDto">
         INSERT INTO
-               user
-                    ( id,
-                      name,
-                      password,
-                      email,
-                      date_of_birth as dateOfBirth,
-                      phone_num as phoneNum,
-                      role
-                    )
-            VALUES
-                    ( #{id},
-                      #{name},
-                      #{password},
-                      #{email},
-                      #{dateOfBirth},
-                      #{phoneNum},
-                      #{role}
-                    )
+        user
+            ( id,
+              name,
+              password,
+              email,
+              date_of_birth AS dateOfBirth,
+              phone_num AS phoneNum,
+              role
+            )
+        VALUES
+            ( #{id},
+              #{name},
+              #{password},
+              #{email},
+              #{dateOfBirth},
+              #{phoneNum},
+              #{role}
+            )
     </insert>
 
 </mapper>
