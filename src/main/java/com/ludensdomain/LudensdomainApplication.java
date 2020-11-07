@@ -10,4 +10,5 @@ public class LudensdomainApplication {
         SpringApplication.run(LudensdomainApplication.class, args);
     }
 
+
 }

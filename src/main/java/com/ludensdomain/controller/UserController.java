@@ -1,16 +1,23 @@
 package com.ludensdomain.controller;
 
+import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_BAD_REQUEST;
+import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_OK;
+
 import com.ludensdomain.dto.UserDto;
 import com.ludensdomain.service.UserService;
-import org.springframework.http.HttpStatus;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import java.util.Optional;
 
+@Log4j2
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -19,34 +26,23 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("login")
-    public String login() { return "/user/loginForm"; }
+    @PostMapping("login")
+    public ResponseEntity<Void> login(@Valid long id, String password) {
+        ResponseEntity<Void> result;
+        Optional<UserDto> user = userService.getUserInfo(id, password);
 
-    @PostMapping("loginProc") 
-    public ResponseEntity<?> loginProc(UserDto userDto, HttpServletRequest req) {
-
-        HttpSession httpSession = req.getSession();
-        UserDto checkUserDto = userService.getUserInfo(userDto);
-
-        if( httpSession != null ){
-            if( userDto.getId().equals(checkUserDto.getId()) && userDto.getPassword().equals(checkUserDto.getPassword()) ) {
-                httpSession.setAttribute("dto", userDto);
-
-                return new ResponseEntity<>("success", HttpStatus.OK);
-            }
+        if (!user.isPresent()) {
+            result = RESPONSE_BAD_REQUEST;
+        } else {
+            result = RESPONSE_OK;
         }
-
-        return new ResponseEntity<>("fail", HttpStatus.OK);
+        return result;
     }
 
-    @GetMapping("signUp")
-    public String signIn() { return "/user/signUpForm"; }
+    @PostMapping("signUp")
+    public ResponseEntity<Void> signUp(@RequestBody UserDto userDto) {
+        userService.insertUserInfo(userDto);
 
-    @PostMapping("signUpProc")
-    public String signInProc() {
-
-
-        return "";
+        return RESPONSE_OK;
     }
-
 }

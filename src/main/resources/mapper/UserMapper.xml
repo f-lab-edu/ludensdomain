@@ -1,33 +1,33 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ludensdomain.mapper.UserMapper">
 
     <select id="getUserInfo" resultType="com.ludensdomain.dto.UserDto">
-SELECT a.id,
-       a.name,
-       a.password,
-       a.email,
-       a.date_of_birth as dateOfBirth,
-       a.phone_num as phoneNum,
-       role,
-  FROM user a
- WHERE id = #{id}
-   AND password = #{password}
+        SELECT id,
+               name,
+               password,
+               email,
+               date_of_birth as dateOfBirth,
+               phone_num as phoneNum,
+               role
+        FROM user
+        WHERE id = #{id}
+        AND password = #{password}
     </select>
 
     <insert id="insertUserInfo" parameterType="com.ludensdomain.dto.UserDto">
-INSERT INTO
-       user a
-            ( a.id,
-              a.name,
-              a.password,
-              a.email,
-              a.date_of_birth as dateOfBirth,
-              a.phone_num as phoneNum,
-              a.role
+        INSERT INTO
+        user
+            ( id,
+              name,
+              password,
+              email,
+              date_of_birth AS dateOfBirth,
+              phone_num AS phoneNum,
+              role
             )
-    VALUES
+        VALUES
             ( #{id},
               #{name},
               #{password},
