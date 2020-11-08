@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "NoIvGenerator.includePlainSaltInEncryptionResults",
+      "type": "java.lang.String",
+      "description": "Description for NoIvGenerator.includePlainSaltInEncryptionResults."
+  }
+] }
