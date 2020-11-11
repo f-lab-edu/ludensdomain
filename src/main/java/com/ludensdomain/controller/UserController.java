@@ -1,10 +1,8 @@
 package com.ludensdomain.controller;
 
-import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_BAD_REQUEST;
-import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_OK;
-
 import com.ludensdomain.dto.UserDto;
 import com.ludensdomain.service.UserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,16 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.Optional;
 
+import static com.ludensdomain.util.ResponseEntityConstants.*;
+
 @Log4j2
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     @PostMapping("login")
     public ResponseEntity<Void> login(@Valid long id, String password) {
@@ -40,9 +37,9 @@ public class UserController {
     }
 
     @PostMapping("signUp")
-    public ResponseEntity<Void> signUp(@RequestBody UserDto userDto) {
-        userService.insertUserInfo(userDto);
+    public ResponseEntity<String> signUp(@RequestBody UserDto user) {
+        userService.insertUserInfo(user);
 
-        return RESPONSE_OK;
+        return RESPONSE_USER_CREATED;
     }
 }
