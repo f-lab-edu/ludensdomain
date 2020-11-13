@@ -27,7 +27,8 @@ public class UserController {
     private final UserService userService;
 
     /**
-     * 사용자 로그인 기능.)
+     * 사용자 로그인 기능.
+     *
      * @param id    사용자 아이디
      * @param password  사용자 비밀번호
      * @return {@literal ResponseEntity<Void>}
@@ -48,6 +49,7 @@ public class UserController {
 
     /**
      * 사용자 회원가입.
+     *
      * @param user  사용자 정보
      * @return {@literal ResponseEntity<String>}
     * */

@@ -23,6 +23,11 @@ public class DatabaseConfig {
         return new HikariDataSource(hikariConfig());
     }
 
+    /**
+     * DB 연결을 위한 sqlSessionFactoryBean 생성.
+     *
+     * @return factoryBean.getObject() 생성한 factoryBean 반환
+     */
     @Bean
     public SqlSessionFactory sqlSessionFactory() throws Exception {
         SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
