@@ -3,7 +3,6 @@ package com.ludensdomain.service;
 import com.ludensdomain.dto.UserDto;
 import com.ludensdomain.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.jasypt.encryption.StringEncryptor;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +25,13 @@ public class UserService {
         userMapper.insertUserInfo(encryptedUser);
     }
 
-    public UserDto encryptUser(UserDto user){
+    /**
+     * 비밀번호를 암호화한 사용자 정보를 build.
+     *
+     * @param user UserDto 인스턴스 변수
+     * @return UserDto
+     */
+    public UserDto encryptUser(UserDto user) {
         String encryptPassword = stringEncryptor.encrypt(user.getPassword());
 
         return UserDto.builder()

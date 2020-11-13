@@ -23,8 +23,8 @@
               name,
               password,
               email,
-              date_of_birth AS dateOfBirth,
-              phone_num AS phoneNum,
+              date_of_birth as dateOfBirth,
+              phone_num as phoneNum,
               role
             )
         VALUES

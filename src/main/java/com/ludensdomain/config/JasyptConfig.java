@@ -12,10 +12,16 @@ import org.springframework.context.annotation.Primary;
 @EnableEncryptableProperties
 public class JasyptConfig {
 
+    /**
+     * jasypt 커스텀 bean.
+     *
+     * @return encryptor 멀티쓰레드를 위한 PooledBEStringEncryptor 반환
+     */
     @Primary
     @Bean("jasyptStringEncryptor")
     public StringEncryptor stringEncryptor() {
-        PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
+        PooledPBEStringEncryptor encryptor;
+        encryptor = new PooledPBEStringEncryptor();
         SimpleStringPBEConfig config = new SimpleStringPBEConfig();
         config.setPassword("KEY");
         config.setAlgorithm("PBEWithMD5AndDES");
