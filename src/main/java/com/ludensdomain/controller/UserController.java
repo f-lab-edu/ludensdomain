@@ -54,7 +54,7 @@ public class UserController {
      * @return {@literal ResponseEntity<String>}
     * */
     @PostMapping("signUp")
-    public ResponseEntity<String> signUp(@RequestBody UserDto user) {
+    public ResponseEntity<Void> signUp(@RequestBody UserDto user) {
         userService.insertUserInfo(user);
 
         return RESPONSE_USER_CREATED;
