@@ -8,8 +8,8 @@
                name,
                password,
                email,
-               date_of_birth as dateOfBirth,
-               phone_num as phoneNum,
+               date_of_birth dateOfBirth,
+               phone_num phoneNum,
                role
         FROM user
         WHERE id = #{id}
@@ -23,8 +23,8 @@
               name,
               password,
               email,
-              date_of_birth as dateOfBirth,
-              phone_num as phoneNum,
+              date_of_birth dateOfBirth,
+              phone_num phoneNum,
               role
             )
         VALUES
