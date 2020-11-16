@@ -8,7 +8,7 @@ import java.util.Optional;
 @Mapper
 public interface UserMapper {
 
-    Optional<UserDto> getUserInfo();
+    Optional<UserDto> getUserInfo(long id, String password);
 
     void insertUserInfo(UserDto userDto);
 }
