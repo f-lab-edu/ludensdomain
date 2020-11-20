@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_BAD_REQUEST;
@@ -72,5 +73,10 @@ public class UserController {
         userService.updateUserInfo(user);
 
         return RESPONSE_OK;
+    }
+
+    @PostMapping("logout")
+    public void logout(HttpServletRequest req) {
+        req.getSession().invalidate();
     }
 }
