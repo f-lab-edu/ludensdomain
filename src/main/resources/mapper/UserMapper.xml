@@ -38,5 +38,15 @@
             )
     </insert>
 
+    <update id="updateUserInfo" parameterType="com.ludensdomain.dto.UserDto">
+        UPDATE user
+        SET name = #{name},
+            email = #{email},
+            dateOfBirth = #{dateOfBirth},
+            phoneNum = #{phoneNum}
+        WHERE id = #{id}
+        AND password = #{password}
+    </update>
+
 </mapper>
 

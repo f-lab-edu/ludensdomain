@@ -44,4 +44,9 @@ public class UserService {
                 .role(user.getRole())
                 .build();
     }
+
+    public void updateUserInfo(UserDto userDto) {
+
+        userMapper.updateUserInfo(userDto);
+    }
 }
