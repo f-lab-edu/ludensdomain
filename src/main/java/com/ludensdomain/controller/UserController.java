@@ -76,7 +76,8 @@ public class UserController {
     }
 
     @PostMapping("logout")
-    public void logout(HttpServletRequest req) {
-        req.getSession().invalidate();
+    public void logout(HttpServletRequest request) {
+
+        userService.endSession(request);
     }
 }
