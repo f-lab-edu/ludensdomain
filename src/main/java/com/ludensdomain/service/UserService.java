@@ -7,7 +7,6 @@ import org.jasypt.encryption.StringEncryptor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import javax.servlet.http.HttpServletRequest;
 
 @Service
 @RequiredArgsConstructor
@@ -46,13 +45,8 @@ public class UserService {
                 .build();
     }
 
-    public void updateUserInfo(UserDto userDto) {
+    public void updateUserInfo(UserDto user, long id) {
 
-        userMapper.updateUserInfo(userDto);
-    }
-
-    public void endSession(HttpServletRequest request) {
-
-        request.getSession().invalidate();
+        userMapper.updateUserInfo(id, user);
     }
 }

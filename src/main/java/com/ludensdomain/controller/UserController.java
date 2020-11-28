@@ -1,7 +1,7 @@
 package com.ludensdomain.controller;
 
 import com.ludensdomain.dto.UserDto;
-import com.ludensdomain.service.Session;
+import com.ludensdomain.service.LoginService;
 import com.ludensdomain.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -30,7 +30,7 @@ import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_USER_CREATE
 public class UserController {
 
     private final UserService userService;
-    private final Session session;
+    private final LoginService loginService;
 
     /**
      * 사용자 로그인 기능.
@@ -70,12 +70,11 @@ public class UserController {
      * 사용자 수정.
      *
      * @param user  사용자 정보
-     * @param id    사용자 아이디
      * @return {@literal ResponseEntity<Void>}
      */
-    @PutMapping("{id}}")
-    public ResponseEntity<Void> update(@RequestBody @Valid UserDto user, @PathVariable String id) {
-        userService.updateUserInfo(id, user);
+    @PutMapping("users/{id}")
+    public ResponseEntity<Void> update(@RequestBody @Valid UserDto user, @PathVariable long id) {
+        userService.updateUserInfo(user, id);
 
         return RESPONSE_OK;
     }
@@ -88,6 +87,6 @@ public class UserController {
     @PostMapping("logout")
     public void logout(HttpServletRequest request) {
         HttpSession httpSession = request.getSession();
-        session.logout(httpSession);
+        loginService.logout(httpSession);
     }
 }
