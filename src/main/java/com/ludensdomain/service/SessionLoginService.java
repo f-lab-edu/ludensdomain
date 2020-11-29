@@ -7,7 +7,7 @@ import javax.servlet.http.HttpSession;
 
 @Service
 @RequiredArgsConstructor
-public class SessionLogin implements LoginService {
+public class SessionLoginService implements LoginService {
 
     @Override
     public void logout(HttpSession httpSession) {
