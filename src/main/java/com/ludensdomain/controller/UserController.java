@@ -1,11 +1,13 @@
 package com.ludensdomain.controller;
 
 import com.ludensdomain.dto.UserDto;
+import com.ludensdomain.service.LoginService;
 import com.ludensdomain.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_BAD_REQUEST;
@@ -26,6 +30,7 @@ import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_USER_CREATE
 public class UserController {
 
     private final UserService userService;
+    private final LoginService loginService;
 
     /**
      * 사용자 로그인 기능.
@@ -67,10 +72,21 @@ public class UserController {
      * @param user  사용자 정보
      * @return {@literal ResponseEntity<Void>}
      */
-    @PutMapping("update")
-    public ResponseEntity<Void> update(@RequestBody @Valid UserDto user) {
-        userService.updateUserInfo(user);
+    @PutMapping("users/{id}")
+    public ResponseEntity<Void> update(@RequestBody @Valid UserDto user, @PathVariable long id) {
+        userService.updateUserInfo(user, id);
 
         return RESPONSE_OK;
+    }
+
+    /**
+     * 세션을 이용한 로그아웃 기능.
+     *
+     * @param request 서블릿 요청
+     */
+    @PostMapping("logout")
+    public void logout(HttpServletRequest request) {
+        HttpSession httpSession = request.getSession();
+        loginService.logout(httpSession);
     }
 }

@@ -45,8 +45,8 @@ public class UserService {
                 .build();
     }
 
-    public void updateUserInfo(UserDto userDto) {
+    public void updateUserInfo(UserDto user, long id) {
 
-        userMapper.updateUserInfo(userDto);
+        userMapper.updateUserInfo(id, user);
     }
 }
