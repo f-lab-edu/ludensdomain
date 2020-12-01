@@ -70,13 +70,16 @@ public class UserController {
      * 사용자 수정.
      *
      * @param user  사용자 정보
+     * @param id    사용자 아이디
+     * @param request 서블릿 요청
      * @return {@literal ResponseEntity<Void>}
      */
     @PutMapping("users/{id}")
-    public ResponseEntity<Void> update(@RequestBody @Valid UserDto user, @PathVariable long id) {
-        userService.updateUserInfo(user, id);
+    public ResponseEntity<Void> update(@RequestBody @Valid UserDto user,
+                                       @PathVariable long id, HttpServletRequest request) {
+        HttpSession httpSession = request.getSession();
 
-        return RESPONSE_OK;
+        return userService.updateUserInfo(user, id, httpSession);
     }
 
     /**

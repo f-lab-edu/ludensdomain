@@ -10,6 +10,14 @@ import javax.servlet.http.HttpSession;
 public class SessionLoginService implements LoginService {
 
     @Override
+    public boolean verifyUser(long id, HttpSession httpSession) {
+        String sessionId = httpSession.getId();
+        String enteredId = String.valueOf(id);
+
+        return sessionId.equals(enteredId);
+    }
+
+    @Override
     public void logout(HttpSession httpSession) {
         httpSession.invalidate();
     }
