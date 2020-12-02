@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import javax.servlet.http.HttpSession;
 
 import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_BAD_REQUEST;
 import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_OK;
@@ -57,11 +56,10 @@ public class UserService {
      *
      * @param user UserDto 인스턴스 변수
      * @param id   사용자 아이디
-     * @param httpSession 현재 세션의 정보를 담은 객체
      * @return {@literal ResponseEntity<Void>}
      */
-    public ResponseEntity<Void> updateUserInfo(UserDto user, long id, HttpSession httpSession) {
-        if (!isSameUser(id, httpSession)) {
+    public ResponseEntity<Void> updateUserInfo(UserDto user, long id) {
+        if (!isSameUser(id)) {
             return RESPONSE_BAD_REQUEST;
         }
 
@@ -69,8 +67,8 @@ public class UserService {
         return RESPONSE_OK;
     }
 
-    public boolean isSameUser(long id, HttpSession httpSession) {
+    public boolean isSameUser(long id) {
 
-        return loginService.verifyUser(id, httpSession);
+        return loginService.verifyUser(id);
     }
 }

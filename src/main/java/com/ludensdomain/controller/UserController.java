@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_BAD_REQUEST;
@@ -71,25 +69,21 @@ public class UserController {
      *
      * @param user  사용자 정보
      * @param id    사용자 아이디
-     * @param request 서블릿 요청
      * @return {@literal ResponseEntity<Void>}
      */
     @PutMapping("users/{id}")
-    public ResponseEntity<Void> update(@RequestBody @Valid UserDto user,
-                                       @PathVariable long id, HttpServletRequest request) {
-        HttpSession httpSession = request.getSession();
+    public ResponseEntity<Void> update(@RequestBody @Valid UserDto user, @PathVariable long id) {
 
-        return userService.updateUserInfo(user, id, httpSession);
+        return userService.updateUserInfo(user, id);
     }
 
     /**
      * 세션을 이용한 로그아웃 기능.
      *
-     * @param request 서블릿 요청
      */
     @PostMapping("logout")
-    public void logout(HttpServletRequest request) {
-        HttpSession httpSession = request.getSession();
-        loginService.logout(httpSession);
+    public void logout() {
+
+        loginService.logout();
     }
 }
