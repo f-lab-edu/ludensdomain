@@ -11,4 +11,6 @@ public interface UserMapper {
     Optional<UserDto> getUserInfo(long id, String password);
 
     void insertUserInfo(UserDto userDto);
+
+    void updateUserInfo(long id, UserDto userDto);
 }
