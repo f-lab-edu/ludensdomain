@@ -1,19 +1,15 @@
 package com.ludensdomain.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 
 @Service
+@RequiredArgsConstructor
 public class SessionLoginService implements LoginService {
 
     private final HttpSession httpSession;
-
-    @Autowired
-    public SessionLoginService(HttpSession httpSession) {
-        this.httpSession = httpSession;
-    }
 
     @Override
     public boolean verifyUser(long id) {
@@ -25,6 +21,7 @@ public class SessionLoginService implements LoginService {
 
     @Override
     public void logout() {
+
         httpSession.invalidate();
     }
 }
