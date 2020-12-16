@@ -77,14 +77,8 @@ public class UserService {
      *
      * @param id   사용자 아이디
      * @param password   사용자 패스워드
-     * @return {@literal ResponseEntity<Void>}
      */
-    public ResponseEntity<Void> deleteUser(long id, String password) {
-        if (isSameUser(id)) {
-            userMapper.deleteUser(id, password);
-            return RESPONSE_OK;
-        } else {
-            return RESPONSE_BAD_REQUEST;
-        }
+    public void deleteUser(long id, String password) {
+        userMapper.deleteUser(id, password);
     }
 }
