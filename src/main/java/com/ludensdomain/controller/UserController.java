@@ -72,7 +72,7 @@ public class UserController {
      * @param id    사용자 아이디
      * @return {@literal ResponseEntity<Void>}
      */
-    @PutMapping("users/{id}")
+    @PutMapping("{id}")
     public ResponseEntity<Void> update(@RequestBody @Valid UserDto user, @PathVariable long id) {
 
         return userService.updateUserInfo(user, id);
@@ -84,11 +84,12 @@ public class UserController {
      */
     @PostMapping("logout")
     public void logout() {
+
         loginService.logout();
     }
 
-    @DeleteMapping("deleteUser")
-    public ResponseEntity<Void> deleteUser(long id, String password) {
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable long id, String password) {
 
         return userService.deleteUser(id, password);
     }
