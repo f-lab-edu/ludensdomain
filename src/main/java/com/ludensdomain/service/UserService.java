@@ -79,6 +79,8 @@ public class UserService {
      * @param password   사용자 패스워드
      */
     public void deleteUser(long id, String password) {
-        userMapper.deleteUser(id, password);
+        if (loginService.verifyUser(id)) {
+            userMapper.deleteUser(id, password);
+        }
     }
 }
