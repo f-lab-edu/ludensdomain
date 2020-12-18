@@ -70,12 +70,11 @@ public class UserController {
      *
      * @param user  사용자 정보
      * @param id    사용자 아이디
-     * @return {@literal ResponseEntity<Void>}
      */
     @PutMapping("{id}")
-    public ResponseEntity<Void> update(@RequestBody @Valid UserDto user, @PathVariable long id) {
+    public void update(@RequestBody @Valid UserDto user, @PathVariable long id) {
 
-        return userService.updateUserInfo(user, id);
+        userService.updateUserInfo(user, id);
     }
 
     /**

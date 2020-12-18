@@ -56,15 +56,11 @@ public class UserService {
      *
      * @param user UserDto 인스턴스 변수
      * @param id   사용자 아이디
-     * @return {@literal ResponseEntity<Void>}
      */
-    public ResponseEntity<Void> updateUserInfo(UserDto user, long id) {
-        if (!isSameUser(id)) {
-            return RESPONSE_BAD_REQUEST;
+    public void updateUserInfo(UserDto user, long id) {
+        if (isSameUser(id)) {
+            userMapper.updateUserInfo(id, user);
         }
-
-        userMapper.updateUserInfo(id, user);
-        return RESPONSE_OK;
     }
 
     public boolean isSameUser(long id) {
