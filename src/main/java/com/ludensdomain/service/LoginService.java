@@ -2,7 +2,7 @@ package com.ludensdomain.service;
 
 public interface LoginService {
 
-    boolean verifyUser(long id);
+    boolean isLoginUser(long id);
 
     void logout();
 }

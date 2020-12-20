@@ -4,13 +4,9 @@ import com.ludensdomain.dto.UserDto;
 import com.ludensdomain.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.jasypt.encryption.StringEncryptor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
-import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_BAD_REQUEST;
-import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_OK;
 
 @Service
 @RequiredArgsConstructor
@@ -58,14 +54,9 @@ public class UserService {
      * @param id   사용자 아이디
      */
     public void updateUserInfo(UserDto user, long id) {
-        if (isSameUser(id)) {
+        if (isLoginUser(id)) {
             userMapper.updateUserInfo(id, user);
         }
-    }
-
-    public boolean isSameUser(long id) {
-
-        return loginService.verifyUser(id);
     }
 
     /**
@@ -75,8 +66,13 @@ public class UserService {
      * @param password   사용자 패스워드
      */
     public void deleteUser(long id, String password) {
-        if (loginService.verifyUser(id)) {
+        if (isLoginUser(id)) {
             userMapper.deleteUser(id, password);
         }
+    }
+
+    public boolean isLoginUser(long id) {
+
+        return loginService.isLoginUser(id);
     }
 }
