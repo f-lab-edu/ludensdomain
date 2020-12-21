@@ -12,7 +12,7 @@ public class SessionLoginService implements LoginService {
     private final HttpSession httpSession;
 
     @Override
-    public boolean verifyUser(long id) {
+    public boolean isLoginUser(long id) {
         String sessionId = httpSession.getId();
         String enteredId = String.valueOf(id);
 

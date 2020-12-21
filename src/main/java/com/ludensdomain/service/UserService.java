@@ -4,13 +4,9 @@ import com.ludensdomain.dto.UserDto;
 import com.ludensdomain.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.jasypt.encryption.StringEncryptor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
-import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_BAD_REQUEST;
-import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_OK;
 
 @Service
 @RequiredArgsConstructor
@@ -56,19 +52,22 @@ public class UserService {
      *
      * @param user UserDto 인스턴스 변수
      * @param id   사용자 아이디
-     * @return {@literal ResponseEntity<Void>}
      */
-    public ResponseEntity<Void> updateUserInfo(UserDto user, long id) {
-        if (!isSameUser(id)) {
-            return RESPONSE_BAD_REQUEST;
+    public void updateUserInfo(UserDto user, long id) {
+        if (loginService.isLoginUser(id)) {
+            userMapper.updateUserInfo(id, user);
         }
-
-        userMapper.updateUserInfo(id, user);
-        return RESPONSE_OK;
     }
 
-    public boolean isSameUser(long id) {
-
-        return loginService.verifyUser(id);
+    /**
+     * 사용자 정보 삭제 비즈니스 로직.
+     *
+     * @param id   사용자 아이디
+     * @param password   사용자 패스워드
+     */
+    public void deleteUser(long id, String password) {
+        if (loginService.isLoginUser(id)) {
+            userMapper.deleteUser(id, password);
+        }
     }
 }

@@ -6,6 +6,7 @@ import com.ludensdomain.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -69,12 +70,11 @@ public class UserController {
      *
      * @param user  사용자 정보
      * @param id    사용자 아이디
-     * @return {@literal ResponseEntity<Void>}
      */
-    @PutMapping("users/{id}")
-    public ResponseEntity<Void> update(@RequestBody @Valid UserDto user, @PathVariable long id) {
+    @PutMapping("{id}")
+    public void update(@RequestBody @Valid UserDto user, @PathVariable long id) {
 
-        return userService.updateUserInfo(user, id);
+        userService.updateUserInfo(user, id);
     }
 
     /**
@@ -85,5 +85,11 @@ public class UserController {
     public void logout() {
 
         loginService.logout();
+    }
+
+    @DeleteMapping("{id}")
+    public void deleteUser(@PathVariable long id, String password) {
+
+        userService.deleteUser(id, password);
     }
 }
