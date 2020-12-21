@@ -54,7 +54,7 @@ public class UserService {
      * @param id   사용자 아이디
      */
     public void updateUserInfo(UserDto user, long id) {
-        if (isLoginUser(id)) {
+        if (loginService.isLoginUser(id)) {
             userMapper.updateUserInfo(id, user);
         }
     }
@@ -66,13 +66,8 @@ public class UserService {
      * @param password   사용자 패스워드
      */
     public void deleteUser(long id, String password) {
-        if (isLoginUser(id)) {
+        if (loginService.isLoginUser(id)) {
             userMapper.deleteUser(id, password);
         }
-    }
-
-    public boolean isLoginUser(long id) {
-
-        return loginService.isLoginUser(id);
     }
 }
