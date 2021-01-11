@@ -25,14 +25,16 @@ public class SessionLoginService implements LoginService {
     public void authLevelByRole(UserDto user) {
         String role = user.getRole();
 
-        if (role.equals("1")) {
-            httpSession.setAttribute("ROLE", AuthLevel.ADMIN);
-        }
-        if (role.equals("2")) {
-            httpSession.setAttribute("ROLE", AuthLevel.COMPANY);
-        }
-        if (role.equals("3")) {
-            httpSession.setAttribute("ROLE", AuthLevel.USER);
+        if (role != null) {
+            if ("1".equals(role)) {
+                httpSession.setAttribute("ROLE", AuthLevel.ADMIN);
+            }
+            if ("2".equals(role)) {
+                httpSession.setAttribute("ROLE", AuthLevel.COMPANY);
+            }
+            if ("3".equals(role)) {
+                httpSession.setAttribute("ROLE", AuthLevel.USER);
+            }
         }
     }
 
