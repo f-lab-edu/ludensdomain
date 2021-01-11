@@ -12,6 +12,9 @@ import javax.servlet.http.HttpSession;
 public class SessionLoginService implements LoginService {
 
     private final HttpSession httpSession;
+    private static final String ROLE_ADMIN = "ROLE_ADMIN";
+    private static final String ROLE_COMPANY = "ROLE_COMPANY";
+    private static final String ROLE_USER = "ROLE_USER";
 
     @Override
     public boolean isLoginUser(long id) {
@@ -27,13 +30,13 @@ public class SessionLoginService implements LoginService {
 
         if (role != null) {
             if ("1".equals(role)) {
-                httpSession.setAttribute("ROLE", AuthLevel.ADMIN);
+                httpSession.setAttribute(ROLE_ADMIN, AuthLevel.ADMIN);
             }
             if ("2".equals(role)) {
-                httpSession.setAttribute("ROLE", AuthLevel.COMPANY);
+                httpSession.setAttribute(ROLE_COMPANY, AuthLevel.COMPANY);
             }
             if ("3".equals(role)) {
-                httpSession.setAttribute("ROLE", AuthLevel.USER);
+                httpSession.setAttribute(ROLE_USER, AuthLevel.USER);
             }
         }
     }
