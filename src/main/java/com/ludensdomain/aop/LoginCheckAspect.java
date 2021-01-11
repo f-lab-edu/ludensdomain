@@ -17,7 +17,7 @@ public class LoginCheckAspect {
 
     private final HttpSession httpSession;
 
-    @Before("@annotation(com.ludendomain.annotation.LoginCheck)")
+    @Before("@annotation(com.ludensdomain.aop.LoginCheck)")
     public void loginCheck() {
         AuthLevel authLevel = (AuthLevel) httpSession.getAttribute("ROLE_COMPANY");
 
