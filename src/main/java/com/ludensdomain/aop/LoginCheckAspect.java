@@ -17,11 +17,29 @@ public class LoginCheckAspect {
 
     private final HttpSession httpSession;
 
-    @Before("@annotation(com.ludensdomain.aop.LoginCheck)")
-    public void loginCheck() {
+    @Before("@annotation(com.ludensdomain.aop.AdminCheck)")
+    public void adminCheck() {
+        AuthLevel authLevel = (AuthLevel) httpSession.getAttribute("ROLE_ADMIN");
+
+        if (authLevel != AuthLevel.ADMIN) {
+            throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @Before("@annotation(com.ludensdomain.aop.CompanyCheck)")
+    public void companyCheck() {
         AuthLevel authLevel = (AuthLevel) httpSession.getAttribute("ROLE_COMPANY");
 
         if (authLevel != AuthLevel.COMPANY) {
+            throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @Before("@annotation(com.ludensdomain.aop.UserCheck)")
+    public void userCheck() {
+        AuthLevel authLevel = (AuthLevel) httpSession.getAttribute("ROLE_USER");
+
+        if (authLevel != AuthLevel.USER) {
             throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
         }
     }
