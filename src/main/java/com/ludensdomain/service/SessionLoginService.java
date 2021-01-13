@@ -27,21 +27,18 @@ public class SessionLoginService implements LoginService {
     @Override
     public void authLevelByRole(UserDto user) {
         String role = user.getRole();
-
-        if (role != null) {
-            switch (role) {
-                case "1" :
-                    httpSession.setAttribute(ROLE_ADMIN, AuthLevel.ADMIN);
-                    break;
-                case "2" :
-                    httpSession.setAttribute(ROLE_COMPANY, AuthLevel.COMPANY);
-                    break;
-                case "3" :
-                    httpSession.setAttribute(ROLE_USER, AuthLevel.USER);
-                    break;
-                default:
-                    break;
-            }
+        switch (role) {
+            case "1" :
+                httpSession.setAttribute(ROLE_ADMIN, AuthLevel.ADMIN);
+                break;
+            case "2" :
+                httpSession.setAttribute(ROLE_COMPANY, AuthLevel.COMPANY);
+                break;
+            case "3" :
+                httpSession.setAttribute(ROLE_USER, AuthLevel.USER);
+                break;
+            default:
+                break;
         }
     }
 
