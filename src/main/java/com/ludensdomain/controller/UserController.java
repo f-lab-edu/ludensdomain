@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import static com.ludensdomain.domain.AuthLevel.authLevelByRole;
 import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_BAD_REQUEST;
 import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_OK;
 import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_USER_CREATED;
@@ -29,6 +31,7 @@ public class UserController {
 
     private final UserService userService;
     private final LoginService loginService;
+    private final HttpSession httpSession;
 
     /**
      * 사용자 로그인 기능.
@@ -45,7 +48,7 @@ public class UserController {
         if (user == null) {
             result = RESPONSE_BAD_REQUEST;
         } else {
-            loginService.authLevelByRole(user);
+            httpSession.setAttribute("ROLE", authLevelByRole(user.getRole()));
             result = RESPONSE_OK;
         }
 

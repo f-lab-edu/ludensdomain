@@ -12,9 +12,6 @@ import javax.servlet.http.HttpSession;
 public class SessionLoginService implements LoginService {
 
     private final HttpSession httpSession;
-    private static final String ROLE_ADMIN = "ROLE_ADMIN";
-    private static final String ROLE_COMPANY = "ROLE_COMPANY";
-    private static final String ROLE_USER = "ROLE_USER";
 
     @Override
     public boolean isLoginUser(long id) {
@@ -22,24 +19,6 @@ public class SessionLoginService implements LoginService {
         String enteredId = String.valueOf(id);
 
         return sessionId.equals(enteredId);
-    }
-
-    @Override
-    public void authLevelByRole(UserDto user) {
-        String role = user.getRole();
-        switch (role) {
-            case "1" :
-                httpSession.setAttribute(ROLE_ADMIN, AuthLevel.ADMIN);
-                break;
-            case "2" :
-                httpSession.setAttribute(ROLE_COMPANY, AuthLevel.COMPANY);
-                break;
-            case "3" :
-                httpSession.setAttribute(ROLE_USER, AuthLevel.USER);
-                break;
-            default:
-                break;
-        }
     }
 
     @Override
