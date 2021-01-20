@@ -8,6 +8,8 @@ public interface UserMapper {
 
     UserDto getUserInfo(long id, String password);
 
+    UserDto selectUserById(long id);
+
     void insertUserInfo(UserDto userDto);
 
     void updateUserInfo(long id, UserDto userDto);

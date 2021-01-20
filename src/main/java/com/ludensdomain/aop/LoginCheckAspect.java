@@ -1,12 +1,11 @@
 package com.ludensdomain.aop;
 
 import com.ludensdomain.domain.AuthLevel;
+import com.ludensdomain.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
 
 import javax.servlet.http.HttpSession;
 
@@ -16,31 +15,50 @@ import javax.servlet.http.HttpSession;
 public class LoginCheckAspect {
 
     private final HttpSession httpSession;
+    private final UserService userService;
 
-    @Before("@annotation(com.ludensdomain.aop.AdminCheck)")
-    public void adminCheck() {
-        AuthLevel authLevel = (AuthLevel) httpSession.getAttribute("ROLE_ADMIN");
-
-        if (authLevel != AuthLevel.ADMIN) {
-            throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
+    @Before("@annotation(com.ludensdomain.aop.UserCheck) && @annotation(UserCheck)")
+    public void userCheck(AuthLevel authLevel) throws Exception {
+        if (authLevel == AuthLevel.ADMIN) {
+            adminCheck();
+        }
+        if (authLevel == AuthLevel.USER) {
+            userCheck();
+        }
+        if (authLevel == AuthLevel.COMPANY) {
+            companyCheck();
         }
     }
 
-    @Before("@annotation(com.ludensdomain.aop.CompanyCheck)")
-    public void companyCheck() {
-        AuthLevel authLevel = (AuthLevel) httpSession.getAttribute("ROLE_COMPANY");
+    private long getCurrentUser() {
 
-        if (authLevel != AuthLevel.COMPANY) {
-            throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
+        return Long.parseLong(httpSession.getId());
+    }
+
+    private void adminCheck() throws Exception {
+        long id = getCurrentUser();
+        AuthLevel role = userService.findUserById(id).getRole();
+
+        if (!(role == AuthLevel.ADMIN)) {
+            throw new Exception();
         }
     }
 
-    @Before("@annotation(com.ludensdomain.aop.UserCheck)")
-    public void userCheck() {
-        AuthLevel authLevel = (AuthLevel) httpSession.getAttribute("ROLE_USER");
+    private void companyCheck() throws Exception {
+        long id = getCurrentUser();
+        AuthLevel role = userService.findUserById(id).getRole();
 
-        if (authLevel != AuthLevel.USER) {
-            throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
+        if (!(role == AuthLevel.COMPANY)) {
+            throw new Exception();
+        }
+    }
+
+    private void userCheck() throws Exception {
+        long id = getCurrentUser();
+        AuthLevel role = userService.findUserById(id).getRole();
+
+        if (!(role == AuthLevel.USER)) {
+            throw new Exception();
         }
     }
 }

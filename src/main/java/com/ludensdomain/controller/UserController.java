@@ -6,22 +6,12 @@ import com.ludensdomain.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import static com.ludensdomain.domain.AuthLevel.authLevelByRole;
-import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_BAD_REQUEST;
-import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_OK;
-import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_USER_CREATED;
+import static com.ludensdomain.util.ResponseEntityConstants.*;
 
 @Log4j2
 @RestController
@@ -32,6 +22,8 @@ public class UserController {
     private final UserService userService;
     private final LoginService loginService;
     private final HttpSession httpSession;
+
+    public static final String ROLE = "ROLE";
 
     /**
      * 사용자 로그인 기능.
@@ -48,7 +40,6 @@ public class UserController {
         if (user == null) {
             result = RESPONSE_BAD_REQUEST;
         } else {
-            httpSession.setAttribute("ROLE", authLevelByRole(user.getRole()));
             result = RESPONSE_OK;
         }
 

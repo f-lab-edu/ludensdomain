@@ -2,20 +2,10 @@ package com.ludensdomain.domain;
 
 public enum AuthLevel {
 
-    ADMIN("1"), COMPANY("2"), USER("3");
+    ADMIN, COMPANY, USER;
 
-    public final String value;
+    public static AuthLevel getAuthLevel(String level) {
 
-    AuthLevel(String value) {
-        this.value = value;
-    }
-
-    public static AuthLevel authLevelByRole(String value) {
-        switch (value) {
-            case "1": return ADMIN;
-            case "2": return COMPANY;
-            case "3": return USER;
-            default: return null;
-        }
+        return Enum.valueOf(AuthLevel.class, level);
     }
 }
