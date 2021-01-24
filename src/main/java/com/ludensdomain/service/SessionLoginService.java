@@ -1,7 +1,5 @@
 package com.ludensdomain.service;
 
-import com.ludensdomain.domain.AuthLevel;
-import com.ludensdomain.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
 package com.ludensdomain.dto;
 
-import com.ludensdomain.domain.AuthLevel;
+import com.ludensdomain.aop.LoginCheck;
 import lombok.Builder;
 import lombok.Value;
 import org.hibernate.validator.constraints.Length;
@@ -38,5 +38,5 @@ public class UserDto {
     String phoneNo;
 
     @NotEmpty
-    AuthLevel role;
+    LoginCheck.AuthLevel role;
 }
