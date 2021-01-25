@@ -19,19 +19,22 @@ public class LoginCheckAspect {
     @Before("@annotation(com.ludensdomain.aop.LoginCheck)")
     public void userCheck(LoginCheck.AuthLevel target) throws Exception {
         switch (target) {
-            case ADMIN: adminCheck();
+            case ADMIN:
+                adminCheck();
                 break;
-            case COMPANY: companyCheck();
+            case COMPANY:
+                companyCheck();
                 break;
-            case USER: userCheck();
+            case USER:
+                userCheck();
                 break;
             default:
-                throw new IllegalStateException("Unexpected value: " + target);
+                throw new IllegalArgumentException("Unexpected value: " + target);
         }
     }
 
     private long getCurrentUser() {
-        Object obj = (httpSession.getAttribute("id"));
+        Object obj = httpSession.getAttribute("id");
 
         return (long) obj;
     }
