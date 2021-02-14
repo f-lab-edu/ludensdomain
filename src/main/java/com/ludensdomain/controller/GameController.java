@@ -1,5 +1,6 @@
 package com.ludensdomain.controller;
 
+import com.ludensdomain.aop.AuthLevel;
 import com.ludensdomain.aop.LoginCheck;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,35 +19,35 @@ import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_OK;
 @RequiredArgsConstructor
 public class GameController {
 
-    @LoginCheck(authLevel = LoginCheck.AuthLevel.USER)
+    @LoginCheck(authLevel = AuthLevel.USER)
     @GetMapping("/{gameId}")
     public ResponseEntity<Void> selectGame(@PathVariable String gameId) {
 
         return RESPONSE_OK;
     }
 
-    @LoginCheck(authLevel = LoginCheck.AuthLevel.USER)
+    @LoginCheck(authLevel = AuthLevel.USER)
     @GetMapping("/gameList")
     public ResponseEntity<Void> selectGameList() {
 
         return RESPONSE_OK;
     }
 
-    @LoginCheck(authLevel = LoginCheck.AuthLevel.COMPANY)
+    @LoginCheck(authLevel = AuthLevel.COMPANY)
     @PostMapping("/{gameId}")
     public ResponseEntity<Void> insertNewGame(@PathVariable String gameId) {
 
         return RESPONSE_OK;
     }
 
-    @LoginCheck(authLevel = LoginCheck.AuthLevel.COMPANY)
+    @LoginCheck(authLevel = AuthLevel.COMPANY)
     @PutMapping("/{gameId}")
     public ResponseEntity<Void> updateGameInfo(@PathVariable String gameId) {
 
         return RESPONSE_OK;
     }
 
-    @LoginCheck(authLevel = LoginCheck.AuthLevel.COMPANY)
+    @LoginCheck(authLevel = AuthLevel.ADMIN)
     @DeleteMapping("/{gameId}")
     public ResponseEntity<Void> deleteGame(@PathVariable String gameId) {
 

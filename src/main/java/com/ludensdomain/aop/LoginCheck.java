@@ -9,14 +9,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface LoginCheck {
 
-    AuthLevel authLevel();
+    AuthLevel authLevel() default AuthLevel.USER;
 
-    enum AuthLevel {
-        ADMIN, COMPANY, USER;
-
-        public static AuthLevel getAuthLevel(String level) {
-
-            return Enum.valueOf(AuthLevel.class, level);
-        }
-    }
 }

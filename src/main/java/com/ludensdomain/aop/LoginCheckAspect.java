@@ -16,9 +16,10 @@ public class LoginCheckAspect {
     private final HttpSession httpSession;
     private final UserService userService;
 
-    @Before("@annotation(com.ludensdomain.aop.LoginCheck)")
-    public void userCheck(LoginCheck.AuthLevel target) throws Exception {
-        switch (target) {
+    @Before("@annotation(LoginCheck) && @annotation(loginCheck)")
+    public void loginCheck(LoginCheck loginCheck) throws Exception {
+        AuthLevel authLevel = loginCheck.authLevel();
+        switch (authLevel) {
             case ADMIN:
                 adminCheck();
                 break;
@@ -29,7 +30,7 @@ public class LoginCheckAspect {
                 userCheck();
                 break;
             default:
-                throw new IllegalArgumentException("Unexpected value: " + target);
+                throw new IllegalArgumentException("Unexpected value: " + authLevel);
         }
     }
 
@@ -41,27 +42,27 @@ public class LoginCheckAspect {
 
     private void adminCheck() throws Exception {
         long id = getCurrentUser();
-        LoginCheck.AuthLevel role = userService.findUserById(id).getRole();
+        AuthLevel role = userService.findUserById(id).getRole();
 
-        if (!(role == LoginCheck.AuthLevel.ADMIN)) {
+        if (!(role == AuthLevel.ADMIN)) {
             throw new Exception();
         }
     }
 
     private void companyCheck() throws Exception {
         long id = getCurrentUser();
-        LoginCheck.AuthLevel role = userService.findUserById(id).getRole();
+        AuthLevel role = userService.findUserById(id).getRole();
 
-        if (!(role == LoginCheck.AuthLevel.COMPANY)) {
+        if (!(role == AuthLevel.COMPANY)) {
             throw new Exception();
         }
     }
 
     private void userCheck() throws Exception {
         long id = getCurrentUser();
-        LoginCheck.AuthLevel role = userService.findUserById(id).getRole();
+        AuthLevel role = userService.findUserById(id).getRole();
 
-        if (!(role == LoginCheck.AuthLevel.USER)) {
+        if (!(role == AuthLevel.USER)) {
             throw new Exception();
         }
     }
