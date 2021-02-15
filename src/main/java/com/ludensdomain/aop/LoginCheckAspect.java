@@ -8,13 +8,14 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpSession;
 
+import static com.ludensdomain.controller.UserController.ROLE;
+
 @Aspect
 @Component
 @RequiredArgsConstructor
 public class LoginCheckAspect {
 
     private final HttpSession httpSession;
-    private final UserService userService;
 
     @Before("@annotation(LoginCheck) && @annotation(loginCheck)")
     public void loginCheck(LoginCheck loginCheck) throws Exception {
@@ -34,15 +35,8 @@ public class LoginCheckAspect {
         }
     }
 
-    private long getCurrentUser() {
-        Object obj = httpSession.getAttribute("id");
-
-        return (long) obj;
-    }
-
     private void adminCheck() throws Exception {
-        long id = getCurrentUser();
-        AuthLevel role = userService.findUserById(id).getRole();
+        AuthLevel role = (AuthLevel) httpSession.getAttribute(ROLE);
 
         if (!(role == AuthLevel.ADMIN)) {
             throw new Exception();
@@ -50,8 +44,7 @@ public class LoginCheckAspect {
     }
 
     private void companyCheck() throws Exception {
-        long id = getCurrentUser();
-        AuthLevel role = userService.findUserById(id).getRole();
+        AuthLevel role = (AuthLevel) httpSession.getAttribute(ROLE);
 
         if (!(role == AuthLevel.COMPANY)) {
             throw new Exception();
@@ -59,8 +52,7 @@ public class LoginCheckAspect {
     }
 
     private void userCheck() throws Exception {
-        long id = getCurrentUser();
-        AuthLevel role = userService.findUserById(id).getRole();
+        AuthLevel role = (AuthLevel) httpSession.getAttribute(ROLE);
 
         if (!(role == AuthLevel.USER)) {
             throw new Exception();

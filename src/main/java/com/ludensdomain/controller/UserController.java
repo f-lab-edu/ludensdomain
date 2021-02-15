@@ -1,5 +1,6 @@
 package com.ludensdomain.controller;
 
+import com.ludensdomain.aop.AuthLevel;
 import com.ludensdomain.dto.UserDto;
 import com.ludensdomain.service.LoginService;
 import com.ludensdomain.service.UserService;
@@ -40,6 +41,8 @@ public class UserController {
         if (user == null) {
             result = RESPONSE_BAD_REQUEST;
         } else {
+            AuthLevel role = userService.findUserById(id).getRole();
+            httpSession.setAttribute(ROLE, role);
             result = RESPONSE_OK;
         }
 
