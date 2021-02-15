@@ -1,6 +1,5 @@
 package com.ludensdomain.aop;
 
-import com.ludensdomain.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -17,8 +16,11 @@ public class LoginCheckAspect {
 
     private final HttpSession httpSession;
 
+    /**.
+     * 기능 인가를 결정하기 위한 권한 확인
+     */
     @Before("@annotation(LoginCheck) && @annotation(loginCheck)")
-    public void loginCheck(LoginCheck loginCheck) throws Exception {
+    public void loginCheck(LoginCheck loginCheck) {
         AuthLevel authLevel = loginCheck.authLevel();
         switch (authLevel) {
             case ADMIN:
@@ -31,31 +33,31 @@ public class LoginCheckAspect {
                 userCheck();
                 break;
             default:
-                throw new IllegalArgumentException("Unexpected value: " + authLevel);
+                break;
         }
     }
 
-    private void adminCheck() throws Exception {
+    private void adminCheck() {
         AuthLevel role = (AuthLevel) httpSession.getAttribute(ROLE);
 
         if (!(role == AuthLevel.ADMIN)) {
-            throw new Exception();
+            throw new IllegalArgumentException(role + " has no access right");
         }
     }
 
-    private void companyCheck() throws Exception {
+    private void companyCheck() {
         AuthLevel role = (AuthLevel) httpSession.getAttribute(ROLE);
 
         if (!(role == AuthLevel.COMPANY)) {
-            throw new Exception();
+            throw new IllegalArgumentException(role + " has no access right");
         }
     }
 
-    private void userCheck() throws Exception {
+    private void userCheck() {
         AuthLevel role = (AuthLevel) httpSession.getAttribute(ROLE);
 
         if (!(role == AuthLevel.USER)) {
-            throw new Exception();
+            throw new IllegalArgumentException(role + " has no access right");
         }
     }
 }
