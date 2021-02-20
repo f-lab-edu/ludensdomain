@@ -18,46 +18,17 @@ public class LoginCheckAspect {
 
     /**.
      * 기능 인가를 결정하기 위한 권한 확인
+     * 기능에 따른 권한을 담은 authLevel과 유저가 지닌 권한을 담은 role을 비교하고, 불일치하면 예외를 발생
+     *
+     * @param loginCheck LoginCheck
+     * @throws IllegalAccessException 허용하지 않는 접근
      */
     @Before("@annotation(LoginCheck) && @annotation(loginCheck)")
-    public void loginCheck(LoginCheck loginCheck) {
+    public void loginCheck(LoginCheck loginCheck) throws IllegalAccessException {
         AuthLevel authLevel = loginCheck.authLevel();
-        switch (authLevel) {
-            case ADMIN:
-                adminCheck();
-                break;
-            case COMPANY:
-                companyCheck();
-                break;
-            case USER:
-                userCheck();
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void adminCheck() {
         AuthLevel role = (AuthLevel) httpSession.getAttribute(ROLE);
-
-        if (!(role == AuthLevel.ADMIN)) {
-            throw new IllegalArgumentException(role + " has no access right");
-        }
-    }
-
-    private void companyCheck() {
-        AuthLevel role = (AuthLevel) httpSession.getAttribute(ROLE);
-
-        if (!(role == AuthLevel.COMPANY)) {
-            throw new IllegalArgumentException(role + " has no access right");
-        }
-    }
-
-    private void userCheck() {
-        AuthLevel role = (AuthLevel) httpSession.getAttribute(ROLE);
-
-        if (!(role == AuthLevel.USER)) {
-            throw new IllegalArgumentException(role + " has no access right");
+        if (authLevel != role) {
+            throw new IllegalAccessException(role + " has no access right");
         }
     }
 }
