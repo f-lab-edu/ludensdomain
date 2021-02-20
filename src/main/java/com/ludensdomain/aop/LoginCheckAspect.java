@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpSession;
 
-import static com.ludensdomain.controller.UserController.ROLE;
+import static com.ludensdomain.service.SessionLoginService.ROLE;
 
 @Aspect
 @Component
