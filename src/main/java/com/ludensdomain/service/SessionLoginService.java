@@ -11,11 +11,12 @@ import javax.servlet.http.HttpSession;
 public class SessionLoginService implements LoginService {
 
     private final HttpSession httpSession;
+    public static final String ID = "ID";
     public static final String ROLE = "ROLE";
 
     @Override
-    public void insertRole(AuthLevel role) {
-
+    public void insertIdAndRole(long id, AuthLevel role) {
+        httpSession.setAttribute(ID, id);
         httpSession.setAttribute(ROLE, role);
     }
 

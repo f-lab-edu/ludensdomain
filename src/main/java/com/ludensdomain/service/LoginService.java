@@ -4,7 +4,7 @@ import com.ludensdomain.aop.AuthLevel;
 
 public interface LoginService {
 
-    void insertRole(AuthLevel role);
+    void insertIdAndRole(long id, AuthLevel role);
 
     boolean isLoginUser(long id);
 
