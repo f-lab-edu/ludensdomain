@@ -45,7 +45,7 @@ public class UserController {
         if (user == null) {
             result = RESPONSE_BAD_REQUEST;
         } else {
-            loginService.insertIdAndRole(id, user.getRole());
+            loginService.login(id, user.getRole());
             result = RESPONSE_OK;
         }
 
