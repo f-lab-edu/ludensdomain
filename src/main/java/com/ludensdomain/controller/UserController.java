@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Optional;
 import javax.validation.Valid;
 
 import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_BAD_REQUEST;
@@ -41,11 +40,12 @@ public class UserController {
     @GetMapping("login")
     public ResponseEntity<Void> login(@Valid long id, String password) {
         ResponseEntity<Void> result;
-        Optional<UserDto> user = userService.getUserInfo(id, password);
+        UserDto user = userService.getUserInfo(id, password);
 
-        if (!user.isPresent()) {
+        if (user == null) {
             result = RESPONSE_BAD_REQUEST;
         } else {
+            loginService.login(id, user.getRole());
             result = RESPONSE_OK;
         }
 

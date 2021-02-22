@@ -6,8 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.jasypt.encryption.StringEncryptor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -16,7 +14,7 @@ public class UserService {
     private final StringEncryptor stringEncryptor;
     private final LoginService loginService;
 
-    public Optional<UserDto> getUserInfo(long id, String password) {
+    public UserDto getUserInfo(long id, String password) {
 
         return userMapper.getUserInfo(id, password);
     }
@@ -24,6 +22,11 @@ public class UserService {
     public void insertUserInfo(UserDto user) {
         UserDto encryptedUser = encryptUser(user);
         userMapper.insertUserInfo(encryptedUser);
+    }
+
+    public UserDto findUserById(long id) {
+
+        return userMapper.selectUserById(id);
     }
 
     /**
