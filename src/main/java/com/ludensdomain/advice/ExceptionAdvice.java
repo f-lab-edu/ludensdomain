@@ -17,10 +17,11 @@ public class ExceptionAdvice {
         return getResult("해당 기능을 이용할 수 있는 권한이 없습니다.");
     }
 
+    /*
+     * 모든 예외 클래스 객체의 메세지를 담는 util method
+     */
     public ExceptionResponse getResult(String message) {
-        ExceptionResponse response = new ExceptionResponse();
-        response.setMessage(message);
 
-        return response;
+        return ExceptionResponse.builder().message(message).build();
     }
 }
