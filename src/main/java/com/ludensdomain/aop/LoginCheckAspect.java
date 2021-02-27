@@ -1,5 +1,6 @@
 package com.ludensdomain.aop;
 
+import com.ludensdomain.advice.exceptions.UnauthorizedUserException;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -21,14 +22,14 @@ public class LoginCheckAspect {
      * 기능에 따른 권한을 담은 authLevel과 유저가 지닌 권한을 담은 role을 비교하고, 불일치하면 예외를 발생
      *
      * @param loginCheck LoginCheck
-     * @throws IllegalAccessException 허용하지 않는 접근
+     * @throws UnauthorizedUserException 허용하지 않는 접근
      */
     @Before("@annotation(LoginCheck) && @annotation(loginCheck)")
-    public void loginCheck(LoginCheck loginCheck) throws IllegalAccessException {
+    public void loginCheck(LoginCheck loginCheck) {
         AuthLevel authLevel = loginCheck.authLevel();
         AuthLevel role = (AuthLevel) httpSession.getAttribute(ROLE);
         if (authLevel != role) {
-            throw new IllegalAccessException(role + " has no access right");
+            throw new UnauthorizedUserException();
         }
     }
 }
