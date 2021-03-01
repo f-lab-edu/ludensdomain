@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ludensdomain.mapper.GameMapper">
+
+    <select id="getGameList" resultType="com.ludensdomain.dto.GameDto">
+        SELECT id,
+               title,
+               genere,
+               description,
+               release_date releaseDate,
+               price,
+               developer,
+               publisher,
+               rating,
+               sales
+        FROM game
+    </select>
+
+</mapper>
+
