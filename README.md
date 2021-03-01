@@ -43,5 +43,5 @@
 <br>
 
 ## DB ERD
-![game erd vpd](https://user-images.githubusercontent.com/71559880/104180365-609dc000-5450-11eb-9682-f001ecee1e40.png)
+![Untitled](https://user-images.githubusercontent.com/71559880/109526840-5ca82900-7af6-11eb-8440-7266d6c4fb9d.png)
 
