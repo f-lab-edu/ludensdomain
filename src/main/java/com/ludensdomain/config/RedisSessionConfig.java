@@ -15,6 +15,8 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.session.data.redis.config.ConfigureRedisAction;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 public class RedisSessionConfig {
@@ -53,19 +55,27 @@ public class RedisSessionConfig {
     }
 
     /**.
-     * Redis를 이용해 cache 적용을 하기 위한 RedisCacheManager 설정
+     * RedisCacheManager : Spring에서 Redis를 통한 cache 기능을 기존 스프링 코드를 최대한 유지시키며 안전하게 적용하기 위해
+     * 사용되는 기능이다. 데이터 생존 주기, 캐시 데이터 타입 등 캐시의 여러 설정을 부여할 수 있다.
+     * disableCachingNullValues : null값이 들어가지 않도록 설정
+     * Serialization : 기존 Redis의 byte array 타입을 특정 데이터 타입으로 받기 위해 설정
+     * cacheConfigurationMap : 캐시 별로 유효시간을 정하기 위해 HashMap 데이터 타입으로 설정
      */
     @Bean
     public RedisCacheManager redisCacheManager(RedisConnectionFactory redisConnectionFactory) {
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration
                 .defaultCacheConfig()
+                .disableCachingNullValues()
                 .serializeKeysWith(RedisSerializationContext
                         .SerializationPair
                         .fromSerializer(new StringRedisSerializer()))
                 .serializeValuesWith(RedisSerializationContext
                         .SerializationPair
                         .fromSerializer(new GenericJackson2JsonRedisSerializer()))
-                .entryTtl(Duration.ofHours(5L));
+                .entryTtl(Duration.ofDays(1));
+
+        Map<String, RedisCacheConfiguration> cacheConfiguration = new HashMap<>();
+        cacheConfiguration.put("gameList", redisCacheConfiguration.entryTtl(Duration.ofHours(3)));
 
         return RedisCacheManager.RedisCacheManagerBuilder
                 .fromConnectionFactory(redisConnectionFactory)
