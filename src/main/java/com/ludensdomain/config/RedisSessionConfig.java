@@ -1,5 +1,6 @@
 package com.ludensdomain.config;
 
+import com.ludensdomain.util.RedisCacheKeyConstants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,8 @@ import org.springframework.session.data.redis.config.ConfigureRedisAction;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.ludensdomain.util.RedisCacheKeyConstants.GAME_LIST;
 
 @Configuration
 public class RedisSessionConfig {
@@ -59,7 +62,10 @@ public class RedisSessionConfig {
      * 사용되는 기능이다. 데이터 생존 주기, 캐시 데이터 타입 등 캐시의 여러 설정을 부여할 수 있다.
      * disableCachingNullValues : null값이 들어가지 않도록 설정
      * Serialization : 기존 Redis의 byte array 타입을 특정 데이터 타입으로 받기 위해 설정
+     * GenericJackson2JsonRedisSerializer은 모든 Object를 JSON 형태로 변환해주지만 Class Type을 같이 저장시켜서
+     * 동일한 Class Type(DTO)만으로 조회가 가능하다는 특징이 있다.
      * cacheConfigurationMap : 캐시 별로 유효시간을 정하기 위해 HashMap 데이터 타입으로 설정
+     * Duration : 캐시의 수명 기간을 정의. 디폴트로 1시간 동안 캐시를 보유하도록 설정
      */
     @Bean
     public RedisCacheManager redisCacheManager(RedisConnectionFactory redisConnectionFactory) {
@@ -72,12 +78,13 @@ public class RedisSessionConfig {
                 .serializeValuesWith(RedisSerializationContext
                         .SerializationPair
                         .fromSerializer(new GenericJackson2JsonRedisSerializer()))
-                .entryTtl(Duration.ofDays(1));
+                .entryTtl(Duration.ofHours(1));
 
         Map<String, RedisCacheConfiguration> cacheConfiguration = new HashMap<>();
-        cacheConfiguration.put("gameList", redisCacheConfiguration.entryTtl(Duration.ofHours(3)));
+        cacheConfiguration.put(GAME_LIST, redisCacheConfiguration.entryTtl(Duration.ofMinutes(10)));
 
-        return RedisCacheManager.RedisCacheManagerBuilder
+        return RedisCacheManager
+                .RedisCacheManagerBuilder
                 .fromConnectionFactory(redisConnectionFactory)
                 .cacheDefaults(redisCacheConfiguration)
                 .build();
