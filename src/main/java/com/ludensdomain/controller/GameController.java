@@ -36,12 +36,12 @@ public class GameController {
         return RESPONSE_OK;
     }
 
-    @Cacheable(key = "#", value = GAME_LIST, cacheManager = "redisCacheManager")
+    @Cacheable(key = "#pageNum", value = GAME_LIST, cacheManager = "redisCacheManager")
     @LoginCheck(authLevel = AuthLevel.USER)
     @GetMapping("/gameList")
-    public List<GameDto> selectGameList() {
+    public List<GameDto> selectGameList(int pageNum) {
 
-        return gameService.getGameList();
+        return gameService.getGameList(pageNum);
     }
 
     @LoginCheck(authLevel = AuthLevel.COMPANY)

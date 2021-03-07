@@ -8,6 +8,6 @@ import java.util.List;
 @Mapper
 public interface GameMapper {
 
-    List<GameDto> getGameList();
+    List<GameDto> getGameList(int pageNum);
 
 }

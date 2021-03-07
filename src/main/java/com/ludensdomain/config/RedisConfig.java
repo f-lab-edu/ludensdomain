@@ -21,7 +21,7 @@ import java.util.Map;
 import static com.ludensdomain.util.RedisCacheKeyConstants.GAME_LIST;
 
 @Configuration
-public class RedisSessionConfig {
+public class RedisConfig {
 
     @Value("${spring.redis.host}")
     private String redisHost;

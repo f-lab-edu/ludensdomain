@@ -13,9 +13,10 @@ public class GameService {
 
     private final GameMapper gameMapper;
 
-    public List<GameDto> getGameList() {
+    public List<GameDto> getGameList(int pageNum) {
+        int startPoint = pageNum * 100;
 
-        return gameMapper.getGameList();
+        return gameMapper.getGameList(startPoint);
     }
 
 }

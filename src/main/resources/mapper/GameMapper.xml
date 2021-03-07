@@ -15,6 +15,7 @@
                rating,
                sales
         FROM game
+        LIMIT #{startPoint}, 100
     </select>
 
 </mapper>
