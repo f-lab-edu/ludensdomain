@@ -43,5 +43,5 @@
 <br>
 
 ## DB ERD
-![Untitled](https://user-images.githubusercontent.com/71559880/109526840-5ca82900-7af6-11eb-8440-7266d6c4fb9d.png)
+![image](https://user-images.githubusercontent.com/71559880/110244935-7e952600-7fa4-11eb-8315-f2f747275479.png)
 
