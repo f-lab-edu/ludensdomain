@@ -1,6 +1,5 @@
 package com.ludensdomain.config;
 
-import com.ludensdomain.util.RedisCacheKeyConstants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -81,7 +80,7 @@ public class RedisSessionConfig {
                 .entryTtl(Duration.ofHours(1));
 
         Map<String, RedisCacheConfiguration> cacheConfiguration = new HashMap<>();
-        cacheConfiguration.put(GAME_LIST, redisCacheConfiguration.entryTtl(Duration.ofMinutes(10)));
+        cacheConfiguration.put(GAME_LIST, redisCacheConfiguration.entryTtl(Duration.ofSeconds(5)));
 
         return RedisCacheManager
                 .RedisCacheManagerBuilder
