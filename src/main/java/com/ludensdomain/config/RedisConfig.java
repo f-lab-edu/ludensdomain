@@ -64,7 +64,7 @@ public class RedisConfig {
      * GenericJackson2JsonRedisSerializer은 모든 Object를 JSON 형태로 변환해주지만 Class Type을 같이 저장시켜서
      * 동일한 Class Type(DTO)만으로 조회가 가능하다는 특징이 있다.
      * cacheConfigurationMap : 캐시 별로 유효시간을 정하기 위해 HashMap 데이터 타입으로 설정
-     * Duration : 캐시의 수명 기간을 정의. 디폴트로 1시간 동안 캐시를 보유하도록 설정
+     * entryTtl(Duration) : 캐시의 수명 기간을 정의. 디폴트로 1시간 동안 캐시를 보유하도록 설정.
      */
     @Bean
     public RedisCacheManager redisCacheManager(RedisConnectionFactory redisConnectionFactory) {
@@ -76,9 +76,9 @@ public class RedisConfig {
                         .fromSerializer(new StringRedisSerializer()))
                 .serializeValuesWith(RedisSerializationContext
                         .SerializationPair
-                        .fromSerializer(new GenericJackson2JsonRedisSerializer()))
-                .entryTtl(Duration.ofHours(1));
+                        .fromSerializer(new GenericJackson2JsonRedisSerializer()));
 
+        // 게임 리스트를 조회하는 경우 게임 평점과 판매 수 같이 실시간적으로 업데이트가 되야 하는 데이터를 다루기 때문에 캐시 생명 주기를 5초로 산정
         Map<String, RedisCacheConfiguration> cacheConfiguration = new HashMap<>();
         cacheConfiguration.put(GAME_LIST, redisCacheConfiguration.entryTtl(Duration.ofSeconds(5)));
 
