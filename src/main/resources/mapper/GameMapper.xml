@@ -4,18 +4,29 @@
 <mapper namespace="com.ludensdomain.mapper.GameMapper">
 
     <select id="getGameList" resultType="com.ludensdomain.dto.GameDto">
-        SELECT id,
-               title,
-               genere,
-               description,
-               release_date releaseDate,
-               price,
-               developer,
-               publisher,
-               rating,
-               sales
-        FROM game
-        LIMIT #{startPoint}, 100
+        SELECT G.id,
+               G.title,
+               G.genre,
+               G.description,
+               G.release_date releaseDate,
+               G.price,
+               G.developer,
+               G.publisher,
+               G.rating,
+               G.sales
+        FROM game G
+            <if test="genre != null and genre != ''">
+                INNER JOIN genre ON G.genre = genre.id
+            </if>
+            <if test="developer != null and developer != ''">
+                INNER JOIN developer ON G.developer = developer.id
+            </if>
+            <if test="publisher != null and publisher != ''">
+                INNER JOIN publisher ON G.publisher = publisher.id
+            </if>
+        WHERE <![CDATA[id < #{startPoint}]]>
+        ORDER BY G.id
+        LIMIT 50
     </select>
 
 </mapper>
