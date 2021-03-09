@@ -26,9 +26,9 @@ public class GameController {
 
     @LoginCheck(authLevel = AuthLevel.USER)
     @GetMapping("/{gameId}")
-    public ResponseEntity<Void> selectGame(@PathVariable String gameId) {
+    public GameDto selectGame(@PathVariable long gameId) {
 
-        return RESPONSE_OK;
+        return gameService.getGameInfo(gameId);
     }
 
     @Cacheable(key = "#listInfo", value = GAME_LIST, cacheManager = "redisCacheManager")
@@ -41,21 +41,21 @@ public class GameController {
 
     @LoginCheck(authLevel = AuthLevel.COMPANY)
     @PostMapping("/{gameId}")
-    public ResponseEntity<Void> insertNewGame(@PathVariable String gameId) {
+    public ResponseEntity<Void> insertNewGame(@PathVariable long gameId) {
 
         return RESPONSE_OK;
     }
 
     @LoginCheck(authLevel = AuthLevel.COMPANY)
     @PutMapping("/{gameId}")
-    public ResponseEntity<Void> updateGameInfo(@PathVariable String gameId) {
+    public ResponseEntity<Void> updateGameInfo(@PathVariable long gameId) {
 
         return RESPONSE_OK;
     }
 
     @LoginCheck(authLevel = AuthLevel.ADMIN)
     @DeleteMapping("/{gameId}")
-    public ResponseEntity<Void> deleteGame(@PathVariable String gameId) {
+    public ResponseEntity<Void> deleteGame(@PathVariable long gameId) {
 
         return RESPONSE_OK;
     }

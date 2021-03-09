@@ -14,6 +14,11 @@ public class GameService {
 
     private final GameMapper gameMapper;
 
+    public GameDto getGameInfo(long gameId) {
+
+        return gameMapper.getGameInfo(gameId);
+    }
+
     public List<GameDto> getGameList(GamePagingDto listInfo) {
 
         return gameMapper.getGameList(listInfo);

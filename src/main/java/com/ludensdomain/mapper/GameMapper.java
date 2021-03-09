@@ -9,6 +9,8 @@ import java.util.List;
 @Mapper
 public interface GameMapper {
 
+    GameDto getGameInfo(long gameId);
+
     List<GameDto> getGameList(GamePagingDto listInfo);
 
 }

@@ -3,6 +3,24 @@
 
 <mapper namespace="com.ludensdomain.mapper.GameMapper">
 
+    <select id="getGameInfo" resultType="com.ludensdomain.dto.GameDto">
+        SELECT G.id,
+               G.title,
+               G.genre,
+               G.description,
+               G.release_date releaseDate,
+               G.price,
+               G.developer,
+               G.publisher,
+               G.rating,
+               G.sales
+        FROM game G
+                 LEFT OUTER JOIN genre ON G.genre = genre.id
+                 LEFT OUTER JOIN developer ON G.developer = developer.id
+                 LEFT OUTER JOIN publisher ON G.publisher = publisher.id
+        WHERE G.id = #{gameId}
+    </select>
+
     <select id="getGameList" parameterType="com.ludensdomain.dto.GamePagingDto" resultType="com.ludensdomain.dto.GameDto">
         SELECT G.id,
                G.title,
