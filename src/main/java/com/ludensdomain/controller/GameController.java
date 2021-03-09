@@ -3,6 +3,7 @@ package com.ludensdomain.controller;
 import com.ludensdomain.aop.AuthLevel;
 import com.ludensdomain.aop.LoginCheck;
 import com.ludensdomain.dto.GameDto;
+import com.ludensdomain.dto.GamePagingDto;
 import com.ludensdomain.service.GameService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -30,12 +31,12 @@ public class GameController {
         return RESPONSE_OK;
     }
 
-    @Cacheable(key = "#pageNum", value = GAME_LIST, cacheManager = "redisCacheManager")
+    @Cacheable(key = "#listInfo", value = GAME_LIST, cacheManager = "redisCacheManager")
     @LoginCheck(authLevel = AuthLevel.USER)
     @GetMapping("/gameList")
-    public List<GameDto> selectGameList(int pageNum) {
+    public List<GameDto> selectGameList(GamePagingDto listInfo) {
 
-        return gameService.getGameList(pageNum);
+        return gameService.getGameList(listInfo);
     }
 
     @LoginCheck(authLevel = AuthLevel.COMPANY)

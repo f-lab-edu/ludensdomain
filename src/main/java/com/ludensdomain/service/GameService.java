@@ -1,6 +1,7 @@
 package com.ludensdomain.service;
 
 import com.ludensdomain.dto.GameDto;
+import com.ludensdomain.dto.GamePagingDto;
 import com.ludensdomain.mapper.GameMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,10 +14,9 @@ public class GameService {
 
     private final GameMapper gameMapper;
 
-    public List<GameDto> getGameList(int pageNum) {
-        int startPoint = pageNum * 100;
+    public List<GameDto> getGameList(GamePagingDto listInfo) {
 
-        return gameMapper.getGameList(startPoint);
+        return gameMapper.getGameList(listInfo);
     }
 
 }
