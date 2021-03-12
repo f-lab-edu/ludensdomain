@@ -1,5 +1,6 @@
 package com.ludensdomain.controller;
 
+import com.ludensdomain.advice.exceptions.InsertFailedException;
 import com.ludensdomain.aop.AuthLevel;
 import com.ludensdomain.aop.LoginCheck;
 import com.ludensdomain.dto.GameDto;
@@ -7,6 +8,8 @@ import com.ludensdomain.dto.GamePagingDto;
 import com.ludensdomain.service.GameService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +26,7 @@ import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_OK;
 public class GameController {
 
     private final GameService gameService;
+    private static final Logger logger = LoggerFactory.getLogger(GameController.class);
 
     @LoginCheck(authLevel = AuthLevel.USER)
     @GetMapping("/{gameId}")
@@ -48,8 +52,8 @@ public class GameController {
     public ResponseEntity<Void> insertNewGame(GameDto gameDto) {
         try {
             gameService.insertGame(gameDto);
-        } catch(Exception e) {
-            e.printStackTrace();
+        } catch(InsertFailedException e) {
+            logger.info(String.valueOf(e));
         }
         return RESPONSE_OK;
     }
