@@ -13,4 +13,6 @@ public interface GameMapper {
 
     List<GameDto> getGameList(GamePagingDto listInfo);
 
+    void insertGame(GameDto gameDto);
+
 }

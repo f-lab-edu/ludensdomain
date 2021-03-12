@@ -4,6 +4,7 @@
 <mapper namespace="com.ludensdomain.mapper.GameMapper">
 
     <select id="getGameInfo" resultType="com.ludensdomain.dto.GameDto">
+        -- status는 숫자로 게임 판매 여부를 표현. 1. 검수 중 | 2. 테스팅 중 | 3. 통과
         SELECT G.id,
                G.title,
                G.genre,
@@ -19,6 +20,7 @@
                  LEFT OUTER JOIN developer ON G.developer = developer.id
                  LEFT OUTER JOIN publisher ON G.publisher = publisher.id
         WHERE G.id = #{gameId}
+        AND G.status = 3
     </select>
 
     <select id="getGameList" parameterType="com.ludensdomain.dto.GamePagingDto" resultType="com.ludensdomain.dto.GameDto">
@@ -46,9 +48,36 @@
                 AND G.publisher = #{publisher}
             </if>
         WHERE <![CDATA[id < #{lastGameId}]]>
+        AND G.status = 3
         ORDER BY G.release_date
         LIMIT ${size}
     </select>
+
+    <insert id="insertGame" parameterType="com.ludensdomain.dto.GameDto">
+        INSERT INTO
+            game
+                ( id,
+                  title,
+                  genre,
+                  description,
+                  release_date,
+                  price,
+                  developer,
+                  publisher,
+                  status
+                )
+        VALUES
+                ( #{id},
+                  #{title},
+                  #{genre},
+                  #{description},
+                  #{releaseDate},
+                  #{price},
+                  #{developer},
+                  #{publisher},
+                  1
+                )
+    </insert>
 
 </mapper>
 
