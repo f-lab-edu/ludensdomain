@@ -49,13 +49,12 @@ public class GameController {
 
     @LoginCheck(authLevel = AuthLevel.COMPANY)
     @PostMapping("/game")
-    public ResponseEntity<Void> insertNewGame(GameDto gameDto) {
+    public void insertNewGame(GameDto gameDto) {
         try {
             gameService.insertGame(gameDto);
         } catch(InsertFailedException e) {
             logger.info(String.valueOf(e));
         }
-        return RESPONSE_OK;
     }
 
     /*
