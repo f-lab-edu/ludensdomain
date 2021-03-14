@@ -14,11 +14,17 @@
                G.developer,
                G.publisher,
                G.rating,
-               G.sales
-        FROM game G
+               G.sales,
+               G.status,
+               R.name,
+               D.name,
+               P.name,
+               S.name
+        FROM game G, genre R, developer D, publisher P, status S
                  LEFT OUTER JOIN genre ON G.genre = genre.id
                  LEFT OUTER JOIN developer ON G.developer = developer.id
                  LEFT OUTER JOIN publisher ON G.publisher = publisher.id
+                 LEFT OUTER JOIN status ON G.status = status.id
         WHERE G.id = #{gameId}
         AND G.status = 3
     </select>
@@ -33,11 +39,17 @@
                G.developer,
                G.publisher,
                G.rating,
-               G.sales
-        FROM game G
+               G.sales,
+               G.status,
+               R.name,
+               D.name,
+               P.name,
+               S.name
+        FROM game G, genre R, developer D, publisher P, status S
         LEFT OUTER JOIN genre ON G.genre = genre.id
         LEFT OUTER JOIN developer ON G.developer = developer.id
         LEFT OUTER JOIN publisher ON G.publisher = publisher.id
+        LEFT OUTER JOIN status ON G.status = status.id
             <if test="genre != null and genre != ''">
                 AND G.genre = #{genre}
             </if>
