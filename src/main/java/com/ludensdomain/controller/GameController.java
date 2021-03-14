@@ -20,7 +20,7 @@ import static com.ludensdomain.util.RedisCacheKeyConstants.GAME_LIST;
 import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_OK;
 
 @RestController
-@RequestMapping("/games")
+@RequestMapping("/")
 @RequiredArgsConstructor
 @Log4j2
 public class GameController {
@@ -41,14 +41,14 @@ public class GameController {
      */
     @Cacheable(key = "#listInfo", value = GAME_LIST, cacheManager = "redisCacheManager")
     @LoginCheck(authLevel = AuthLevel.USER)
-    @GetMapping("/gameList")
+    @GetMapping("/games")
     public List<GameDto> selectGameList(GamePagingDto listInfo) {
 
         return gameService.getGameList(listInfo);
     }
 
     @LoginCheck(authLevel = AuthLevel.COMPANY)
-    @PostMapping("/game")
+    @PostMapping("/games")
     public void insertNewGame(GameDto gameDto) {
         try {
             gameService.insertGame(gameDto);
