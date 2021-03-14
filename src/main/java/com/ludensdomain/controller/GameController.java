@@ -52,8 +52,8 @@ public class GameController {
     public void insertNewGame(GameDto gameDto) {
         try {
             gameService.insertGame(gameDto);
-        } catch(InsertFailedException e) {
-            logger.info(String.valueOf(e));
+        } catch(Exception e) {
+            throw new InsertFailedException();
         }
     }
 
