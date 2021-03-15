@@ -16,10 +16,10 @@
                G.rating,
                G.sales,
                G.status,
-               R.name,
-               D.name,
-               P.name,
-               S.name
+               R.name genreName,
+               D.name developerName,
+               P.name publisherName,
+               S.name statusName
         FROM game G, genre R, developer D, publisher P, status S
                  LEFT OUTER JOIN genre ON G.genre = genre.id
                  LEFT OUTER JOIN developer ON G.developer = developer.id
@@ -41,10 +41,10 @@
                G.rating,
                G.sales,
                G.status,
-               R.name,
-               D.name,
-               P.name,
-               S.name
+               R.name genreName,
+               D.name developerName,
+               P.name publisherName,
+               S.name statusName
         FROM game G, genre R, developer D, publisher P, status S
         LEFT OUTER JOIN genre ON G.genre = genre.id
         LEFT OUTER JOIN developer ON G.developer = developer.id
@@ -90,6 +90,19 @@
                   1
                 )
     </insert>
+
+    <update id="updateGame" parameterType="com.ludensdomain.dto.GameDto">
+        UPDATE game
+        SET title = #{title},
+            genre = #{genre},
+            description = #{description},
+            release_date = #{releaseDate},
+            price = #{price},
+            developer = #{developer},
+            publisher = #{publisher},
+            status = #{status}
+        WHERE id = #{id}
+    </update>
 
 </mapper>
 

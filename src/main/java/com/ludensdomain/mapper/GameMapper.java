@@ -15,4 +15,6 @@ public interface GameMapper {
 
     void insertGame(GameDto gameDto);
 
+    void updateGame(GameDto gameDto);
+
 }

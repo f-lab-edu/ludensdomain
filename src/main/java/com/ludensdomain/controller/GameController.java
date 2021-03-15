@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.ludensdomain.util.RedisCacheKeyConstants.GAME_LIST;
 import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_OK;
@@ -26,7 +27,7 @@ import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_OK;
 public class GameController {
 
     private final GameService gameService;
-//    private static final Logger logger = LoggerFactory.getLogger(GameController.class);
+    private static final Logger logger = LoggerFactory.getLogger(GameController.class);
 
     @LoginCheck(authLevel = AuthLevel.USER)
     @GetMapping("/{gameId}")
@@ -63,9 +64,14 @@ public class GameController {
      */
     @LoginCheck(authLevel = AuthLevel.COMPANY)
     @PutMapping("/{gameId}")
-    public ResponseEntity<Void> updateGameInfo(@PathVariable long gameId) {
+    public void updateGameInfo(@PathVariable long gameId, GameDto gameDto) {
+        Optional<GameDto> game = Optional.ofNullable(gameService.getGameInfo(gameId));
 
-        return RESPONSE_OK;
+        if(game.isPresent()) {
+            gameService.updateGame(gameId, gameDto);
+        } else {
+            logger.error("Error updating game[" + gameId + "]");
+        }
     }
 
     @LoginCheck(authLevel = AuthLevel.ADMIN)

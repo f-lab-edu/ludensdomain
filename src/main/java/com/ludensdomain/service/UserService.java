@@ -24,11 +24,6 @@ public class UserService {
         userMapper.insertUserInfo(encryptedUser);
     }
 
-    public UserDto findUserById(long id) {
-
-        return userMapper.selectUserById(id);
-    }
-
     /**
      * 비밀번호를 암호화한 사용자 정보를 build.
      *
