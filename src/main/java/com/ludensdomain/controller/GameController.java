@@ -20,13 +20,13 @@ import static com.ludensdomain.util.RedisCacheKeyConstants.GAME_LIST;
 import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_OK;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/store")
 @RequiredArgsConstructor
 @Log4j2
 public class GameController {
 
     private final GameService gameService;
-    private static final Logger logger = LoggerFactory.getLogger(GameController.class);
+//    private static final Logger logger = LoggerFactory.getLogger(GameController.class);
 
     @LoginCheck(authLevel = AuthLevel.USER)
     @GetMapping("/{gameId}")
