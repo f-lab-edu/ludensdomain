@@ -4,10 +4,13 @@ import com.ludensdomain.dto.GameDto;
 import com.ludensdomain.dto.GamePagingDto;
 import com.ludensdomain.mapper.GameMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class GameService {
@@ -30,8 +33,14 @@ public class GameService {
     }
 
     public void updateGame(long id, GameDto game) {
-        GameDto updatedGame = buildGame(id, game);
-        gameMapper.updateGame(updatedGame);
+        Optional<GameDto> checkGame = Optional.ofNullable(getGameInfo(id));
+
+        if(checkGame.isPresent()) {
+            GameDto updatedGame = buildGame(id, game);
+            gameMapper.updateGame(updatedGame);
+        } else {
+            log.error("Error updating game[" + id + "]");
+        }
     }
 
     public GameDto buildGame(long id, GameDto game) {
