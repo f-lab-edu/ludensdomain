@@ -4,7 +4,7 @@
 <mapper namespace="com.ludensdomain.mapper.GameMapper">
 
     <select id="getGameInfo" resultType="com.ludensdomain.dto.GameDto">
-        -- status는 숫자로 게임 판매 여부를 표현. 1. 검수 중 | 2. 테스팅 중 | 3. 통과
+        -- status는 숫자로 게임 판매 여부를 표현. 1. 검수 중 | 2. 테스팅 중 | 3. 통과 | 4. 중지
         SELECT G.id,
                G.title,
                G.genre,
@@ -27,6 +27,7 @@
                  LEFT OUTER JOIN status ON G.status = status.id
         WHERE G.id = #{gameId}
         AND G.status = 3
+        OR G.status = 4
     </select>
 
     <select id="getGameList" parameterType="com.ludensdomain.dto.GamePagingDto" resultType="com.ludensdomain.dto.GameDto">
@@ -61,6 +62,7 @@
             </if>
         WHERE <![CDATA[id < #{lastGameId}]]>
         AND G.status = 3
+        OR G.status = 4
         ORDER BY G.release_date
         LIMIT ${size}
     </select>
@@ -103,6 +105,18 @@
             status = #{status}
         WHERE id = #{id}
     </update>
+
+    <update id="updateGameStatus">
+        UPDATE game
+        SET status = #{status}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteGame">
+        DELETE
+        FROM game
+        WHERE id = #{id}
+    </delete>
 
 </mapper>
 

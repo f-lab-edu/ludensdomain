@@ -1,6 +1,5 @@
 package com.ludensdomain.service;
 
-import com.ludensdomain.advice.exceptions.InsertFailedException;
 import com.ludensdomain.advice.exceptions.UpdateFailedException;
 import com.ludensdomain.dto.GameDto;
 import com.ludensdomain.dto.GamePagingDto;
@@ -11,6 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ScheduledExecutorService;
+
+import static java.util.concurrent.TimeUnit.HOURS;
 
 @Log4j2
 @Service
@@ -18,6 +20,7 @@ import java.util.Optional;
 public class GameService {
 
     private final GameMapper gameMapper;
+    private final ScheduledExecutorService scheduler;
 
     public GameDto getGameInfo(long gameId) {
 
@@ -34,21 +37,21 @@ public class GameService {
         gameMapper.insertGame(gameDto);
     }
 
-    public void updateGame(long id, GameDto game) {
-        Optional<GameDto> checkGame = Optional.ofNullable(getGameInfo(id));
+    public void updateGame(long gameId, GameDto game) {
+        Optional<GameDto> checkGame = Optional.ofNullable(getGameInfo(gameId));
 
         if(checkGame.isPresent()) {
-            GameDto updatedGame = buildGame(id, game);
+            GameDto updatedGame = buildGame(gameId, game);
             gameMapper.updateGame(updatedGame);
         } else {
-            log.error("Error updating game[" + id + "]");
+            log.error("Error updating game[" + gameId + "]");
             throw new UpdateFailedException();
         }
     }
 
-    public GameDto buildGame(long id, GameDto game) {
+    public GameDto buildGame(long gameId, GameDto game) {
         return GameDto.builder()
-                .id(id)
+                .id(gameId)
                 .title(game.getTitle())
                 .genre(game.getGenre())
                 .description(game.getDescription())
@@ -60,4 +63,14 @@ public class GameService {
                 .build();
     }
 
+    public void updateGameStatus(long gameId, int status) {
+
+        gameMapper.updateGameStatus(gameId, status);
+    }
+
+    public void deleteGame(long gameId) {
+        updateGameStatus(gameId, 4);
+        Runnable task = gameMapper.deleteGame(gameId);
+        scheduler.schedule(task, 12, HOURS);
+    }
 }
