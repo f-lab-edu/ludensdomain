@@ -1,5 +1,7 @@
 package com.ludensdomain.service;
 
+import com.ludensdomain.advice.exceptions.InsertFailedException;
+import com.ludensdomain.advice.exceptions.UpdateFailedException;
 import com.ludensdomain.dto.GameDto;
 import com.ludensdomain.dto.GamePagingDto;
 import com.ludensdomain.mapper.GameMapper;
@@ -40,6 +42,7 @@ public class GameService {
             gameMapper.updateGame(updatedGame);
         } else {
             log.error("Error updating game[" + id + "]");
+            throw new UpdateFailedException();
         }
     }
 
