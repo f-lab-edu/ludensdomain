@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import static java.util.concurrent.TimeUnit.HOURS;
@@ -20,7 +21,6 @@ import static java.util.concurrent.TimeUnit.HOURS;
 public class GameService {
 
     private final GameMapper gameMapper;
-    private final ScheduledExecutorService scheduler;
 
     public GameDto getGameInfo(long gameId) {
 
@@ -68,9 +68,15 @@ public class GameService {
         gameMapper.updateGameStatus(gameId, status);
     }
 
+    /**
+     * 게임 삭제 기능
+     * 지정한 게임 판매 상태를 판매 불가로 만든 후 12시간 뒤에 게임을 삭제하는 기능
+     * @param gameId
+     * ScheduledFuture schedule : "Submits a one-shot task that becomes enabled after the given delay"
+     */
     public void deleteGame(long gameId) {
         updateGameStatus(gameId, 4);
-        Runnable task = gameMapper.deleteGame(gameId);
-        scheduler.schedule(task, 12, HOURS);
+        ScheduledExecutorService schedule = Executors.newSingleThreadScheduledExecutor();
+        schedule.schedule(gameMapper.deleteGame(gameId), 12, HOURS);
     }
 }
