@@ -41,7 +41,6 @@ public class GameService {
             GameDto updatedGame = buildGame(id, game);
             gameMapper.updateGame(updatedGame);
         } else {
-            log.error("Error updating game[" + id + "]");
             throw new UpdateFailedException();
         }
     }
