@@ -29,9 +29,9 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(UpdateFailedException.class)
     @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
-    protected ExceptionResponse updateFailedException() {
+    protected ExceptionResponse updateFailedException(long id) {
 
-        return getResult("게임 정보 업데이트에 실패했습니다.");
+        return getResult("게임 아이디[" + id + "] 업데이트에 실패했습니다.");
     }
 
     /*
