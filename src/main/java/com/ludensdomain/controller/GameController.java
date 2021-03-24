@@ -20,7 +20,7 @@ import static com.ludensdomain.util.RedisCacheKeyConstants.GAME_LIST;
 import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_OK;
 
 @RestController
-@RequestMapping("/game")
+@RequestMapping("/games")
 @RequiredArgsConstructor
 @Log4j2
 public class GameController {
