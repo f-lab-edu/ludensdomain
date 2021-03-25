@@ -41,14 +41,14 @@ public class GameController {
      */
     @Cacheable(key = "#listInfo", value = GAME_LIST, cacheManager = "redisCacheManager")
     @LoginCheck(authLevel = AuthLevel.USER)
-    @GetMapping("/games")
+    @GetMapping("/")
     public List<GameDto> selectGameList(GamePagingDto listInfo) {
 
         return gameService.getGameList(listInfo);
     }
 
     @LoginCheck(authLevel = AuthLevel.COMPANY)
-    @PostMapping("/games")
+    @PostMapping("/game")
     public void insertNewGame(GameDto gameDto) {
         try {
             gameService.insertGame(gameDto);
