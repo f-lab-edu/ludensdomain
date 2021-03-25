@@ -75,4 +75,11 @@ public class GameController {
 
         gameService.deleteGame(gameId);
     }
+
+    // Jenkins에서 deleteGame 에러 발생 시 확인용 호출하기 위해 필요한 메서드
+    @RequestMapping(path = "/callJenkinsApi")
+    public void callJenkins() {
+
+        gameService.checkGameDeleted();
+    }
 }
