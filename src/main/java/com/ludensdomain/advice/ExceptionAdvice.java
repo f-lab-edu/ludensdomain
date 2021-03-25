@@ -1,5 +1,6 @@
 package com.ludensdomain.advice;
 
+import com.ludensdomain.advice.exceptions.InsertFailedException;
 import com.ludensdomain.advice.exceptions.UnauthorizedUserException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,15 @@ public class ExceptionAdvice {
     @ExceptionHandler(UnauthorizedUserException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     protected ExceptionResponse unauthorizedUserException() {
+
         return getResult("해당 기능을 이용할 수 있는 권한이 없습니다.");
+    }
+
+    @ExceptionHandler(InsertFailedException.class)
+    @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
+    protected ExceptionResponse insertFailedException() {
+
+        return getResult("게임 추가에 실패했습니다.");
     }
 
     /*

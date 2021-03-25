@@ -24,4 +24,9 @@ public class GameService {
         return gameMapper.getGameList(listInfo);
     }
 
+    public void insertGame(GameDto gameDto) {
+
+        gameMapper.insertGame(gameDto);
+    }
+
 }
