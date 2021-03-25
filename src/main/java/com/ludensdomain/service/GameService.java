@@ -40,7 +40,8 @@ public class GameService {
             GameDto updatedGame = buildGame(id, game);
             gameMapper.updateGame(updatedGame);
         } else {
-            throw new UpdateFailedException(id);
+            String message = "게임 아이디[" + id + "] 업데이트에 실패했습니다.";
+            throw new UpdateFailedException(message);
         }
     }
 
