@@ -8,11 +8,15 @@ import com.ludensdomain.dto.GamePagingDto;
 import com.ludensdomain.service.GameService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -26,7 +30,6 @@ import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_OK;
 public class GameController {
 
     private final GameService gameService;
-//    private static final Logger logger = LoggerFactory.getLogger(GameController.class);
 
     @LoginCheck(authLevel = AuthLevel.USER)
     @GetMapping("/{gameId}")
@@ -63,9 +66,9 @@ public class GameController {
      */
     @LoginCheck(authLevel = AuthLevel.COMPANY)
     @PutMapping("/{gameId}")
-    public ResponseEntity<Void> updateGameInfo(@PathVariable long gameId) {
+    public void updateGameInfo(@PathVariable long gameId, GameDto gameDto) {
 
-        return RESPONSE_OK;
+        gameService.updateGame(gameId, gameDto);
     }
 
     @LoginCheck(authLevel = AuthLevel.ADMIN)

@@ -2,6 +2,7 @@ package com.ludensdomain.advice;
 
 import com.ludensdomain.advice.exceptions.InsertFailedException;
 import com.ludensdomain.advice.exceptions.UnauthorizedUserException;
+import com.ludensdomain.advice.exceptions.UpdateFailedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,6 +25,13 @@ public class ExceptionAdvice {
     protected ExceptionResponse insertFailedException() {
 
         return getResult("게임 추가에 실패했습니다.");
+    }
+
+    @ExceptionHandler(UpdateFailedException.class)
+    @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
+    protected ExceptionResponse updateFailedException(String message) {
+
+        return getResult(message);
     }
 
     /*

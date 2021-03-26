@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_BAD_REQUEST;
-import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_OK;
-import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_USER_CREATED;
+import static com.ludensdomain.util.ResponseEntityConstants.*;
 
 @Log4j2
 @RestController

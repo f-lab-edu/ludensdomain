@@ -40,4 +40,12 @@ public class GameDto {
 
     int status;
 
+    String genreName;
+
+    String publisherName;
+
+    String developerName;
+
+    String statusName;
+
 }
