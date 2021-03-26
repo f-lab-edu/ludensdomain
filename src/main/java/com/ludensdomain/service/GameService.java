@@ -10,10 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-
-import static java.util.concurrent.TimeUnit.HOURS;
 
 @Log4j2
 @Service
@@ -21,7 +17,6 @@ import static java.util.concurrent.TimeUnit.HOURS;
 public class GameService {
 
     private final GameMapper gameMapper;
-    private final ScheduledExecutorService schedule = Executors.newSingleThreadScheduledExecutor();
 
     public GameDto getGameInfo(long gameId) {
 
@@ -71,16 +66,11 @@ public class GameService {
 
     /**
      * 게임 삭제 기능
-     * 지정한 게임 판매 상태를 판매 불가(4)로 만든 후 12시간 뒤에 게임을 삭제하는 기능
+     * 젠킨스를 이용해 호출되고 난 12시간 뒤에 게임을 삭제하는 기능
      * @param gameId 게임 아이디
-     * newSingleThreadScheduledExecutor : 싱글 쓰레드 스케줄러로 한 번에 하나의 스케줄만 실행 가능
      */
-    public void deleteGame(long gameId) {
-        updateGameStatus(gameId, 4);
-        schedule.schedule(gameMapper.deleteGame(gameId), 12, HOURS);
-    }
+    public void deleteSchedule(long gameId) {
 
-    public void checkGameDeleted() {
-
+        gameMapper.deleteGame(gameId);
     }
 }

@@ -70,16 +70,16 @@ public class GameController {
     }
 
     @LoginCheck(authLevel = AuthLevel.ADMIN)
-    @DeleteMapping("/{gameId}")
+    @PutMapping("/{gameId}")
     public void deleteGame(@PathVariable long gameId) {
 
-        gameService.deleteGame(gameId);
+        gameService.updateGameStatus(gameId, 4);
     }
 
     // Jenkins에서 deleteGame 에러 발생 시 확인용 호출하기 위해 필요한 메서드
-    @RequestMapping(path = "/callJenkinsApi")
-    public void callJenkins() {
+    @RequestMapping(path = "/deleteSchedule")
+    public void deleteSchedule(long gameId) {
 
-        gameService.checkGameDeleted();
+        gameService.deleteSchedule(gameId);
     }
 }
