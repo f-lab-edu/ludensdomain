@@ -77,7 +77,7 @@ public class GameController {
     }
 
     // Jenkins에서 deleteGame 에러 발생 시 확인용 호출하기 위해 필요한 메서드
-    @RequestMapping(path = "/deleteSchedule")
+    @DeleteMapping("/games?scheduled=true")
     public void deleteSchedule(long gameId) {
 
         gameService.deleteSchedule(gameId);
