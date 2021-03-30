@@ -9,19 +9,11 @@ import com.ludensdomain.service.GameService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 import static com.ludensdomain.util.RedisCacheKeyConstants.GAME_LIST;
-import static com.ludensdomain.util.ResponseEntityConstants.RESPONSE_OK;
 
 @RestController
 @RequestMapping("/games")
@@ -72,9 +64,18 @@ public class GameController {
     }
 
     @LoginCheck(authLevel = AuthLevel.ADMIN)
-    @DeleteMapping("/{gameId}")
-    public ResponseEntity<Void> deleteGame(@PathVariable long gameId) {
+    @PutMapping("/{gameId}")
+    public void deleteGame(@PathVariable long gameId) {
 
-        return RESPONSE_OK;
+        gameService.updateGameStatus(gameId, 4);
+    }
+
+    // Jenkins에서 deleteGame 에러 발생 시 확인용 호출하기 위해 필요한 메서드
+    @DeleteMapping("/game")
+    public void deleteSchedule(@RequestParam boolean scheduled, long gameId) {
+
+        if(scheduled) {
+            gameService.deleteSchedule(gameId);
+        }
     }
 }

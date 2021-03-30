@@ -33,21 +33,21 @@ public class GameService {
         gameMapper.insertGame(gameDto);
     }
 
-    public void updateGame(long id, GameDto game) {
-        Optional<GameDto> checkGame = Optional.ofNullable(getGameInfo(id));
+    public void updateGame(long gameId, GameDto game) {
+        Optional<GameDto> checkGame = Optional.ofNullable(getGameInfo(gameId));
 
         if(checkGame.isPresent()) {
-            GameDto updatedGame = buildGame(id, game);
+            GameDto updatedGame = buildGame(gameId, game);
             gameMapper.updateGame(updatedGame);
         } else {
-            String message = "게임 아이디[" + id + "] 업데이트에 실패했습니다.";
+            String message = "게임 아이디[" + gameId + "] 업데이트에 실패했습니다.";
             throw new UpdateFailedException(message);
         }
     }
 
-    public GameDto buildGame(long id, GameDto game) {
+    public GameDto buildGame(long gameId, GameDto game) {
         return GameDto.builder()
-                .id(id)
+                .id(gameId)
                 .title(game.getTitle())
                 .genre(game.getGenre())
                 .description(game.getDescription())
@@ -55,8 +55,22 @@ public class GameService {
                 .price(game.getPrice())
                 .developer(game.getDeveloper())
                 .publisher(game.getPublisher())
-                .status(game.getStatus())
+                .status(1)
                 .build();
     }
 
+    public void updateGameStatus(long gameId, int status) {
+
+        gameMapper.updateGameStatus(gameId, status);
+    }
+
+    /**
+     * 게임 삭제 기능
+     * 젠킨스를 이용해 호출되고 난 12시간 뒤에 게임을 삭제하는 기능
+     * @param gameId 게임 아이디
+     */
+    public void deleteSchedule(long gameId) {
+
+        gameMapper.deleteGame(gameId);
+    }
 }
