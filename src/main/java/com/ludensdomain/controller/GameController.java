@@ -64,7 +64,7 @@ public class GameController {
     }
 
     @LoginCheck(authLevel = AuthLevel.ADMIN)
-    @PutMapping("/{gameId}")
+    @PostMapping("/{gameId}")
     public void deleteGame(@PathVariable long gameId) {
 
         gameService.updateGameStatus(gameId, 4);

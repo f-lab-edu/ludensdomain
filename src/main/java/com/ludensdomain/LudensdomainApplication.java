@@ -1,5 +1,7 @@
 package com.ludensdomain;
 
+import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
@@ -14,9 +16,11 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
  */
 
 @SpringBootApplication
-@EnableRedisHttpSession
-@EnableCaching
 @EnableAspectJAutoProxy
+@EnableCaching
+@EnableEncryptableProperties
+@EnableRedisHttpSession
+@Log4j2
 public class LudensdomainApplication {
 
     public static void main(String[] args) {
