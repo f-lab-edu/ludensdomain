@@ -9,14 +9,13 @@
                password,
                email,
                date_of_birth dateOfBirth,
-               phone_num phoneNum,
+               phone_num phoneNo,
                role
         FROM user
         WHERE id = #{id}
-        AND password = #{password}
     </select>
 
-    <insert id="insertUserInfo" parameterType="com.ludensdomain.dto.UserDto">
+    <insert id="insertUserInfo">
         INSERT INTO
         user
             ( id,
@@ -33,7 +32,7 @@
               #{password},
               #{email},
               #{dateOfBirth},
-              #{phoneNum},
+              #{phoneNo},
               #{role}
             )
     </insert>
@@ -43,7 +42,7 @@
         SET name = #{name},
             email = #{email},
             dateOfBirth = #{dateOfBirth},
-            phoneNum = #{phoneNum}
+            phoneNum = #{phoneNo}
         WHERE id = #{id}
         AND password = #{password}
     </update>
