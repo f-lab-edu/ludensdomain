@@ -24,6 +24,12 @@ import java.util.Map;
 import static com.ludensdomain.util.ReplicationKeyConstants.MASTER;
 import static com.ludensdomain.util.ReplicationKeyConstants.SLAVE;
 
+/*
+ * @EnableTransactionManagement : 어노테이션 기반 트랜잭션 관리 기능
+ * @Configuration과 같이 사용하면 기본적인 트랜잭션 또는 반응형 트랜잭션을 configure할 수 있다.
+ * XML configuration으로는 <tx:annotation-driven/>와 같은 방법이다.
+ * 차이점이라면 TransactionManger의 빈 이름은 transactionManager로 고정이 되나, 어노테이션 방식의 빈 이름은 사용자 임의로 정할 수 있다.
+ */
 @Configuration
 @EnableTransactionManagement
 public class DatabaseConfig {
@@ -73,6 +79,7 @@ public class DatabaseConfig {
         factoryBean.setDataSource(dataSource(routingDataSource(masterDataSource(), slaveDataSource())));
         factoryBean.setTypeAliasesPackage("com.ludensdomain.dto");
         factoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapper/**/*.xml"));
+
         return factoryBean.getObject();
     }
 
@@ -82,7 +89,10 @@ public class DatabaseConfig {
     }
 
     @Bean
-    public PlatformTransactionManager transactionManager() {
-        return new DataSourceTransactionManager(dataSource(routingDataSource(masterDataSource(), slaveDataSource())));
+    public PlatformTransactionManager transactionManager(@Qualifier("dataSource") DataSource dataSource) {
+        DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
+        transactionManager.setDataSource(dataSource);
+
+        return transactionManager;
     }
 }
