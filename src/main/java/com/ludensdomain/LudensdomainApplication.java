@@ -10,9 +10,10 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 
 /**.
  *
- * @EnableCaching Spring 어노테이션 기반 캐시 기능 적용
- * @EnableRedisHttpSession 세션을 통한 Redis 기능 적용(서버 확장에 의한 사용자 정보 통일성을 위함)
  * @EnableAspectJAutoProxy AOP를 이용하기 위한 프록시 기능 적용
+ * @EnableCaching Spring 어노테이션 기반 캐시 기능 적용
+ * @EnableEncryptableProperties Jasypt 사용에 필요한 암호화 기능 적용
+ * @EnableRedisHttpSession 세션을 통한 Redis 기능 적용(서버 확장에 의한 사용자 정보 통일성을 위함)
  */
 
 @SpringBootApplication
