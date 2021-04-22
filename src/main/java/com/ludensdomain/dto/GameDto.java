@@ -1,15 +1,17 @@
 package com.ludensdomain.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
 import org.springframework.data.annotation.Id;
 
-import java.util.Date;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @Value
 @Builder
+@AllArgsConstructor
 public class GameDto {
 
     @Id

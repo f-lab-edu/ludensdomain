@@ -1,8 +1,12 @@
 package com.ludensdomain.config;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.cache.CacheProperties;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -20,25 +24,42 @@ import java.util.Map;
 
 import static com.ludensdomain.util.RedisCacheKeyConstants.GAME_LIST;
 
+@EnableCaching
 @Configuration
 public class RedisConfig {
 
     @Value("${spring.redis.host}")
     private String redisHost;
 
-    @Value("${spring.redis.port}")
-    private int redisPort;
+    @Value("${spring.redis.session.port}")
+    private int redisSessionPort;
 
-    @Bean
-    public RedisConnectionFactory redisConnectionFactory() {
+    @Value("${spring.redis.cache.port}")
+    private int redisCachePort;
 
-        return new LettuceConnectionFactory(new RedisStandaloneConfiguration(redisHost, redisPort));
+    @Primary
+    @Bean("redisSessionConnectionFactory")
+    public RedisConnectionFactory redisSessionConnectionFactory() {
+        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
+        redisStandaloneConfiguration.setHostName(redisHost);
+        redisStandaloneConfiguration.setPort(redisSessionPort);
+
+        return new LettuceConnectionFactory(redisStandaloneConfiguration);
     }
 
     @Bean
-    public static ConfigureRedisAction configureRedisAction() {
-        return ConfigureRedisAction.NO_OP;
+    public RedisConnectionFactory redisCacheConnectionFactory() {
+        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
+        redisStandaloneConfiguration.setHostName(redisHost);
+        redisStandaloneConfiguration.setPort(redisCachePort);
+
+        return new LettuceConnectionFactory(redisStandaloneConfiguration);
     }
+
+//    @Bean
+//    public static ConfigureRedisAction configureRedisAction() {
+//        return ConfigureRedisAction.NO_OP;
+//    }
 
     /**
      * String 자료형 위주로 데이터를 받기 위해 RedisTemplate StringRedisSerializer 사용.
@@ -47,9 +68,19 @@ public class RedisConfig {
      * @return redisTemplate
      */
     @Bean
-    public RedisTemplate<String, Object> redisTemplate() {
+    public RedisTemplate<String, Object> redisSessionTemplate() {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(redisConnectionFactory());
+        redisTemplate.setConnectionFactory(redisSessionConnectionFactory());
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+
+        return redisTemplate;
+    }
+
+    @Bean
+    public RedisTemplate<String, Object> redisCacheTemplate() {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(redisCacheConnectionFactory());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
 
@@ -67,7 +98,8 @@ public class RedisConfig {
      * entryTtl(Duration) : 캐시의 수명 기간을 정의. 디폴트로 1시간 동안 캐시를 보유하도록 설정.
      */
     @Bean
-    public RedisCacheManager redisCacheManager(RedisConnectionFactory redisConnectionFactory) {
+    public RedisCacheManager redisCacheManager(
+            @Qualifier("redisCacheConnectionFactory") RedisConnectionFactory redisConnectionFactory) {
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration
                 .defaultCacheConfig()
                 .disableCachingNullValues()
