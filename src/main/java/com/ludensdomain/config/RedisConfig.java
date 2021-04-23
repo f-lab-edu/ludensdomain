@@ -26,8 +26,11 @@ import static com.ludensdomain.util.RedisCacheKeyConstants.GAME_LIST;
 @Configuration
 public class RedisConfig {
 
-    @Value("${spring.redis.host}")
-    private String redisHost;
+    @Value("${spring.redis.session.host}")
+    private String redisSessionHost;
+
+    @Value("${spring.redis.cache.host}")
+    private String redisCacheHost;
 
     @Value("${spring.redis.session.port}")
     private int redisSessionPort;
@@ -41,22 +44,21 @@ public class RedisConfig {
      * RedisStandaloneConfiguration : RedisConnectionFactory를 통해 RedisConnection을 세팅하기 위한 configuration 객체
      * LettuceConnectionFacotory : Lettuce(Redis client) 기반의 ConnectionFactory 객체
      * Lettuce는 Jedis에 비교해 CPU 활용도와 응답 속도가 월등함으로 LettuceConnectionFactory를 사용함
-     * 2개의 RedisConnectionFactory가 있어 @Primary로 세션 관련 Factory 빈이 먼저 생성되도록 설정
      */
+    @Bean
     @Primary
-    @Bean("redisSessionConnectionFactory")
     public RedisConnectionFactory redisSessionConnectionFactory() {
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
-        redisStandaloneConfiguration.setHostName(redisHost);
+        redisStandaloneConfiguration.setHostName(redisSessionHost);
         redisStandaloneConfiguration.setPort(redisSessionPort);
 
         return new LettuceConnectionFactory(redisStandaloneConfiguration);
     }
 
-    @Bean
+    @Bean("redisCacheConnectionFactory")
     public RedisConnectionFactory redisCacheConnectionFactory() {
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
-        redisStandaloneConfiguration.setHostName(redisHost);
+        redisStandaloneConfiguration.setHostName(redisCacheHost);
         redisStandaloneConfiguration.setPort(redisCachePort);
 
         return new LettuceConnectionFactory(redisStandaloneConfiguration);
@@ -112,14 +114,12 @@ public class RedisConfig {
                         .fromSerializer(new GenericJackson2JsonRedisSerializer()));
 
         // 게임 리스트를 조회하는 경우 게임 평점과 판매 수 같이 실시간적으로 업데이트가 되야 하는 데이터를 다루기 때문에 캐시 생명 주기를 5초로 산정
-        Map<String, RedisCacheConfiguration> cacheConfiguration = new HashMap<>();
-        cacheConfiguration.put(GAME_LIST, redisCacheConfiguration.entryTtl(Duration.ofSeconds(5)));
+        Map<String, RedisCacheConfiguration> redisCacheConfigMap = new HashMap<>();
+        redisCacheConfigMap.put(GAME_LIST, redisCacheConfiguration.entryTtl(Duration.ofSeconds(5)));
 
         return RedisCacheManager
-                .RedisCacheManagerBuilder
-                .fromConnectionFactory(redisConnectionFactory)
-                .cacheDefaults(redisCacheConfiguration)
+                .builder(redisConnectionFactory)
+                .withInitialCacheConfigurations(redisCacheConfigMap)
                 .build();
     }
-
 }
