@@ -1,8 +1,11 @@
 package com.ludensdomain.config;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -12,7 +15,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import org.springframework.session.data.redis.config.ConfigureRedisAction;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -20,24 +22,46 @@ import java.util.Map;
 
 import static com.ludensdomain.util.RedisCacheKeyConstants.GAME_LIST;
 
+@EnableCaching
 @Configuration
 public class RedisConfig {
 
-    @Value("${spring.redis.host}")
-    private String redisHost;
+    @Value("${spring.redis.session.host}")
+    private String redisSessionHost;
 
-    @Value("${spring.redis.port}")
-    private int redisPort;
+    @Value("${spring.redis.cache.host}")
+    private String redisCacheHost;
 
+    @Value("${spring.redis.session.port}")
+    private int redisSessionPort;
+
+    @Value("${spring.redis.cache.port}")
+    private int redisCachePort;
+
+    /*
+     * Redis에 연결하기 위해 필요한 객체로 thread-safe함
+     * thread-safe하다는 건 멀티 쓰레드 환경에서 여러 쓰레드가 하나의 기능에 접근해도 개발자가 의도했던 대로 실행된다는 걸 의미한다.
+     * RedisStandaloneConfiguration : RedisConnectionFactory를 통해 RedisConnection을 세팅하기 위한 configuration 객체
+     * LettuceConnectionFacotory : Lettuce(Redis client) 기반의 ConnectionFactory 객체
+     * Lettuce는 Jedis에 비교해 CPU 활용도와 응답 속도가 월등함으로 LettuceConnectionFactory를 사용함
+     */
     @Bean
-    public RedisConnectionFactory redisConnectionFactory() {
+    @Primary
+    public RedisConnectionFactory redisSessionConnectionFactory() {
+        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
+        redisStandaloneConfiguration.setHostName(redisSessionHost);
+        redisStandaloneConfiguration.setPort(redisSessionPort);
 
-        return new LettuceConnectionFactory(new RedisStandaloneConfiguration(redisHost, redisPort));
+        return new LettuceConnectionFactory(redisStandaloneConfiguration);
     }
 
-    @Bean
-    public static ConfigureRedisAction configureRedisAction() {
-        return ConfigureRedisAction.NO_OP;
+    @Bean("redisCacheConnectionFactory")
+    public RedisConnectionFactory redisCacheConnectionFactory() {
+        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
+        redisStandaloneConfiguration.setHostName(redisCacheHost);
+        redisStandaloneConfiguration.setPort(redisCachePort);
+
+        return new LettuceConnectionFactory(redisStandaloneConfiguration);
     }
 
     /**
@@ -47,9 +71,19 @@ public class RedisConfig {
      * @return redisTemplate
      */
     @Bean
-    public RedisTemplate<String, Object> redisTemplate() {
+    public RedisTemplate<String, Object> redisSessionTemplate() {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(redisConnectionFactory());
+        redisTemplate.setConnectionFactory(redisSessionConnectionFactory());
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+
+        return redisTemplate;
+    }
+
+    @Bean
+    public RedisTemplate<String, Object> redisCacheTemplate() {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(redisCacheConnectionFactory());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
 
@@ -67,7 +101,8 @@ public class RedisConfig {
      * entryTtl(Duration) : 캐시의 수명 기간을 정의. 디폴트로 1시간 동안 캐시를 보유하도록 설정.
      */
     @Bean
-    public RedisCacheManager redisCacheManager(RedisConnectionFactory redisConnectionFactory) {
+    public RedisCacheManager redisCacheManager(
+            @Qualifier("redisCacheConnectionFactory") RedisConnectionFactory redisConnectionFactory) {
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration
                 .defaultCacheConfig()
                 .disableCachingNullValues()
@@ -79,14 +114,12 @@ public class RedisConfig {
                         .fromSerializer(new GenericJackson2JsonRedisSerializer()));
 
         // 게임 리스트를 조회하는 경우 게임 평점과 판매 수 같이 실시간적으로 업데이트가 되야 하는 데이터를 다루기 때문에 캐시 생명 주기를 5초로 산정
-        Map<String, RedisCacheConfiguration> cacheConfiguration = new HashMap<>();
-        cacheConfiguration.put(GAME_LIST, redisCacheConfiguration.entryTtl(Duration.ofSeconds(5)));
+        Map<String, RedisCacheConfiguration> redisCacheConfigMap = new HashMap<>();
+        redisCacheConfigMap.put(GAME_LIST, redisCacheConfiguration.entryTtl(Duration.ofSeconds(5)));
 
         return RedisCacheManager
-                .RedisCacheManagerBuilder
-                .fromConnectionFactory(redisConnectionFactory)
-                .cacheDefaults(redisCacheConfiguration)
+                .builder(redisConnectionFactory)
+                .withInitialCacheConfigurations(redisCacheConfigMap)
                 .build();
     }
-
 }

@@ -11,6 +11,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static com.ludensdomain.util.RedisCacheKeyConstants.GAME_LIST;
@@ -37,7 +38,7 @@ public class GameController {
     @Cacheable(key = "#listInfo", value = GAME_LIST, cacheManager = "redisCacheManager")
     @LoginCheck(authLevel = AuthLevel.USER)
     @GetMapping("/")
-    public List<GameDto> selectGameList(GamePagingDto listInfo) {
+    public List<GameDto> selectGameList(@Valid GamePagingDto listInfo) {
 
         return gameService.getGameList(listInfo);
     }
