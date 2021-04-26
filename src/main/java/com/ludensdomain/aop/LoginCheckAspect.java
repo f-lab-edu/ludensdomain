@@ -32,4 +32,5 @@ public class LoginCheckAspect {
             throw new UnauthorizedUserException();
         }
     }
+
 }

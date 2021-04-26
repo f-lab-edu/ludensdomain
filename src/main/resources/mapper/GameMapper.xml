@@ -115,7 +115,7 @@
     <delete id="deleteGame">
         DELETE
         FROM game
-        WHERE id = #{id}
+        WHERE status = 4
     </delete>
 
 </mapper>

@@ -19,6 +19,6 @@ public interface GameMapper {
 
     void updateGameStatus(long gameId, int status);
 
-    void deleteGame(long gameId);
+    void deleteGame();
 
 }

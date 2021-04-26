@@ -1,10 +1,13 @@
 package com.ludensdomain.service;
 
+import com.ludensdomain.advice.exceptions.DuplicatedUserException;
 import com.ludensdomain.dto.UserDto;
 import com.ludensdomain.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.jasypt.encryption.StringEncryptor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,8 +28,15 @@ public class UserService {
     }
 
     public void insertUserInfo(UserDto user) {
-        UserDto encryptedUser = encryptUser(user);
-        userMapper.insertUserInfo(encryptedUser);
+        Optional<UserDto> checkExistingUser = Optional
+                .ofNullable(getUserInfo(user.getId(), user.getPassword()));
+
+        if (checkExistingUser.isPresent()) {
+            throw new DuplicatedUserException();
+        } else {
+            UserDto encryptedUser = encryptUser(user);
+            userMapper.insertUserInfo(encryptedUser);
+        }
     }
 
     /**
@@ -66,11 +76,10 @@ public class UserService {
      * 사용자 정보 삭제 비즈니스 로직.
      *
      * @param id   사용자 아이디
-     * @param password   사용자 패스워드
      */
-    public void deleteUser(long id, String password) {
+    public void deleteUser(long id) {
         if (loginService.isLoginUser(id)) {
-            userMapper.deleteUser(id, password);
+            userMapper.deleteUser(id);
         }
     }
 }

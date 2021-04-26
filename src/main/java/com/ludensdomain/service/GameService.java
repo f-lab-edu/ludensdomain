@@ -71,8 +71,8 @@ public class GameService {
      * 젠킨스를 이용해 호출되고 난 12시간 뒤에 게임을 삭제하는 기능
      * @param gameId 게임 아이디
      */
-    public void deleteSchedule(long gameId) {
+    public void deleteSchedule() {
 
-        gameMapper.deleteGame(gameId);
+        gameMapper.deleteGame();
     }
 }

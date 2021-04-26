@@ -1,5 +1,6 @@
 package com.ludensdomain.advice;
 
+import com.ludensdomain.advice.exceptions.DuplicatedUserException;
 import com.ludensdomain.advice.exceptions.InsertFailedException;
 import com.ludensdomain.advice.exceptions.UnauthorizedUserException;
 import com.ludensdomain.advice.exceptions.UpdateFailedException;
@@ -32,6 +33,13 @@ public class ExceptionAdvice {
     protected ExceptionResponse updateFailedException(String message) {
 
         return getResult(message);
+    }
+
+    @ExceptionHandler(DuplicatedUserException.class)
+    @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
+    protected ExceptionResponse duplicatedUserException() {
+
+        return getResult("이미 존재하는 유저입니다.");
     }
 
     /*
