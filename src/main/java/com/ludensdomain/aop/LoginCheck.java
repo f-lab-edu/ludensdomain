@@ -8,7 +8,4 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface LoginCheck {
-
-    AuthLevel authLevel() default AuthLevel.USER;
-
 }

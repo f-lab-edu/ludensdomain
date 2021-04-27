@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpSession;
 
-import static com.ludensdomain.service.SessionLoginService.ROLE;
+import static com.ludensdomain.service.SessionLoginService.ID;
 
 @Aspect
 @Component
@@ -18,19 +18,15 @@ public class LoginCheckAspect {
     private final HttpSession httpSession;
 
     /**.
-     * 기능 인가를 결정하기 위한 권한 확인
-     * 기능에 따른 권한을 담은 authLevel과 유저가 지닌 권한을 담은 role을 비교하고, 불일치하면 예외를 발생
-     *
+     * 로그인한 유저에 한해서 접근을 허용
      * @param loginCheck LoginCheck
      * @throws UnauthorizedUserException 허용하지 않는 접근
      */
     @Before("@annotation(LoginCheck) && @annotation(loginCheck)")
     public void loginCheck(LoginCheck loginCheck) {
-        AuthLevel authLevel = loginCheck.authLevel();
-        AuthLevel role = (AuthLevel) httpSession.getAttribute(ROLE);
-        if (authLevel != role) {
+        String id = (String) httpSession.getAttribute(ID);
+        if (id.isEmpty()) {
             throw new UnauthorizedUserException();
         }
     }
-
 }
