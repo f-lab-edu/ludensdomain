@@ -15,7 +15,7 @@ public class SessionLoginService implements LoginService {
     public static final String ROLE = "ROLE";
 
     @Override
-    public void login(long id, AuthLevel role) {
+    public void login(long id, String role) {
         httpSession.setAttribute(ID, id);
         httpSession.setAttribute(ROLE, role);
     }

@@ -39,5 +39,5 @@ public class UserDto {
     String phoneNo;
 
     @NotEmpty
-    AuthLevel role;
+    String role;
 }
