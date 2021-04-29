@@ -19,23 +19,20 @@ public class UserService {
 
     public UserDto getUserInfo(long id, String password) {
         UserDto user = userMapper.getUserInfo(id);
-        String decryptPw = stringEncryptor.decrypt(user.getPassword());
-        if (password.equals(decryptPw)) {
-            return user;
-        } else {
-            return null;
+        if (user != null) {
+            String decryptPw = stringEncryptor.decrypt(user.getPassword());
+            return (password.equals(decryptPw)) ? user : null;
         }
+        return null;
     }
 
     public void insertUserInfo(UserDto user) {
         Optional<UserDto> checkExistingUser = Optional
                 .ofNullable(getUserInfo(user.getId(), user.getPassword()));
-
         if (checkExistingUser.isPresent()) {
             throw new DuplicatedUserException();
         } else {
-            UserDto encryptedUser = encryptUser(user);
-            userMapper.insertUserInfo(encryptedUser);
+            userMapper.insertUserInfo(encryptUser(user));
         }
     }
 
