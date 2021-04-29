@@ -33,6 +33,6 @@ public class RoleCheckAspect {
         if (!(role.equals(sessionRole))) {
             throw new UnauthorizedUserException();
         }
-        log.info("{}은 해당 기능에 접근 가능한 권한입니다.", roleCheck.authLevel().getRoleName());
+        log.info("{}는/은 해당 기능에 접근 가능합니다.", roleCheck.authLevel().getRoleName());
     }
 }

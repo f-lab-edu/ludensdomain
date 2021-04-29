@@ -25,7 +25,7 @@ public class LoginCheckAspect {
     @Before("@annotation(LoginCheck) && @annotation(loginCheck)")
     public void loginCheck(LoginCheck loginCheck) {
         String id = (String) httpSession.getAttribute(ID);
-        if (id.isEmpty()) {
+        if (id == null || id.trim().isEmpty()) {
             throw new UnauthorizedUserException();
         }
     }
