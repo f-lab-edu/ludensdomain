@@ -31,7 +31,7 @@ public class RoleCheckAspect {
         String role = roleCheck.authLevel().getRole();
         String sessionRole = (String) httpSession.getAttribute(ROLE);
         if (!(role.equals(sessionRole))) {
-            log.error("{}은/는 해당 기능에 접근 불가능합니다.", roleCheck.authLevel().getRoleName());
+            log.warn("{}은/는 해당 기능에 접근 불가능합니다.", roleCheck.authLevel().getRoleName());
             throw new UnauthorizedUserException();
         }
     }
