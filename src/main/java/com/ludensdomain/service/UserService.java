@@ -21,7 +21,7 @@ public class UserService {
         UserDto user = userMapper.getUserInfo(id);
         if (user != null) {
             String decryptPw = stringEncryptor.decrypt(user.getPassword());
-            return (password.equals(decryptPw)) ? user : null;
+            return password.equals(decryptPw) ? user : null;
         }
         return null;
     }
