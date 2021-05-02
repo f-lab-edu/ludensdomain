@@ -1,6 +1,5 @@
 package com.ludensdomain.service;
 
-import com.ludensdomain.aop.AuthLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
