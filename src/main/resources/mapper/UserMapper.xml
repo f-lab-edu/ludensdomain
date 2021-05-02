@@ -44,13 +44,11 @@
             dateOfBirth = #{dateOfBirth},
             phoneNum = #{phoneNo}
         WHERE id = #{id}
-        AND password = #{password}
     </update>
 
     <delete id="deleteUser" parameterType="com.ludensdomain.dto.UserDto">
         DELETE FROM user
         WHERE id = #{id}
-        AND password = #{password}
     </delete>
 
 </mapper>

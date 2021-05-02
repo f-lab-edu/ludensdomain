@@ -3,6 +3,7 @@ package com.ludensdomain.controller;
 import com.ludensdomain.advice.exceptions.InsertFailedException;
 import com.ludensdomain.aop.AuthLevel;
 import com.ludensdomain.aop.LoginCheck;
+import com.ludensdomain.aop.RoleCheck;
 import com.ludensdomain.dto.GameDto;
 import com.ludensdomain.dto.GamePagingDto;
 import com.ludensdomain.service.GameService;
@@ -24,7 +25,7 @@ public class GameController {
 
     private final GameService gameService;
 
-    @LoginCheck(authLevel = AuthLevel.USER)
+    @LoginCheck
     @GetMapping("/{gameId}")
     public GameDto selectGame(@PathVariable long gameId) {
 
@@ -33,17 +34,16 @@ public class GameController {
 
     /*
      * @Cacheable : 캐시 적용. RedisConfig로 정의한 redisCacheManager 기반으로 listInfo를 키로 저장
-     * @LoginCheck : aop로 사용자 식별 및 인가
      */
     @Cacheable(key = "#listInfo", value = GAME_LIST, cacheManager = "redisCacheManager")
-    @LoginCheck(authLevel = AuthLevel.USER)
+    @LoginCheck
     @GetMapping("/")
     public List<GameDto> selectGameList(@Valid GamePagingDto listInfo) {
 
         return gameService.getGameList(listInfo);
     }
 
-    @LoginCheck(authLevel = AuthLevel.COMPANY)
+    @RoleCheck(authLevel = AuthLevel.COMPANY)
     @PostMapping("/game")
     public void insertNewGame(GameDto gameDto) {
         try {
@@ -56,15 +56,16 @@ public class GameController {
     /*
      * 해당 메서드는 배급사에서 이미 등록된 게임의 정보를 수정하는 용도가 주다.
      * 게임의 평점이나 판매수는 다른 메서드로 구현
+     * @LoginCheck : aop로 사용자 식별 및 인가
      */
-    @LoginCheck(authLevel = AuthLevel.COMPANY)
+    @RoleCheck(authLevel = AuthLevel.COMPANY)
     @PutMapping("/{gameId}")
     public void updateGameInfo(@PathVariable long gameId, GameDto gameDto) {
 
         gameService.updateGame(gameId, gameDto);
     }
 
-    @LoginCheck(authLevel = AuthLevel.ADMIN)
+    @RoleCheck(authLevel = AuthLevel.ADMIN)
     @PostMapping("/{gameId}")
     public void deleteGame(@PathVariable long gameId) {
 
@@ -73,10 +74,10 @@ public class GameController {
 
     // Jenkins에서 deleteGame 에러 발생 시 확인용 호출하기 위해 필요한 메서드
     @DeleteMapping("/game")
-    public void deleteSchedule(@RequestParam boolean scheduled, long gameId) {
+    public void deleteSchedule(@RequestParam boolean scheduled) {
 
         if(scheduled) {
-            gameService.deleteSchedule(gameId);
+            gameService.deleteSchedule();
         }
     }
 }

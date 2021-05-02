@@ -68,11 +68,13 @@ public class GameService {
 
     /**
      * 게임 삭제 기능
-     * 젠킨스를 이용해 호출되고 난 12시간 뒤에 게임을 삭제하는 기능
-     * @param gameId 게임 아이디
+     * 게임을 삭제하고 싶으면 먼저 updateGameStatus()로 게임 판매 여부를 4(게임 삭제)로 변경
+     * 그 다음 젠킨스를 이용해 매일 정해진 시간에 deleteSchedule()을 실행해 게임 판매 여부가 4인 값을 삭제
+     * 서버가 다운 되거나 삭제 도중 에러로 중단된 경우에 재실행이 되도록 젠킨스로 실행하고 관리할 예정
      */
-    public void deleteSchedule(long gameId) {
+    @Transactional
+    public void deleteSchedule() {
 
-        gameMapper.deleteGame(gameId);
+        gameMapper.deleteGame();
     }
 }

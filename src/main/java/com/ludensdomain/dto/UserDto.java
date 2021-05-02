@@ -15,7 +15,8 @@ import javax.validation.constraints.Pattern;
 @Builder
 public class UserDto {
 
-    @NotNull @NotEmpty(message = "아이디를 입력하세요.")
+    @NotNull
+    @NotEmpty(message = "아이디를 입력하세요.")
     long id;
 
     @NotEmpty(message = "이름을 입력하세요.")
@@ -34,9 +35,9 @@ public class UserDto {
     Date dateOfBirth;
 
     @NotEmpty
-    @Length(max = 11, message = "전화번호는 11자리 이하로 입력해주세요.")
+    @Length(max = 20)
     String phoneNo;
 
     @NotEmpty
-    AuthLevel role;
+    String role;
 }

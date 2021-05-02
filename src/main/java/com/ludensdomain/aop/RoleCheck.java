@@ -7,5 +7,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface LoginCheck {
+public @interface RoleCheck {
+    AuthLevel authLevel() default AuthLevel.USER;
 }
