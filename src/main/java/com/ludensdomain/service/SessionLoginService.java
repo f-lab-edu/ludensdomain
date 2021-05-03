@@ -21,7 +21,7 @@ public class SessionLoginService implements LoginService {
 
     @Override
     public boolean isLoginUser(long id) {
-        String sessionId = httpSession.getId();
+        String sessionId = (String) httpSession.getAttribute(ID);
         String enteredId = String.valueOf(id);
 
         return sessionId.equals(enteredId);

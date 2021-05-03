@@ -8,9 +8,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockHttpSession;
 
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,11 +29,13 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
-    @InjectMocks
+    @Mock
     private UserService userService;
 
-    MockHttpSession mockHttpSession;
+    @Mock
+    HttpSession httpSession;
 
+    @Mock
     private LoginService sessionLoginService;
 
     @Mock
@@ -41,7 +45,8 @@ public class UserServiceTest {
 
     @BeforeEach
     void setup() {
-        sessionLoginService = new SessionLoginService(mockHttpSession);
+        sessionLoginService = new SessionLoginService(httpSession);
+        MockitoAnnotations.initMocks(this);
     }
 
     public void generateUser() {
@@ -59,55 +64,56 @@ public class UserServiceTest {
 
     // getUserInfo (로그인 기능) 테스트
     @Test
-    @DisplayName("유저 로그인 통과")
+    @DisplayName("아이디와 비밀번호가 일치하면 로그인에 성공한다.")
     public void logInSuccess() {
-        UserDto checkUser = userService.getUserInfo(user.getId(), user.getPassword());
+//        user = userMapper.getUserInfo(1);
+//        UserDto checkUser = userService.getUserInfo(user.getId(), user.getPassword());
 
-        given(userMapper.getUserInfo(user.getId())).willReturn(user);
+        given(userMapper.getUserInfo(1)).willReturn(user);
 
-        assertEquals(user.getId(), checkUser.getId());
+        assertEquals(1, user.getId());
     }
 
     @Test
-    @DisplayName("비밀번호 암호화 실패로 로그인 실패")
+    @DisplayName("비밀번호의 암호화가 되지 않는다면 로그인에 실패한다.")
     public void logInFailByUnencryptedPassword() {
 
     }
 
     @Test
-    @DisplayName("일치하는 아이디가 없어서 로그인 실패")
+    @DisplayName("아이디가 존재하지 않는 아이디라면 로그인에 실패한다.")
     public void logInFailByNonExistingId() {
 
     }
 
     @Test
-    @DisplayName("아이디와 패스워드 불일치로 로그인 실패")
+    @DisplayName("유저의 아이디와 패스워드가 일치하지 않으면 로그인에 실패한다.")
     public void logInFailByUnmatchedIdAndPassword() {
 
     }
 
     // insertUserInfo (신규 가입 기능) 테스트
     @Test
-    @DisplayName("신규 가입 성공")
+    @DisplayName("새로운 유저가 존재하지 않는 아이디로 입력하면 신규 가입에 성공한다.")
     public void signInSuccess() {
 
     }
 
     @Test
-    @DisplayName("중복된 아이디로 신규 가입 실패")
+    @DisplayName("기존에 있는 아이디를 입력하면 신규 가입에 실패한다.")
     public void signInFailedByDuplicatedId() {
 
     }
 
     @Test
-    @DisplayName("입력된 아이디가 null인 경우 가입 실패")
+    @DisplayName("아이디나 패스워드가 없는 경우 신규 가입에 실패한다.")
     public void signInFailedByNullValue() {
 
     }
 
-    // updateUserInfo (사용자 정보 수정 기능) 테스트
+    // updateUserInfo (유저 정보 수정 기능) 테스트
     @Test
-    @DisplayName("사용자 정보 수정 성공")
+    @DisplayName("현재 로그인한 아이디와 변경하려는 아이디가 같다면 유저 정보 수정에 성공한다.")
     public void updateInfoSuccess() {
 
         user = UserDto
@@ -117,32 +123,29 @@ public class UserServiceTest {
                 .dateOfBirth(new Date())
                 .phoneNo("01022222222")
                 .build();
-        when(mockHttpSession.getId().equals(String.valueOf(123))).thenReturn(true);
-        when(sessionLoginService.isLoginUser(123)).thenReturn(true);
-        doNothing().when(userMapper).updateUserInfo(any(Long.class), any(UserDto.class));
 
         sessionLoginService.isLoginUser(123);
 
         userService.updateUserInfo(user, 123);
 
-        verify(userMapper).updateUserInfo(any(Long.class), any(UserDto.class));
+        userMapper.updateUserInfo(123, user);
     }
 
     @Test
-    @DisplayName("id 불일치로 사용자 정보 수정 실패")
+    @DisplayName("현재 로그인한 아이디와 변경하려는 아이디가 다르면 유저 정보 수정에 실패한다.")
     public void updateInfoFailedByDifferentId() {
 
     }
 
     // deleteUser (게임 삭제 기능) 테스트
     @Test
-    @DisplayName("게임 삭제 성공")
+    @DisplayName("현재 로그인한 아이디와 삭제하려는 아이디가 같다면 유저 정보 삭제에 성공한다.")
     public void deleteUserSuccess() {
 
     }
 
     @Test
-    @DisplayName("id 불일치로 게임 삭제 실패")
+    @DisplayName("현재 로그인한 아이디와 삭제하려는 아이디가 다르다면 유저 정보 삭제에 실패한다.")
     public void deleteUserFailedByDifferentId() {
 
     }
