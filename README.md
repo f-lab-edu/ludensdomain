@@ -45,3 +45,12 @@
 ## DB ERD
 ![image](https://user-images.githubusercontent.com/71559880/111853344-fd537100-895d-11eb-8539-f7513fd5738c.png)
 
+<br>
+
+## 기술 블로그
+1. 대용량 트래픽을 위한 유통 시스템 설계
+2. 분산 서버를 이용하며 세션을 유지하는 방법
+3. DB 부하 분산을 위한 캐시 적용
+4. DB 부하 분산을 위한 윈도우 환경 MySQL replication 설정
+5. 세션과 캐시 분리를 위한 Redis 분리와 Docker 사용
+블로그 링크 : [https://daakludens.github.io/](https://daakludens.github.io/)
