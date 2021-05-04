@@ -15,6 +15,7 @@ import org.springframework.mock.web.MockHttpSession;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -29,7 +30,10 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
-    @Mock
+    private static final String SID = "1";
+    private static final Long LID = 1L;
+
+    @InjectMocks
     private UserService userService;
 
     @Mock
@@ -46,13 +50,13 @@ public class UserServiceTest {
     @BeforeEach
     void setup() {
         sessionLoginService = new SessionLoginService(httpSession);
-        MockitoAnnotations.initMocks(this);
+        lenient().when(httpSession.getAttribute(SID)).thenReturn("1");
     }
 
-    public void generateUser() {
+    public UserDto generateUser() {
         user = UserDto
                 .builder()
-                .id(1)
+                .id(LID)
                 .name("홍길동")
                 .password("aaa")
                 .email("user@mail.com")
@@ -60,6 +64,7 @@ public class UserServiceTest {
                 .phoneNo("01011112222")
                 .role("3")
                 .build();
+        return user;
     }
 
     // getUserInfo (로그인 기능) 테스트
@@ -69,8 +74,8 @@ public class UserServiceTest {
 //        user = userMapper.getUserInfo(1);
 //        UserDto checkUser = userService.getUserInfo(user.getId(), user.getPassword());
 
-        given(userMapper.getUserInfo(1)).willReturn(user);
-
+//        given(userMapper.getUserInfo(1)).willReturn(user);
+        userService.getUserInfo(LID, "aaa");
         assertEquals(1, user.getId());
     }
 
