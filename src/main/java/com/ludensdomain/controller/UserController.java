@@ -1,5 +1,6 @@
 package com.ludensdomain.controller;
 
+import com.ludensdomain.aop.LoginCheck;
 import com.ludensdomain.dto.UserDto;
 import com.ludensdomain.service.LoginService;
 import com.ludensdomain.service.UserService;
@@ -37,17 +38,9 @@ public class UserController {
      */
     @GetMapping("login")
     public ResponseEntity<Void> login(@Valid long id, String password) {
-        ResponseEntity<Void> result;
         UserDto user = userService.getUserInfo(id, password);
 
-        if (user == null) {
-            result = RESPONSE_BAD_REQUEST;
-        } else {
-            loginService.login(id, user.getRole());
-            result = RESPONSE_OK;
-        }
-
-        return result;
+        return (user == null) ? RESPONSE_BAD_REQUEST : RESPONSE_OK;
     }
 
     /**
@@ -69,22 +62,32 @@ public class UserController {
      * @param user  사용자 정보
      * @param id    사용자 아이디
      */
+    @LoginCheck
     @PutMapping("{id}")
     public void update(@RequestBody @Valid UserDto user, @PathVariable long id) {
 
         userService.updateUserInfo(user, id);
     }
 
+    @LoginCheck
+    @PutMapping("changePw")
+    public void changePassword(long id, String newPw) {
+
+        userService.changePassword(id, newPw);
+    }
+
     /**
      * 세션을 이용한 로그아웃 기능.
      *
      */
+    @LoginCheck
     @PostMapping("logout")
     public void logout() {
 
         loginService.logout();
     }
 
+    @LoginCheck
     @DeleteMapping("{id}")
     public void deleteUser(@PathVariable long id) {
 

@@ -7,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.jasypt.encryption.StringEncryptor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -21,19 +19,17 @@ public class UserService {
         UserDto user = userMapper.getUserInfo(id);
         if (user != null) {
             String decryptPw = stringEncryptor.decrypt(user.getPassword());
+            loginService.login(id, user.getRole());
             return password.equals(decryptPw) ? user : null;
         }
         return null;
     }
 
     public void insertUserInfo(UserDto user) {
-        Optional<UserDto> checkExistingUser = Optional
-                .ofNullable(getUserInfo(user.getId(), user.getPassword()));
-        if (checkExistingUser.isPresent()) {
+        if (checkIdExists(user.getId())) {
             throw new DuplicatedUserException();
-        } else {
-            userMapper.insertUserInfo(encryptUser(user));
         }
+        userMapper.insertUserInfo(encryptUser(user));
     }
 
     /**
@@ -57,26 +53,39 @@ public class UserService {
     }
 
     /**
-     * 사용자 정보 수정 비즈니스 로직.
-     * 아이디로 같은 유저인지 확인 후 맞으면 수정한 다음 OK를 반환하고 아니면 BAD_REQUEST 를 반환.
+     * 사용자 정보 수정
      *
      * @param user UserDto 인스턴스 변수
      * @param id   사용자 아이디
      */
     public void updateUserInfo(UserDto user, long id) {
-        if (loginService.isLoginUser(id)) {
-            userMapper.updateUserInfo(id, user);
-        }
+
+        userMapper.updateUserInfo(id, user);
     }
 
     /**
-     * 사용자 정보 삭제 비즈니스 로직.
+     * 유저 아이디 존재 여부 확인
+     *
+     * @param id 유저 아이디
+     * @return true/false
+     */
+    public Boolean checkIdExists(long id) {
+
+        return userMapper.checkIdExists(id);
+    }
+
+    public void changePassword(long id, String newPw) {
+
+        userMapper.changePassword(id, stringEncryptor.encrypt(newPw));
+    }
+
+    /**
+     * 사용자 정보 삭제
      *
      * @param id   사용자 아이디
      */
     public void deleteUser(long id) {
-        if (loginService.isLoginUser(id)) {
-            userMapper.deleteUser(id);
-        }
+
+        userMapper.deleteUser(id);
     }
 }
