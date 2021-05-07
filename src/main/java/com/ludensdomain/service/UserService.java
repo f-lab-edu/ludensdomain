@@ -1,28 +1,34 @@
 package com.ludensdomain.service;
 
 import com.ludensdomain.advice.exceptions.DuplicatedUserException;
+import com.ludensdomain.advice.exceptions.NonExistingUserException;
 import com.ludensdomain.dto.UserDto;
 import com.ludensdomain.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.jasypt.encryption.StringEncryptor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
+    private final LoginService loginService;
     private final UserMapper userMapper;
     private final StringEncryptor stringEncryptor;
-    private final LoginService loginService;
 
+    @Transactional
     public UserDto login(long id, String password) {
-        UserDto user = getUserInfo(id);
-        if (user != null) {
-            String decryptPw = stringEncryptor.decrypt(user.getPassword());
-            loginService.login(id, user.getRole());
-            return password.equals(decryptPw) ? user : null;
+        UserDto existedUser = Optional.ofNullable(getUserInfo(id)).orElseThrow(NonExistingUserException::new);
+        String encryptPw = stringEncryptor.encrypt(password);
+        if (encryptPw.equals(existedUser.getPassword())) {
+            loginService.login(id, existedUser.getRole());
+            return existedUser;
+        } else {
+            return null;
         }
-        return null;
     }
 
     public UserDto getUserInfo(long id) {
