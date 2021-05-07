@@ -60,13 +60,12 @@ public class UserController {
      * 사용자 수정.
      *
      * @param user  사용자 정보
-     * @param id    사용자 아이디
      */
     @LoginCheck
-    @PutMapping("{id}")
-    public void update(@RequestBody @Valid UserDto user, @PathVariable long id) {
+    @PutMapping("update")
+    public void update(@RequestBody @Valid UserDto user) {
 
-        userService.updateUserInfo(user, id);
+        userService.updateUserInfo(user);
     }
 
     @LoginCheck

@@ -67,11 +67,10 @@ public class UserService {
      * 사용자 정보 수정
      *
      * @param user UserDto 인스턴스 변수
-     * @param id   사용자 아이디
      */
-    public void updateUserInfo(UserDto user, long id) {
+    public void updateUserInfo(UserDto user) {
 
-        userMapper.updateUserInfo(id, user);
+        userMapper.updateUserInfo(user);
     }
 
     /**
