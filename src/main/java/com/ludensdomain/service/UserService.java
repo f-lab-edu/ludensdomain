@@ -15,14 +15,19 @@ public class UserService {
     private final StringEncryptor stringEncryptor;
     private final LoginService loginService;
 
-    public UserDto getUserInfo(long id, String password) {
-        UserDto user = userMapper.getUserInfo(id);
+    public UserDto login(long id, String password) {
+        UserDto user = getUserInfo(id);
         if (user != null) {
             String decryptPw = stringEncryptor.decrypt(user.getPassword());
             loginService.login(id, user.getRole());
             return password.equals(decryptPw) ? user : null;
         }
         return null;
+    }
+
+    public UserDto getUserInfo(long id) {
+
+        return userMapper.getUserInfo(id);
     }
 
     public void insertUserInfo(UserDto user) {

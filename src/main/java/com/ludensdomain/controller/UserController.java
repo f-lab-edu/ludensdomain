@@ -38,7 +38,7 @@ public class UserController {
      */
     @GetMapping("login")
     public ResponseEntity<Void> login(@Valid long id, String password) {
-        UserDto user = userService.getUserInfo(id, password);
+        UserDto user = userService.login(id, password);
 
         return (user == null) ? RESPONSE_BAD_REQUEST : RESPONSE_OK;
     }
