@@ -63,11 +63,11 @@
 <br>
 
 ## 📝 기술 블로그
-1. 대용량 트래픽을 위한 유통 시스템 설계
-2. 분산 서버를 이용하며 세션을 유지하는 방법
-3. DB 부하 분산을 위한 캐시 적용
-4. DB 부하 분산을 위한 윈도우 환경 MySQL replication 설정
-5. 세션과 캐시 분리를 위한 Redis 분리와 Docker 사용
+1. 대용량 트래픽을 위한 유통 시스템 설계 → [https://daakludens.github.io/project/scale-up-out/](https://daakludens.github.io/project/scale-up-out/)
+2. 분산 서버를 이용하며 세션을 유지하는 방법 → [https://daakludens.github.io/project/session/](https://daakludens.github.io/project/session/)
+3. DB 부하 분산을 위한 캐시 적용 → [https://daakludens.github.io/project/redis-cache/](https://daakludens.github.io/project/redis-cache/)
+4. DB 부하 분산을 위한 윈도우 환경 MySQL replication 설정 → [https://daakludens.github.io/project/replication/](https://daakludens.github.io/project/replication/)
+5. 세션과 캐시 분리를 위한 Redis 분리와 Docker 사용 → [https://daakludens.github.io/project/separate-redis/](https://daakludens.github.io/project/separate-redis/)
 
 블로그 링크 : [https://daakludens.github.io/](https://daakludens.github.io/)
 
