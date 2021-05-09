@@ -14,7 +14,7 @@ public interface UserMapper {
 
     void changePassword(long id, String password);
 
-    Boolean checkIdExists(long id);
+    boolean checkIdExists(long id);
 
     void deleteUser(long id);
 

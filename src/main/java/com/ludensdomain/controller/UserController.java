@@ -29,56 +29,38 @@ public class UserController {
     private final UserService userService;
     private final LoginService loginService;
 
-    /**
-     * 사용자 로그인 기능.
-     *
-     * @param id        사용자 아이디
-     * @param password  사용자 비밀번호
-     * @return {@literal ResponseEntity<Void>}
-     */
-    @GetMapping("login")
+    @PostMapping("login")
     public ResponseEntity<Void> login(@Valid long id, String password) {
-        UserDto user = userService.login(id, password);
 
-        return (user == null) ? RESPONSE_BAD_REQUEST : RESPONSE_OK;
+        return userService.login(id, password) ? RESPONSE_OK : RESPONSE_BAD_REQUEST;
     }
 
-    /**
-     * 사용자 회원가입.
-     *
-     * @param user  사용자 정보
-     * @return {@literal ResponseEntity<Void>}
-     */
-    @PostMapping("signUp")
-    public ResponseEntity<Void> signUp(@RequestBody UserDto user) {
+    @PostMapping
+    public void signUp(@RequestBody UserDto user) {
+
         userService.insertUserInfo(user);
-
-        return RESPONSE_USER_CREATED;
     }
 
-    /**
-     * 사용자 수정.
-     *
-     * @param user  사용자 정보
-     */
+    @GetMapping("{id}")
+    public UserDto userInfo(@PathVariable long id) {
+
+        return userService.getUserInfo(id);
+    }
+
     @LoginCheck
-    @PutMapping("update")
+    @PutMapping
     public void update(@RequestBody @Valid UserDto user) {
 
         userService.updateUserInfo(user);
     }
 
     @LoginCheck
-    @PutMapping("changePw")
-    public void changePassword(long id, String newPw) {
+    @PutMapping("{id}")
+    public void changePassword(@PathVariable long id, String newPw) {
 
         userService.changePassword(id, newPw);
     }
 
-    /**
-     * 세션을 이용한 로그아웃 기능.
-     *
-     */
     @LoginCheck
     @PostMapping("logout")
     public void logout() {

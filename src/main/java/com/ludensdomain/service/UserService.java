@@ -20,14 +20,17 @@ public class UserService {
     private final StringEncryptor stringEncryptor;
 
     @Transactional
-    public UserDto login(long id, String password) {
-        UserDto existedUser = Optional.ofNullable(getUserInfo(id)).orElseThrow(NonExistingUserException::new);
+    public boolean login(long id, String password) {
+        UserDto existedUser = Optional
+                .ofNullable(getUserInfo(id))
+                .orElseThrow(NonExistingUserException::new);
         String encryptPw = stringEncryptor.encrypt(password);
+
         if (encryptPw.equals(existedUser.getPassword())) {
             loginService.login(id, existedUser.getRole());
-            return existedUser;
+            return true;
         } else {
-            return null;
+            return false;
         }
     }
 
@@ -79,7 +82,7 @@ public class UserService {
      * @param id 유저 아이디
      * @return true/false
      */
-    public Boolean checkIdExists(long id) {
+    public boolean checkIdExists(long id) {
 
         return userMapper.checkIdExists(id);
     }
