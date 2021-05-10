@@ -2,6 +2,7 @@ package com.ludensdomain.service;
 
 import com.ludensdomain.advice.exceptions.DuplicatedUserException;
 import com.ludensdomain.advice.exceptions.NonExistingUserException;
+import com.ludensdomain.advice.exceptions.PasswordNotMatchingException;
 import com.ludensdomain.dto.UserDto;
 import com.ludensdomain.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,7 @@ public class UserService {
             loginService.login(id, existedUser.getRole());
             return true;
         } else {
-            return false;
+            throw new PasswordNotMatchingException();
         }
     }
 

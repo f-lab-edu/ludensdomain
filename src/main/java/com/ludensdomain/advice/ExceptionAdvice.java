@@ -46,6 +46,13 @@ public class ExceptionAdvice {
         return getResult("존재하지 않는 아이디입니다.");
     }
 
+    @ExceptionHandler(PasswordNotMatchingException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ExceptionResponse passwordNotMatchingException() {
+
+        return getResult("아이디와 패스워드가 일치하지 않습니다.");
+    }
+
     /*
      * 모든 예외 클래스 객체의 메세지를 담는 util method
      */
