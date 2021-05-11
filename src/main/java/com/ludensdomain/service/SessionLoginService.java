@@ -1,6 +1,5 @@
 package com.ludensdomain.service;
 
-import com.ludensdomain.aop.AuthLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +17,6 @@ public class SessionLoginService implements LoginService {
     public void login(long id, String role) {
         httpSession.setAttribute(ID, id);
         httpSession.setAttribute(ROLE, role);
-    }
-
-    @Override
-    public boolean isLoginUser(long id) {
-        String sessionId = httpSession.getId();
-        String enteredId = String.valueOf(id);
-
-        return sessionId.equals(enteredId);
     }
 
     @Override
