@@ -1,9 +1,6 @@
 package com.ludensdomain.advice;
 
-import com.ludensdomain.advice.exceptions.DuplicatedUserException;
-import com.ludensdomain.advice.exceptions.InsertFailedException;
-import com.ludensdomain.advice.exceptions.UnauthorizedUserException;
-import com.ludensdomain.advice.exceptions.UpdateFailedException;
+import com.ludensdomain.advice.exceptions.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -40,6 +37,20 @@ public class ExceptionAdvice {
     protected ExceptionResponse duplicatedUserException() {
 
         return getResult("이미 존재하는 유저입니다.");
+    }
+
+    @ExceptionHandler(NonExistingUserException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    protected ExceptionResponse nonExistingUserException() {
+
+        return getResult("존재하지 않는 아이디입니다.");
+    }
+
+    @ExceptionHandler(PasswordNotMatchingException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ExceptionResponse passwordNotMatchingException() {
+
+        return getResult("아이디와 패스워드가 일치하지 않습니다.");
     }
 
     /*

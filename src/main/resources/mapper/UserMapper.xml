@@ -15,7 +15,7 @@
         WHERE id = #{id}
     </select>
 
-    <insert id="insertUserInfo">
+    <insert id="insertUserInfo" parameterType="com.ludensdomain.dto.UserDto">
         INSERT INTO
         user
             ( id,
@@ -45,6 +45,16 @@
             phoneNum = #{phoneNo}
         WHERE id = #{id}
     </update>
+
+    <update id="changePassword" parameterType="com.ludensdomain.dto.UserDto">
+        UPDATE user
+        SET password = #{password}
+        WHERE id = #{id}
+    </update>
+
+    <select id="checkIdExists" parameterType="com.ludensdomain.dto.UserDto">
+        SELECT EXISTS(SELECT id from user where id = #{id})
+    </select>
 
     <delete id="deleteUser" parameterType="com.ludensdomain.dto.UserDto">
         DELETE FROM user

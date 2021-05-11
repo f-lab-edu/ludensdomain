@@ -10,7 +10,11 @@ public interface UserMapper {
 
     void insertUserInfo(UserDto userDto);
 
-    void updateUserInfo(long id, UserDto userDto);
+    void updateUserInfo(UserDto userDto);
+
+    void changePassword(long id, String password);
+
+    boolean checkIdExists(long id);
 
     void deleteUser(long id);
 
