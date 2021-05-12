@@ -5,8 +5,8 @@ import com.ludensdomain.advice.exceptions.NonExistingUserException;
 import com.ludensdomain.advice.exceptions.PasswordNotMatchingException;
 import com.ludensdomain.dto.UserDto;
 import com.ludensdomain.mapper.UserMapper;
+import com.ludensdomain.util.BCryptEncryptor;
 import lombok.RequiredArgsConstructor;
-import org.jasypt.encryption.StringEncryptor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,16 +18,15 @@ public class UserService {
 
     private final LoginService loginService;
     private final UserMapper userMapper;
-    private final StringEncryptor stringEncryptor;
 
     @Transactional
     public boolean login(long id, String password) {
         UserDto existedUser = Optional
                 .ofNullable(getUserInfo(id))
                 .orElseThrow(NonExistingUserException::new);
-        String encryptPw = stringEncryptor.encrypt(password);
+        String encryptPw = BCryptEncryptor.encrypt(password);
 
-        if (encryptPw.equals(existedUser.getPassword())) {
+        if (BCryptEncryptor.isMatch(existedUser.getPassword(), encryptPw)) {
             loginService.login(id, existedUser.getRole());
             return true;
         } else {
@@ -55,7 +54,7 @@ public class UserService {
      * @return {@literal ResponseEntity<Void>}
      */
     public UserDto encryptUser(UserDto user) {
-        String encryptPassword = stringEncryptor.encrypt(user.getPassword());
+        String encryptPassword = BCryptEncryptor.encrypt(user.getPassword());
 
         return UserDto.builder()
                 .id(user.getId())
@@ -90,8 +89,8 @@ public class UserService {
     }
 
     public void changePassword(long id, String newPw) {
-        String encryptedNewPw = stringEncryptor.encrypt(newPw);
-        userMapper.changePassword(id, encryptedNewPw);
+
+        userMapper.changePassword(id, BCryptEncryptor.encrypt(newPw));
     }
 
     /**
