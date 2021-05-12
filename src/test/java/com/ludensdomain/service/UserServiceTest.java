@@ -2,6 +2,7 @@ package com.ludensdomain.service;
 
 import com.ludensdomain.dto.UserDto;
 import com.ludensdomain.mapper.UserMapper;
+import org.jasypt.encryption.StringEncryptor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /*
@@ -37,10 +38,12 @@ public class UserServiceTest {
     private LoginService sessionLoginService;
 
     @Mock
+    StringEncryptor stringEncryptor;
+
+    @Mock
     private UserMapper userMapper;
 
     UserDto user;
-    UserDto encryptedUser;
 
     @BeforeEach
     void setup() {
@@ -62,29 +65,10 @@ public class UserServiceTest {
                 .build();
     }
 
-    @BeforeEach
-    public void generateEncryptedUser() {
-        encryptedUser = UserDto
-                .builder()
-                .id(1)
-                .name("홍길동")
-                .password("detpyrcne")
-                .email("user@mail.com")
-                .dateOfBirth(new Date())
-                .phoneNo("01011112222")
-                .role("3")
-                .build();
-    }
-
-    // getUserInfo (로그인 기능) 테스트
     @Test
     @DisplayName("아이디와 비밀번호가 일치하면 로그인에 성공한다.")
     public void logInSuccess() {
-//        user = userMapper.getUserInfo(1);
-//        UserDto checkUser = userService.getUserInfo(user.getId(), user.getPassword());
 
-//        given(userMapper.getUserInfo(1)).willReturn(user);
-        assertEquals(1, user.getId());
     }
 
     @Test
@@ -112,7 +96,6 @@ public class UserServiceTest {
         verify(userMapper).getUserInfo(ID);
     }
 
-    // insertUserInfo (신규 가입 기능) 테스트
     @Test
     @DisplayName("새로운 유저가 존재하지 않는 아이디로 입력하면 신규 가입에 성공한다.")
     public void signInSuccess() {
@@ -126,13 +109,6 @@ public class UserServiceTest {
     }
 
     @Test
-    @DisplayName("아이디나 패스워드가 없는 경우 신규 가입에 실패한다.")
-    public void signInFailedByNullValue() {
-
-    }
-
-    // updateUserInfo (유저 정보 수정 기능) 테스트
-    @Test
     @DisplayName("유저 정보 수정에 성공한다.")
     public void updateInfoSuccess() {
         userMapper.updateUserInfo(user);
@@ -142,26 +118,29 @@ public class UserServiceTest {
     @Test
     @DisplayName("아이디 중복 여부를 확인하고 없다면 false를 반환")
     public void duplicatedIdFalseByNonExistingId() {
-
+        when(userMapper.checkIdExists(ID)).thenReturn(false);
+        assertFalse(userMapper.checkIdExists(ID));
+        verify(userMapper).checkIdExists(ID);
     }
 
     @Test
-    @DisplayName("아이디 중복 여부를 확인하고 없다면 false를 반환")
+    @DisplayName("아이디 중복 여부를 확인하고 있다면 true를 반환")
     public void duplicatedIdTrueByExistingId() {
+        when(userMapper.checkIdExists(ID)).thenReturn(true);
+        assertTrue(userMapper.checkIdExists(ID));
+        verify(userMapper).checkIdExists(ID);
+    }
+
+    @Test
+    @DisplayName("아이디와 변경될 패스워드를 넘겨서 패스워드를 수정한다.")
+    public void changePasswordSuccess() {
 
     }
 
-    // deleteUser (게임 삭제 기능) 테스트
     @Test
-    @DisplayName("현재 로그인한 아이디와 삭제하려는 아이디가 같다면 유저 정보 삭제에 성공한다.")
+    @DisplayName("유저 정보를 삭제한다.")
     public void deleteUserSuccess() {
-
+        userMapper.deleteUser(ID);
+        verify(userMapper).deleteUser(ID);
     }
-
-    @Test
-    @DisplayName("현재 로그인한 아이디와 삭제하려는 아이디가 다르다면 유저 정보 삭제에 실패한다.")
-    public void deleteUserFailedByDifferentId() {
-
-    }
-
 }

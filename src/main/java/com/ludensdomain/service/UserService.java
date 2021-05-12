@@ -44,7 +44,8 @@ public class UserService {
         if (checkIdExists(user.getId())) {
             throw new DuplicatedUserException();
         }
-        userMapper.insertUserInfo(encryptUser(user));
+        UserDto encryptedUser = encryptUser(user);
+        userMapper.insertUserInfo(encryptedUser);
     }
 
     /**
@@ -89,8 +90,8 @@ public class UserService {
     }
 
     public void changePassword(long id, String newPw) {
-
-        userMapper.changePassword(id, stringEncryptor.encrypt(newPw));
+        String encryptedNewPw = stringEncryptor.encrypt(newPw);
+        userMapper.changePassword(id, encryptedNewPw);
     }
 
     /**
