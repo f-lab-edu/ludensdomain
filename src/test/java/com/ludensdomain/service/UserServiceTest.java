@@ -8,17 +8,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.mock.web.MockHttpSession;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 /*
@@ -30,8 +25,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
-    private static final String SID = "1";
-    private static final Long LID = 1L;
+    private static final long ID = 1;
 
     @InjectMocks
     private UserService userService;
@@ -46,17 +40,19 @@ public class UserServiceTest {
     private UserMapper userMapper;
 
     UserDto user;
+    UserDto encryptedUser;
 
     @BeforeEach
     void setup() {
         sessionLoginService = new SessionLoginService(httpSession);
-        lenient().when(httpSession.getAttribute(SID)).thenReturn("1");
+        lenient().when(httpSession.getAttribute("1")).thenReturn("1");
     }
 
-    public UserDto generateUser() {
+    @BeforeEach
+    public void generateUser() {
         user = UserDto
                 .builder()
-                .id(LID)
+                .id(1)
                 .name("홍길동")
                 .password("aaa")
                 .email("user@mail.com")
@@ -64,7 +60,20 @@ public class UserServiceTest {
                 .phoneNo("01011112222")
                 .role("3")
                 .build();
-        return user;
+    }
+
+    @BeforeEach
+    public void generateEncryptedUser() {
+        encryptedUser = UserDto
+                .builder()
+                .id(1)
+                .name("홍길동")
+                .password("detpyrcne")
+                .email("user@mail.com")
+                .dateOfBirth(new Date())
+                .phoneNo("01011112222")
+                .role("3")
+                .build();
     }
 
     // getUserInfo (로그인 기능) 테스트
@@ -75,7 +84,6 @@ public class UserServiceTest {
 //        UserDto checkUser = userService.getUserInfo(user.getId(), user.getPassword());
 
 //        given(userMapper.getUserInfo(1)).willReturn(user);
-        userService.getUserInfo(LID, "aaa");
         assertEquals(1, user.getId());
     }
 
@@ -95,6 +103,13 @@ public class UserServiceTest {
     @DisplayName("유저의 아이디와 패스워드가 일치하지 않으면 로그인에 실패한다.")
     public void logInFailByUnmatchedIdAndPassword() {
 
+    }
+
+    @Test
+    @DisplayName("유저의 아이디가 일치한다면 해당 아이디의 유저 정보를 가져온다.")
+    public void getUserInfoSuccess() {
+        userMapper.getUserInfo(ID);
+        verify(userMapper).getUserInfo(ID);
     }
 
     // insertUserInfo (신규 가입 기능) 테스트
@@ -118,27 +133,21 @@ public class UserServiceTest {
 
     // updateUserInfo (유저 정보 수정 기능) 테스트
     @Test
-    @DisplayName("현재 로그인한 아이디와 변경하려는 아이디가 같다면 유저 정보 수정에 성공한다.")
+    @DisplayName("유저 정보 수정에 성공한다.")
     public void updateInfoSuccess() {
-
-        user = UserDto
-                .builder()
-                .name("조남길")
-                .email("update@gmail.com")
-                .dateOfBirth(new Date())
-                .phoneNo("01022222222")
-                .build();
-
-        sessionLoginService.isLoginUser(123);
-
-        userService.updateUserInfo(user, 123);
-
-        userMapper.updateUserInfo(123, user);
+        userMapper.updateUserInfo(user);
+        verify(userMapper).updateUserInfo(user);
     }
 
     @Test
-    @DisplayName("현재 로그인한 아이디와 변경하려는 아이디가 다르면 유저 정보 수정에 실패한다.")
-    public void updateInfoFailedByDifferentId() {
+    @DisplayName("아이디 중복 여부를 확인하고 없다면 false를 반환")
+    public void duplicatedIdFalseByNonExistingId() {
+
+    }
+
+    @Test
+    @DisplayName("아이디 중복 여부를 확인하고 없다면 false를 반환")
+    public void duplicatedIdTrueByExistingId() {
 
     }
 
