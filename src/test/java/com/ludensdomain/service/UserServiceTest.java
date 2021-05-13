@@ -1,10 +1,10 @@
 package com.ludensdomain.service;
 
 import com.ludensdomain.advice.exceptions.DuplicatedUserException;
+import com.ludensdomain.advice.exceptions.NonExistingUserException;
 import com.ludensdomain.dto.UserDto;
 import com.ludensdomain.mapper.UserMapper;
 import com.ludensdomain.util.BCryptEncryptor;
-import org.jasypt.encryption.StringEncryptor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,12 +15,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.lenient;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /*
  * Service 클래스의 Unit Test
@@ -70,19 +69,17 @@ public class UserServiceTest {
     @Test
     @DisplayName("아이디와 비밀번호가 일치하면 로그인에 성공한다.")
     public void logInSuccess() {
-
+        when(userMapper.getUserInfo(ID)).thenReturn(user);
+        assertEquals(userService.getUserInfo(ID), user);
+        verify(userMapper).getUserInfo(ID);
     }
 
     @Test
-    @DisplayName("비밀번호의 암호화가 되지 않는다면 로그인에 실패한다.")
-    public void logInFailByUnencryptedPassword() {
-
-    }
-
-    @Test
-    @DisplayName("아이디가 존재하지 않는 아이디라면 로그인에 실패한다.")
+    @DisplayName("존재하지 않는 유저의 아이디라면 로그인에 실패한다.")
     public void logInFailByNonExistingId() {
-
+//        when(userMapper.getUserInfo(ID)).thenReturn(null);
+//        assertThrows(NonExistingUserException.class, () -> userService.getUserInfo(ID));
+//        verify(userMapper).getUserInfo(any(long.class));
     }
 
     @Test
@@ -101,7 +98,7 @@ public class UserServiceTest {
     @Test
     @DisplayName("새로운 유저가 존재하지 않는 아이디로 입력하면 신규 가입에 성공한다.")
     public void signInSuccess() {
-        when(userMapper.checkIdExists(user.getId())).thenReturn(false);
+        when(userMapper.checkIdExists(ID)).thenReturn(false);
         userService.insertUserInfo(user);
         assertFalse(userService.checkIdExists(ID));
         verify(userMapper).insertUserInfo(any(UserDto.class));
@@ -110,7 +107,7 @@ public class UserServiceTest {
     @Test
     @DisplayName("기존에 있는 아이디를 입력하면 신규 가입에 실패한다.")
     public void signInFailedByDuplicatedId() {
-        when(userMapper.checkIdExists(user.getId())).thenReturn(true);
+        when(userMapper.checkIdExists(ID)).thenReturn(true);
         assertThrows(DuplicatedUserException.class, () -> userService.insertUserInfo(user));
         verify(userMapper).checkIdExists(any(long.class));
     }
