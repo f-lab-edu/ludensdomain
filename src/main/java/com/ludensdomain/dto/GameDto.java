@@ -36,7 +36,7 @@ public class GameDto {
     @NotEmpty(message = "배급사를 입력하세요.")
     long publisher;
 
-    int rating;
+    double rating;
 
     int sales;
 

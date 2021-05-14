@@ -20,7 +20,7 @@
                D.name developerName,
                P.name publisherName,
                S.name statusName
-        FROM game G, genre R, developer D, publisher P, status S
+        FROM game G
                  LEFT OUTER JOIN genre ON G.genre = R.id
                  LEFT OUTER JOIN developer ON G.developer = D.id
                  LEFT OUTER JOIN publisher ON G.publisher = P.id
@@ -46,7 +46,7 @@
                D.name developerName,
                P.name publisherName,
                S.name statusName
-        FROM game G, genre R, developer D, publisher P, status S
+        FROM game G
         LEFT OUTER JOIN genre ON G.genre = R.id
         LEFT OUTER JOIN developer ON G.developer = D.id
         LEFT OUTER JOIN publisher ON G.publisher = P.id
