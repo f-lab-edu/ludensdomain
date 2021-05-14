@@ -1,7 +1,6 @@
 package com.ludensdomain.service;
 
 import com.ludensdomain.advice.exceptions.DuplicatedUserException;
-import com.ludensdomain.advice.exceptions.NonExistingUserException;
 import com.ludensdomain.dto.UserDto;
 import com.ludensdomain.mapper.UserMapper;
 import com.ludensdomain.util.BCryptEncryptor;
@@ -13,13 +12,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.servlet.http.HttpSession;
 import java.util.Date;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /*
  * Service 클래스의 Unit Test
@@ -36,9 +39,6 @@ public class UserServiceTest {
     private UserService userService;
 
     @Mock
-    HttpSession httpSession;
-
-    @Mock
     private LoginService sessionLoginService;
 
     @Mock
@@ -50,9 +50,6 @@ public class UserServiceTest {
 
     @BeforeEach
     void setup() {
-        sessionLoginService = new SessionLoginService(httpSession);
-        lenient().when(httpSession.getAttribute("1")).thenReturn("1");
-
         user = UserDto
                 .builder()
                 .id(1)
@@ -76,27 +73,46 @@ public class UserServiceTest {
     }
 
     @Test
-    @DisplayName("아이디와 비밀번호가 일치하면 로그인에 성공한다.")
+    @DisplayName("이미 존재하는 유저의 아이디이고 비밀번호가 일치하면 로그인에 성공한다.")
     public void logInSuccess() {
         when(userMapper.getUserInfo(ID)).thenReturn(user);
         assertEquals(userService.getUserInfo(ID), user);
         verify(userMapper).getUserInfo(ID);
+
         assertTrue(BCryptEncryptor.isMatch(user.getPassword(), encryptedUser.getPassword()));
 
+        doNothing().when(sessionLoginService).login(ID, encryptedUser.getPassword());
+        sessionLoginService.login(ID, encryptedUser.getPassword());
+        verify(sessionLoginService).login(ID, encryptedUser.getPassword());
     }
 
     @Test
     @DisplayName("존재하지 않는 유저의 아이디라면 로그인에 실패한다.")
     public void logInFailByNonExistingId() {
-//        when(userMapper.getUserInfo(ID)).thenReturn(null);
-//        assertThrows(NonExistingUserException.class, () -> userService.getUserInfo(ID));
-//        verify(userMapper).getUserInfo(ID);
+        when(userMapper.getUserInfo(ID)).thenReturn(null);
+        assertNull(userService.getUserInfo(ID));
+        verify(userMapper).getUserInfo(ID);
     }
 
     @Test
-    @DisplayName("유저의 아이디와 패스워드가 일치하지 않으면 로그인에 실패한다.")
+    @DisplayName("패스워드가 일치하지 않으면 로그인에 실패한다.")
     public void logInFailByUnmatchedIdAndPassword() {
+        UserDto wrongUser = UserDto
+                .builder()
+                .id(1)
+                .name("홍길동")
+                .password(BCryptEncryptor.encrypt("bbb"))
+                .email("user@mail.com")
+                .dateOfBirth(new Date())
+                .phoneNo("01011112222")
+                .role("3")
+                .build();
 
+        when(userMapper.getUserInfo(ID)).thenReturn(user);
+        assertEquals(userService.getUserInfo(ID), user);
+        verify(userMapper).getUserInfo(ID);
+
+        assertFalse(BCryptEncryptor.isMatch(user.getPassword(), wrongUser.getPassword()));
     }
 
     @Test
