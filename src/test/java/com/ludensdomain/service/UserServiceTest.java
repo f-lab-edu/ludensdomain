@@ -46,19 +46,28 @@ public class UserServiceTest {
 
     UserDto user;
 
+    UserDto encryptedUser;
+
     @BeforeEach
     void setup() {
         sessionLoginService = new SessionLoginService(httpSession);
         lenient().when(httpSession.getAttribute("1")).thenReturn("1");
-    }
 
-    @BeforeEach
-    public void generateUser() {
         user = UserDto
                 .builder()
                 .id(1)
                 .name("홍길동")
                 .password("aaa")
+                .email("user@mail.com")
+                .dateOfBirth(new Date())
+                .phoneNo("01011112222")
+                .role("3")
+                .build();
+
+        encryptedUser = UserDto
+                .builder()
+                .name("홍길동")
+                .password(BCryptEncryptor.encrypt("aaa"))
                 .email("user@mail.com")
                 .dateOfBirth(new Date())
                 .phoneNo("01011112222")
@@ -72,6 +81,8 @@ public class UserServiceTest {
         when(userMapper.getUserInfo(ID)).thenReturn(user);
         assertEquals(userService.getUserInfo(ID), user);
         verify(userMapper).getUserInfo(ID);
+        assertTrue(BCryptEncryptor.isMatch(user.getPassword(), encryptedUser.getPassword()));
+
     }
 
     @Test
@@ -79,7 +90,7 @@ public class UserServiceTest {
     public void logInFailByNonExistingId() {
 //        when(userMapper.getUserInfo(ID)).thenReturn(null);
 //        assertThrows(NonExistingUserException.class, () -> userService.getUserInfo(ID));
-//        verify(userMapper).getUserInfo(any(long.class));
+//        verify(userMapper).getUserInfo(ID);
     }
 
     @Test
