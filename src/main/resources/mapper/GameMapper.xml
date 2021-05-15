@@ -26,8 +26,7 @@
                  LEFT OUTER JOIN publisher ON G.publisher = P.id
                  LEFT OUTER JOIN status ON G.status = S.id
         WHERE G.id = #{gameId}
-        AND G.status = 3
-        OR G.status = 4
+        AND (G.status = 3 OR G.status = 4)
     </select>
 
     <select id="getGameList" parameterType="com.ludensdomain.dto.GamePagingDto" resultType="com.ludensdomain.dto.GameDto">
@@ -47,10 +46,10 @@
                P.name publisherName,
                S.name statusName
         FROM game G
-        LEFT OUTER JOIN genre ON G.genre = R.id
-        LEFT OUTER JOIN developer ON G.developer = D.id
-        LEFT OUTER JOIN publisher ON G.publisher = P.id
-        LEFT OUTER JOIN status ON G.status = S.id
+        LEFT OUTER JOIN genre R ON G.genre = R.id
+        LEFT OUTER JOIN developer D ON G.developer = D.id
+        LEFT OUTER JOIN publisher P ON G.publisher = P.id
+        LEFT OUTER JOIN status S ON G.status = S.id
             <if test="genre != null and genre != ''">
                 AND G.genre = #{genre}
             </if>
@@ -60,9 +59,8 @@
             <if test="publisher != null and publisher != ''">
                 AND G.publisher = #{publisher}
             </if>
-        WHERE <![CDATA[G.id < #{lastGameId}]]>
-        AND G.status = 3
-        OR G.status = 4
+        WHERE <![CDATA[G.id > #{lastGameId}]]>
+        AND (G.status = 3 OR G.status = 4)
         ORDER BY G.release_date
         LIMIT ${size}
     </select>
