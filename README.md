@@ -1,24 +1,37 @@
-# ludensdomain
-게임을 위한 공간. 게임 유통과 구매 및 정보 교환장
+# 🎮 ludensdomain
+- 게임을 위한 공간
+- 유저들은 게임 유통과 구매장으로 사용
+- 유통사 또는 개발사는 게임 발매 및 관리
 
 <br>
 
-## 프로젝트 목표
+## 📜 프로젝트 목표
 - 특정 날(대규모 세일 주간)에 다이나믹하게 변동하는 대용량 트래픽을 견뎌내는 게임 유통 사이트(ESD) 구현
 - 단순한 기능 구현과 구조에서 벗어나 보다 의미 있고 가독성 높은 코드를 작성
 - 기존에 사용하던 기술들을 정확히 이해하며 객체지향 정신을 받아 코드에 녹여내고자 함
 
 <br>
 
-## 구조
-- Spring Boot 5, Maven 빌드 도구, 내장 Tomcat으로 애플리케이션 작성
-- MySQL Master-Slave 구조로 부하 분산, 서버 다운 시 백업, 읽기-쓰기 분리 가능
-- Redis 인스턴스 2개에 각각 세션과 캐시 기능을 적용해 확장 용이성 높임
+## ⚙ 사용 기술
+- Spring Boot 5 
+- Maven 빌드 도구, 
+- Tomcat
+- MySQL (Master-Slave 구조)
+- Redis (session, cache)
+- Docker
 
 <br>
 
-## 화면
-카카오 오븐을 이용한 화면 구도    
+## 🚄 Git Flow
+- 브랜치마다 정확한 목적과 기능을 분리하기 위해 사용
+- 운영(main), 개발 주(main), 각 기능(feature) 등 역할 분담
+
+![image](https://user-images.githubusercontent.com/71559880/117329750-ecd86500-aecf-11eb-9087-f4c045969f62.png)
+
+<br>
+
+## 📱 화면
+- 카카오 오븐을 이용한 화면 구성
 링크 : [카카오 오븐](https://ovenapp.io/project/aiaaov0xDr9DgzqKn2hFKsUoEjdvJYDt#ERlTJ)
 
 ### 사용자 화면
@@ -44,16 +57,21 @@
 
 <br>
 
-## DB ERD
+## 🗃 DB ERD
 ![image](https://user-images.githubusercontent.com/71559880/111853344-fd537100-895d-11eb-8539-f7513fd5738c.png)
 
 <br>
 
-## 기술 블로그
-1. 대용량 트래픽을 위한 유통 시스템 설계
-2. 분산 서버를 이용하며 세션을 유지하는 방법
-3. DB 부하 분산을 위한 캐시 적용
-4. DB 부하 분산을 위한 윈도우 환경 MySQL replication 설정
-5. 세션과 캐시 분리를 위한 Redis 분리와 Docker 사용
+## 📝 기술 블로그
+1. 대용량 트래픽을 위한 유통 시스템 설계 → [https://daakludens.github.io/project/scale-up-out/](https://daakludens.github.io/project/scale-up-out/)
+2. 분산 서버를 이용하며 세션을 유지하는 방법 → [https://daakludens.github.io/project/session/](https://daakludens.github.io/project/session/)
+3. DB 부하 분산을 위한 캐시 적용 → [https://daakludens.github.io/project/redis-cache/](https://daakludens.github.io/project/redis-cache/)
+4. DB 부하 분산을 위한 윈도우 환경 MySQL replication 설정 → [https://daakludens.github.io/project/replication/](https://daakludens.github.io/project/replication/)
+5. 세션과 캐시 분리를 위한 Redis 분리와 Docker 사용 → [https://daakludens.github.io/project/separate-redis/](https://daakludens.github.io/project/separate-redis/)
 
 블로그 링크 : [https://daakludens.github.io/](https://daakludens.github.io/)
+
+<br>
+
+## 💽 USE CASE
+[USE CASE로 이동](https://github.com/f-lab-edu/ludensdomain.wiki.git)
