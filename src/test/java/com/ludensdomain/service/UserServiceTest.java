@@ -1,6 +1,8 @@
 package com.ludensdomain.service;
 
 import com.ludensdomain.advice.exceptions.DuplicatedUserException;
+import com.ludensdomain.advice.exceptions.NonExistingUserException;
+import com.ludensdomain.advice.exceptions.PasswordNotMatchingException;
 import com.ludensdomain.dto.UserDto;
 import com.ludensdomain.mapper.UserMapper;
 import com.ludensdomain.util.BCryptEncryptor;
@@ -45,8 +47,8 @@ public class UserServiceTest {
     private UserMapper userMapper;
 
     UserDto user;
-
     UserDto encryptedUser;
+    UserDto wrongUser;
 
     @BeforeEach
     void setup() {
@@ -70,11 +72,22 @@ public class UserServiceTest {
                 .phoneNo("01011112222")
                 .role("3")
                 .build();
+
+        wrongUser = UserDto
+                .builder()
+                .id(1)
+                .name("홍길동")
+                .password(BCryptEncryptor.encrypt("bbb"))
+                .email("user@mail.com")
+                .dateOfBirth(new Date())
+                .phoneNo("01011112222")
+                .role("3")
+                .build();
     }
 
     @Test
-    @DisplayName("이미 존재하는 유저의 아이디이고 비밀번호가 일치하면 로그인에 성공한다.")
-    public void logInSuccess() {
+    @DisplayName("존재하는 유저의 아이디면서 비밀번호가 일치한다면 로그인에 성공한다.")
+    public void logInSuccessByMatchingIdAndPassword() {
         when(userMapper.getUserInfo(ID)).thenReturn(user);
         assertEquals(userService.getUserInfo(ID), user);
         verify(userMapper).getUserInfo(ID);
@@ -87,43 +100,34 @@ public class UserServiceTest {
     }
 
     @Test
-    @DisplayName("존재하지 않는 유저의 아이디라면 로그인에 실패한다.")
+    @DisplayName("존재하지 않는 유저의 아이디라면 로그인에 실패하면서 NonExistingUserException을 발생시킨다.")
     public void logInFailByNonExistingId() {
         when(userMapper.getUserInfo(ID)).thenReturn(null);
         assertNull(userService.getUserInfo(ID));
         verify(userMapper).getUserInfo(ID);
+        assertThrows(NonExistingUserException.class, () -> userService.login(ID, user.getPassword()));
     }
 
     @Test
-    @DisplayName("패스워드가 일치하지 않으면 로그인에 실패한다.")
-    public void logInFailByUnmatchedIdAndPassword() {
-        UserDto wrongUser = UserDto
-                .builder()
-                .id(1)
-                .name("홍길동")
-                .password(BCryptEncryptor.encrypt("bbb"))
-                .email("user@mail.com")
-                .dateOfBirth(new Date())
-                .phoneNo("01011112222")
-                .role("3")
-                .build();
-
+    @DisplayName("패스워드가 일치하지 않으면 로그인에 실패하면서 PasswordNotMatchingException을 발생시킨다.")
+    public void logInFailByUnmatchedPassword() {
         when(userMapper.getUserInfo(ID)).thenReturn(user);
         assertEquals(userService.getUserInfo(ID), user);
         verify(userMapper).getUserInfo(ID);
 
         assertFalse(BCryptEncryptor.isMatch(user.getPassword(), wrongUser.getPassword()));
+        assertThrows(PasswordNotMatchingException.class, () -> userService.login(ID, wrongUser.getPassword()));
     }
 
     @Test
-    @DisplayName("아이디를 입력해 유저 정보를 가져온다.")
+    @DisplayName("아이디를 입력해 아이디가 매칭되는 유저 정보를 가져온다.")
     public void getUserInfoSuccess() {
         userService.getUserInfo(ID);
         verify(userMapper).getUserInfo(ID);
     }
 
     @Test
-    @DisplayName("새로운 유저가 존재하지 않는 아이디로 입력하면 신규 가입에 성공한다.")
+    @DisplayName("새로운 유저가 존재하지 않는 아이디를 입력하면 신규 가입에 성공한다.")
     public void signInSuccess() {
         when(userMapper.checkIdExists(ID)).thenReturn(false);
         userService.insertUserInfo(user);
@@ -132,46 +136,47 @@ public class UserServiceTest {
     }
 
     @Test
-    @DisplayName("기존에 있는 아이디를 입력하면 신규 가입에 실패한다.")
-    public void signInFailedByDuplicatedId() {
+    @DisplayName("새로운 유저가 기존에 있는 아이디를 입력하면 신규 가입에 실패하면서 DuplicatedUserException을 발생시킨다.")
+    public void signInFailByDuplicatedId() {
         when(userMapper.checkIdExists(ID)).thenReturn(true);
         assertThrows(DuplicatedUserException.class, () -> userService.insertUserInfo(user));
         verify(userMapper).checkIdExists(any(long.class));
     }
 
     @Test
-    @DisplayName("유저 정보 수정에 성공한다.")
-    public void updateInfoSuccess() {
+    @DisplayName("유저의 정보를 입력하면 유저 정보 수정에 성공한다.")
+    public void updateUserInfoSuccess() {
+        doNothing().when(userMapper).updateUserInfo(user);
         userService.updateUserInfo(user);
         verify(userMapper).updateUserInfo(user);
     }
 
     @Test
     @DisplayName("아이디 중복 여부를 확인하고 없다면 false를 반환한다.")
-    public void duplicatedIdFalseByNonExistingId() {
+    public void isNotDuplicatedIdAndReturnFalse() {
         when(userMapper.checkIdExists(ID)).thenReturn(false);
         assertFalse(userMapper.checkIdExists(ID));
         verify(userMapper).checkIdExists(ID);
     }
 
     @Test
-    @DisplayName("아이디 중복 여부를 확인하고 있다면 true를 반환하며 예외가 발생한다.")
-    public void duplicatedIdTrueByExistingId() {
+    @DisplayName("아이디 중복 여부를 확인하고 있다면 true를 반환한다.")
+    public void isDuplicatedIdAndReturnTrue() {
         when(userMapper.checkIdExists(ID)).thenReturn(true);
         assertTrue(userMapper.checkIdExists(ID));
         verify(userMapper).checkIdExists(ID);
     }
 
     @Test
-    @DisplayName("아이디와 변경될 패스워드를 넘겨서 패스워드를 수정한다.")
+    @DisplayName("아이디와 변경될 패스워드를 입력하면 패스워드를 암호화해 새로 저장한다.")
     public void changePasswordSuccess() {
         userService.changePassword(ID, "01010");
         verify(userMapper).changePassword(any(long.class), any(String.class));
     }
 
     @Test
-    @DisplayName("유저 정보를 삭제한다.")
-    public void deleteUserSuccess() {
+    @DisplayName("유저 아이디를 입력하면 유저의 정보를 삭제한다.")
+    public void deleteUserInfoSuccess() {
         userService.deleteUser(ID);
         verify(userMapper).deleteUser(ID);
     }
