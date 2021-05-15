@@ -14,7 +14,7 @@
 
 ## ⚙ 사용 기술
 - Spring Boot 5 
-- Maven 빌드 도구, 
+- Maven 빌드 도구 
 - Tomcat
 - MySQL (Master-Slave 구조)
 - Redis (session, cache)
