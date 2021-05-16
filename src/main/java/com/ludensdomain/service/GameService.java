@@ -73,7 +73,7 @@ public class GameService {
      * 서버가 다운 되거나 삭제 도중 에러로 중단된 경우에 재실행이 되도록 젠킨스로 실행하고 관리할 예정
      */
     @Transactional
-    public void deleteSchedule() {
+    public void deleteGame() {
 
         gameMapper.deleteGame();
     }
