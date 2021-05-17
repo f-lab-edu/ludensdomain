@@ -15,6 +15,8 @@ public interface GameMapper {
 
     void insertGame(GameDto gameDto);
 
+    boolean isGameExists(long gameId);
+
     void updateGame(GameDto gameDto);
 
     void updateGameStatus(long gameId, int status);
