@@ -46,11 +46,8 @@ public class GameController {
     @RoleCheck(authLevel = AuthLevel.COMPANY)
     @PostMapping("/game")
     public void insertNewGame(GameDto gameDto) {
-        try {
-            gameService.insertGame(gameDto);
-        } catch(Exception e) {
-            throw new InsertFailedException();
-        }
+
+        gameService.insertGame(gameDto);
     }
 
     /*
@@ -66,16 +63,15 @@ public class GameController {
     }
 
     @RoleCheck(authLevel = AuthLevel.ADMIN)
-    @PostMapping("/{gameId}")
-    public void updateGameStatus(@PathVariable long gameId) {
+    @PatchMapping("/{gameId}")
+    public void updateGameStatus(@PathVariable long gameId, int status) {
 
-        gameService.updateGameStatus(gameId, 4);
+        gameService.updateGameStatus(gameId, status);
     }
 
     // Jenkins에서 deleteGame 에러 발생 시 확인용 호출하기 위해 필요한 메서드
     @DeleteMapping("/game")
     public void deleteGame(@RequestParam boolean scheduled) {
-
         if(scheduled) {
             gameService.deleteGame();
         }

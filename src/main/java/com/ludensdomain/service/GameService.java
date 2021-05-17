@@ -1,5 +1,6 @@
 package com.ludensdomain.service;
 
+import com.ludensdomain.advice.exceptions.InsertFailedException;
 import com.ludensdomain.advice.exceptions.UpdateFailedException;
 import com.ludensdomain.dto.GameDto;
 import com.ludensdomain.dto.GamePagingDto;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Log4j2
 @Service
@@ -31,19 +31,25 @@ public class GameService {
     }
 
     public void insertGame(GameDto gameDto) {
+        try {
+            gameMapper.insertGame(gameDto);
+        } catch(Exception e) {
+            throw new InsertFailedException();
+        }
+    }
 
-        gameMapper.insertGame(gameDto);
+    public boolean isGameExists(long gameId) {
+
+        return gameMapper.isGameExists(gameId);
     }
 
     public void updateGame(long gameId, GameDto game) {
-        Optional<GameDto> checkGame = Optional.ofNullable(getGameInfo(gameId));
-
-        if(checkGame.isPresent()) {
-            GameDto updatedGame = buildGame(gameId, game);
-            gameMapper.updateGame(updatedGame);
-        } else {
+        if(isGameExists(gameId)) {
             String message = "게임 아이디[" + gameId + "] 업데이트에 실패했습니다.";
             throw new UpdateFailedException(message);
+        } else {
+            GameDto updatedGame = buildGame(gameId, game);
+            gameMapper.updateGame(updatedGame);
         }
     }
 
