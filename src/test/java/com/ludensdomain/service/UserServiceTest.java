@@ -152,16 +152,16 @@ public class UserServiceTest {
     }
 
     @Test
-    @DisplayName("아이디 중복 여부를 확인하고 없다면 false를 반환한다.")
-    public void isNotDuplicatedIdAndReturnFalse() {
+    @DisplayName("아이디 중복 여부를 확인하고 중복되지 않는다면 false를 반환한다.")
+    public void isDuplicatedIdReturnFalse() {
         when(userMapper.checkIdExists(ID)).thenReturn(false);
         assertFalse(userMapper.checkIdExists(ID));
         verify(userMapper).checkIdExists(ID);
     }
 
     @Test
-    @DisplayName("아이디 중복 여부를 확인하고 있다면 true를 반환한다.")
-    public void isDuplicatedIdAndReturnTrue() {
+    @DisplayName("아이디 중복 여부를 확인하고 중복된다면 true를 반환한다.")
+    public void isDuplicatedIdReturnTrue() {
         when(userMapper.checkIdExists(ID)).thenReturn(true);
         assertTrue(userMapper.checkIdExists(ID));
         verify(userMapper).checkIdExists(ID);
