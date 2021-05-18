@@ -93,6 +93,10 @@
                 )
     </insert>
 
+    <select id="isGameExists" parameterType="com.ludensdomain.dto.GameDto">
+        SELECT EXISTS(SELECT id from game where id = #{id})
+    </select>
+
     <update id="updateGame" parameterType="com.ludensdomain.dto.GameDto">
         UPDATE game
         SET title = #{title},
