@@ -13,10 +13,10 @@ public class GamePagingDto {
 
     int size;
 
-    String developer;
+    long developer;
 
-    String publisher;
+    long publisher;
 
-    String genre;
+    long genre;
 
 }
