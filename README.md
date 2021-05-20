@@ -24,7 +24,7 @@
 
 ## 🚄 Git Flow
 - agile 개발 환경에 적합한 운영 방법으로 feature 별 개발 진행과 빠른 피드백 반영
-- main 브랜치는 운영 브랜치로 깔끔하고 언제든 배포가 가능하도록 관리
+- main 브랜치는 운영 브랜치로 깔끔하고 언제든 배포가 가능하도록 관리하며 develop 브랜치는 통합 환경으로 개발된 feature를 합체
 - 나머지 브랜치는 목적에 맞게 독립적으로 관리하며 동시 개발이 가능해 기능 개발 시간 딜레이를 최대한 축소
 
 ![image](https://user-images.githubusercontent.com/71559880/117329750-ecd86500-aecf-11eb-9087-f4c045969f62.png)
