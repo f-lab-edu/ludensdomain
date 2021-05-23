@@ -82,9 +82,9 @@ public class GameServiceTest {
                 .builder()
                 .lastGameId(5)
                 .size(10)
-                .developer("우비소프트")
-                .publisher("우너브라더스")
-                .genre("액션")
+                .developer(1)
+                .publisher(1)
+                .genre(1)
                 .build();
     }
 
