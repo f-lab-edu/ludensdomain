@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ludensdomain.mapper.PurchaseMapper">
+
+    <select id="getPurchaseHistory">
+        SELECT G.id,
+               G.title,
+               G.genre,
+               G.description,
+               G.release_date releaseDate,
+               G.price,
+               G.developer,
+               G.publisher,
+               G.rating,
+               G.sales,
+               G.status,
+               U.id,
+               U.name,
+               P.purchase_date purchaseDate,
+               P.purchase_id purchaseId
+        FROM game G, purchase P, user U
+        WHERE P.user_id = #{userId}
+        AND P.game_id = G.id
+        AND P.user_id = U.id
+    </select>
+
+</mapper>
