@@ -28,5 +28,13 @@ pipeline {
                 }
             }
         }
+
+        stage('Archive') {
+            archive '**/target/*.jar'
+        }
+
+        stage('Deploy') {
+            echo 'Steps before deployment is complete'
+        }
     }
 }
