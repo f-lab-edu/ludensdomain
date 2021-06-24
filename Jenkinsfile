@@ -30,11 +30,15 @@ pipeline {
         }
 
         stage('Archive') {
-            archive '**/target/*.jar'
+            steps {
+                archive '**/target/*.jar'
+            }
         }
 
         stage('Deploy') {
-            echo 'Steps before deployment is complete'
+            steps {
+                echo 'Steps before deployment is complete'
+            }
         }
     }
 }
