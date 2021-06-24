@@ -3,26 +3,26 @@
 
 <mapper namespace="com.ludensdomain.mapper.PurchaseMapper">
 
-    <select id="getPurchaseHistory">
-        SELECT G.id,
-               G.title,
-               G.genre,
-               G.description,
-               G.release_date releaseDate,
-               G.price,
-               G.developer,
-               G.publisher,
-               G.rating,
-               G.sales,
-               G.status,
-               U.id,
-               U.name,
-               P.purchase_date purchaseDate,
-               P.purchase_id purchaseId
-        FROM game G, purchase P, user U
-        WHERE P.user_id = #{userId}
-        AND P.game_id = G.id
-        AND P.user_id = U.id
-    </select>
+    <insert id="buy">
+        INSERT INTO
+            purchase
+            (
+             user_id,
+             game_id,
+             purchase_date
+            )
+        VALUES
+            (
+             #{userId},
+             #{gameId},
+             NOW()
+            )
+    </insert>
+
+    <update id="refund">
+        UPDATE purchase
+        SET refund = 1
+        WHERE purchase_id = #{purchaseId}
+    </update>
 
 </mapper>

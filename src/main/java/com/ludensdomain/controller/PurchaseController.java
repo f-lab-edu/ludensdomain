@@ -1,12 +1,13 @@
 package com.ludensdomain.controller;
 
-import com.ludensdomain.dto.GameDto;
+import com.ludensdomain.service.ChargeService;
 import com.ludensdomain.service.PurchaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/purchase")
@@ -14,25 +15,20 @@ import java.util.List;
 public class PurchaseController {
 
     private final PurchaseService purchaseService;
+    private final ChargeService chargeService;
 
     @PostMapping("/{gameId}")
-    public void buyGame(@PathVariable long gameId, long userId) {
-
+    public void buy(@PathVariable long gameId, long userId) {
+        purchaseService.buy(gameId, userId);
     }
 
     @PostMapping("/{userId}")
-    public void chargeFund(@PathVariable long userId, int amount) {
-
+    public void chargeCash(@PathVariable long userId, int amount) {
+        chargeService.chargeCash(userId, amount);
     }
 
-    @GetMapping("/{userId}")
-    public List<GameDto> getPurchaseHistory(@PathVariable long userId) {
-
-        return purchaseService.getPurchaseHistory(userId);
-    }
-
-    @PutMapping("/{gameId}")
-    public void refund(@PathVariable long gameId, long userId) {
-
+    @PutMapping("/{purchaseId}")
+    public void refund(@PathVariable long purchaseId) {
+        purchaseService.refund(purchaseId);
     }
 }

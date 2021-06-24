@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 public class MobileChargeService implements ChargeService {
 
     @Override
-    public void chargeFund(long userId, int amount) {
+    public void chargeCash(long userId, int amount) {
 
     }
 }

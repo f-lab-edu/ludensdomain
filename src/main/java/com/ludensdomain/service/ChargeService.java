@@ -2,6 +2,6 @@ package com.ludensdomain.service;
 
 public interface ChargeService {
 
-    void chargeFund(long userId, int amount);
+    void chargeCash(long userId, int amount);
 
 }
