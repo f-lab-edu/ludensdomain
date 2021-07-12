@@ -91,11 +91,6 @@ public class RedisConfig {
         return redisTemplate;
     }
 
-    @Bean
-    public static ConfigureRedisAction configureRedisAction() {
-        return ConfigureRedisAction.NO_OP;
-    }
-
     /**.
      * RedisCacheManager : Spring에서 Redis를 통한 cache 기능을 기존 스프링 코드를 최대한 유지시키며 안전하게 적용하기 위해
      * 사용되는 기능이다. 데이터 생존 주기, 캐시 데이터 타입 등 캐시의 여러 설정을 부여할 수 있다.
