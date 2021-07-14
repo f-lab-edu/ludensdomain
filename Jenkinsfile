@@ -15,7 +15,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh 'mvn clean verify -DskipITs=true -Dspring.profiles.active=prod'
+                    sh 'mvn clean verify -DskipITs=true -Dspring.profiles.active=dev'
                     archiveArtifacts 'ludensdomain/target/*.jar'
                 }
             }
