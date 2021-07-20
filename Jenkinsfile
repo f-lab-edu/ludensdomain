@@ -15,7 +15,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh 'mvn clean package -DskipITs=true -P dev'
+                    sh 'mvn clean package -DskipITs=true -DskipTests=true -P dev'
                     archiveArtifacts 'ludensdomain/target/*.jar'
                 }
             }
