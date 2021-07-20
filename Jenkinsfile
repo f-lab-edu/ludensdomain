@@ -15,7 +15,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh 'mvn clean package -DskipITs=true -DskipTests=true -P dev'
+                    sh 'mvn clean package -DskipITs=true -DskipTests=true'
                     archiveArtifacts 'target/*.jar'
                 }
             }
@@ -24,7 +24,7 @@ pipeline {
         stage('Unit Test') {
             steps {
                 script {
-                    sh 'mvn surefire:test'
+                    sh 'mvn -Dspring.profiles.active=dev surefire:test'
                     junit '**/target/surefire-reports/TEST-*.xml'
                 }
             }
