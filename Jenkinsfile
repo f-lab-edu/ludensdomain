@@ -37,9 +37,6 @@ pipeline {
               }
             }
             steps([$class: 'BapSshPromotionPublisherPlugin']) {
-                echo 'deployment step'
-            }
-            steps([$class: 'BapSshPromotionPublisherPlugin']) {
                 continueOnError: false, failOnError: true,
                 publishers: [
                     sshPublisherDesc(
