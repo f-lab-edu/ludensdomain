@@ -24,7 +24,7 @@ pipeline {
         stage('Unit Test') {
             steps {
                 script {
-                    sh 'mvn -Dspring.profiles.active=dev -DskipITs=true surefire:test'
+                    sh 'mvn surefire:test'
                     junit '**/target/surefire-reports/TEST-*.xml'
                 }
             }
