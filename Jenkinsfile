@@ -37,21 +37,22 @@ pipeline {
               }
             }
             steps([$class: 'BapSshPromotionPublisherPlugin']) {
-                continueOnError: false, failOnError: true,
-                publishers: [
-                    sshPublisherDesc(
-                        configName: "ludens-deploy",
-                        verbose: true,
-                        transfers: [
-                            sshTransfer(
-                                sourceFiles: "target/*.jar",
-                                removePrefix: "target",
-                                remoteDirectory: "/",
-                                execCommand: "sh /root/scripts/ludens-deploy.sh"
-                            )
-                        ]
-                    )
-                ]
+                echo 'deployment step'
+//                 continueOnError: false, failOnError: true,
+//                 publishers: [
+//                     sshPublisherDesc(
+//                         configName: "ludens-deploy",
+//                         verbose: true,
+//                         transfers: [
+//                             sshTransfer(
+//                                 sourceFiles: "target/*.jar",
+//                                 removePrefix: "target",
+//                                 remoteDirectory: "/",
+//                                 execCommand: "sh /root/scripts/ludens-deploy.sh"
+//                             )
+//                         ]
+//                     )
+//                 ]
             }
         }
     }
