@@ -48,7 +48,7 @@ pipeline {
                                     sourceFiles: "target/*.jar",
                                     removePrefix: "target",
                                     remoteDirectory: "/",
-                                    execCommand: "sh /root/scripts/ludens-deploy.sh"
+                                    execCommand: "sh /scripts/ludens-deploy.sh"
                                 )
                             ]
                         )
