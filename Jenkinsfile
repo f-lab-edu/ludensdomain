@@ -37,7 +37,6 @@ pipeline {
               }
             }
             steps([$class: 'BapSshPromotionPublisherPlugin']) {
-                echo 'Deployment start'
                 sshPublisher(
                     continueOnError: false, failOnError: true,
                     publishers: [
@@ -48,7 +47,7 @@ pipeline {
                                 sshTransfer(
                                     sourceFiles: "target/*.jar",
                                     removePrefix: "target",
-                                    remoteDirectory: "/ludensdomain/app",
+                                    remoteDirectory: "/",
                                     execCommand: "sh /scripts/ludens-deploy.sh"
                                 )
                             ]
