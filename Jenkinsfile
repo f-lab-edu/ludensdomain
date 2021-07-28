@@ -47,7 +47,7 @@ pipeline {
                                 sshTransfer(
                                     sourceFiles: "target/*.jar",
                                     removePrefix: "target",
-                                    remoteDirectory: "/",
+                                    remoteDirectory: "/ludensdomain/app",
                                     execCommand: "sh /scripts/ludens-deploy.sh"
                                 )
                             ]
