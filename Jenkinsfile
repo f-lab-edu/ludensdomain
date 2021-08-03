@@ -36,6 +36,7 @@ pipeline {
                 currentBuild.result == null || currentBuild.result == 'SUCCESS'
               }
             }
+
             steps([$class: 'BapSshPromotionPublisherPlugin']) {
                 sshPublisher(
                     continueOnError: false, failOnError: true,
