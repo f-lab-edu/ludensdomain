@@ -78,7 +78,7 @@ public class UserController {
         userService.deleteUser(id);
     }
 
-    @GetMapping("/{id}/games")
+    @GetMapping("/{id}/purchases")
     public List<GameDto> getPurchaseHistory(@PathVariable long id) {
 
         return userService.getPurchaseHistory(id);

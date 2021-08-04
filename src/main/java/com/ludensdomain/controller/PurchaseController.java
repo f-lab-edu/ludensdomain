@@ -19,16 +19,19 @@ public class PurchaseController {
 
     @PostMapping("/{gameId}")
     public void buy(@PathVariable long gameId, long userId) {
+
         purchaseService.buy(gameId, userId);
     }
 
     @PostMapping("/{userId}")
     public void chargeCash(@PathVariable long userId, int amount) {
+
         chargeService.chargeCash(userId, amount);
     }
 
     @PutMapping("/{purchaseId}")
     public void refund(@PathVariable long purchaseId) {
+
         purchaseService.refund(purchaseId);
     }
 }
