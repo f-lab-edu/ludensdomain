@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Value;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Value
 @Builder
@@ -25,6 +25,6 @@ public class PurchaseDto {
     private int refund;
 
     @NotNull
-    private Date purchaseDate;
+    private LocalDate purchaseDate;
 
 }
