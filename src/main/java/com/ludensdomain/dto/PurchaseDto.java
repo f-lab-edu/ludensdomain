@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Value
@@ -11,14 +12,19 @@ import java.util.Date;
 @AllArgsConstructor
 public class PurchaseDto {
 
-    long purchaseId;
+    @NotNull
+    private long purchaseId;
 
-    long userId;
+    @NotNull
+    private long userId;
 
-    long gameId;
+    @NotNull
+    private long gameId;
 
-    int refund;
+    @NotNull
+    private int refund;
 
-    Date purchaseDate;
+    @NotNull
+    private Date purchaseDate;
 
 }

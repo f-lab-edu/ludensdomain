@@ -4,13 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
 
+import javax.validation.constraints.NotNull;
+
 @Value
 @Builder
 @AllArgsConstructor
 public class AccountDto {
 
-    long id;
+    @NotNull
+    private long id;
 
-    int amount;
+    @NotNull
+    private int amount;
 
 }
