@@ -32,11 +32,11 @@ pipeline {
 
         stage('Deploy') {
             when {
-              expression {
-                currentBuild.result == null || currentBuild.result == 'SUCCESS'
+                  allOf {
+                    expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
+                    branch 'develop'
+                  }
               }
-            }
-
             steps([$class: 'BapSshPromotionPublisherPlugin']) {
                 sshPublisher(
                     continueOnError: false, failOnError: true,
