@@ -4,19 +4,26 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
 
+import javax.validation.constraints.NotNull;
+
 @Value
 @Builder
 @AllArgsConstructor
 public class GamePagingDto {
 
-    int lastGameId;
+    @NotNull
+    private int lastGameId;
 
-    int size;
+    @NotNull
+    private int size;
 
-    long developer;
+    @NotNull
+    private long developer;
 
-    long publisher;
+    @NotNull
+    private long publisher;
 
-    long genre;
+    @NotNull
+    private long genre;
 
 }
