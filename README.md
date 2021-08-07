@@ -25,7 +25,7 @@
 
 <br>
 
-## 프로젝트 전체 구조
+## :milky_way: 프로젝트 전체 구조
 ![test  Untitled](https://user-images.githubusercontent.com/71559880/128583601-535cc084-1d82-42b9-9da3-4953a1e3da58.jpg)
 
 <br>
