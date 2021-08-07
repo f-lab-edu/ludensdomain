@@ -13,12 +13,20 @@
 <br>
 
 ## ⚙ 사용 기술
+- Java 8
 - Spring Boot 5 
 - Maven
 - Tomcat
-- MySQL (Master-Slave 구조)
+- MySQL (Master-Slave)
 - Redis (session, cache)
 - Docker
+- Naver Cloud Platform
+- Jenkins
+
+<br>
+
+## 프로젝트 전체 구조
+![test  Untitled](https://user-images.githubusercontent.com/71559880/128583601-535cc084-1d82-42b9-9da3-4953a1e3da58.jpg)
 
 <br>
 
