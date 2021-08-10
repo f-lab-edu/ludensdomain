@@ -26,7 +26,7 @@
 <br>
 
 ## :milky_way: 프로젝트 전체 구조
-![test  Untitled](https://user-images.githubusercontent.com/71559880/128583601-535cc084-1d82-42b9-9da3-4953a1e3da58.jpg)
+![test  Copy of Untitled](https://user-images.githubusercontent.com/71559880/128896574-10b7c1ff-4f90-40fd-aa12-5cea5e784227.jpg)
 
 <br>
 
