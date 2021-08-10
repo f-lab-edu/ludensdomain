@@ -79,11 +79,13 @@
 3. DB 부하 분산을 위한 캐시 적용 → [https://daakludens.github.io/project/redis-cache/](https://daakludens.github.io/project/redis-cache/)
 4. DB 부하 분산을 위한 윈도우 환경 MySQL replication 설정 → [https://daakludens.github.io/project/replication/](https://daakludens.github.io/project/replication/)
 5. 세션과 캐시 분리를 위한 Redis 분리와 Docker 사용 → [https://daakludens.github.io/project/separate-redis/](https://daakludens.github.io/project/separate-redis/)
-6. Jenkis CI
+6. 코드의 동작을 보장하기 위한 단위 테스트 적용 → [https://daakludens.github.io/project/unit_test/](https://daakludens.github.io/project/unit_test/)
+7. 빌드와 단위 테스트 자동화를 위한 Jenkins CI 도입 → [https://daakludens.github.io/project/jenkins-ci/](https://daakludens.github.io/project/jenkins-ci/)
 
 블로그 링크 : [https://daakludens.github.io/](https://daakludens.github.io/)
 
 <br>
 
 ## 💽 USE CASE
+
 [USE CASE로 이동](https://github.com/f-lab-edu/ludensdomain.wiki.git)
