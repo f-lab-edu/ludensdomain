@@ -79,6 +79,7 @@
 3. DB 부하 분산을 위한 캐시 적용 → [https://daakludens.github.io/project/redis-cache/](https://daakludens.github.io/project/redis-cache/)
 4. DB 부하 분산을 위한 윈도우 환경 MySQL replication 설정 → [https://daakludens.github.io/project/replication/](https://daakludens.github.io/project/replication/)
 5. 세션과 캐시 분리를 위한 Redis 분리와 Docker 사용 → [https://daakludens.github.io/project/separate-redis/](https://daakludens.github.io/project/separate-redis/)
+6. Jenkis CI
 
 블로그 링크 : [https://daakludens.github.io/](https://daakludens.github.io/)
 
