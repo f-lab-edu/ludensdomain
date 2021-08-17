@@ -88,4 +88,4 @@
 
 ## 💽 USE CASE
 
-[USE CASE로 이동](https://github.com/f-lab-edu/ludensdomain.wiki.git)
+[USE CASE로 이동](https://github.com/f-lab-edu/ludensdomain/wiki/Use-Case)
