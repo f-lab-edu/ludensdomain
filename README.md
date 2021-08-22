@@ -69,7 +69,7 @@
 <br>
 
 ## 🗃 DB ERD
-![erd final](https://user-images.githubusercontent.com/71559880/130326870-a4f96a23-71be-47ad-b85d-4f46abd45b68.jpg)
+![erd final](https://user-images.githubusercontent.com/71559880/130349308-b671edc6-1279-4a61-9154-5a4b71638a23.jpg)
 
 <br>
 
