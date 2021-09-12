@@ -5,25 +5,26 @@ import lombok.Builder;
 import lombok.Value;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 @Value
 @Builder
 @AllArgsConstructor
-public class GamePagingDto {
+public class PurchaseDto {
 
     @NotNull
-    private int lastGameId;
+    private long purchaseId;
 
     @NotNull
-    private int size;
+    private long userId;
 
     @NotNull
-    private long developer;
+    private long gameId;
 
     @NotNull
-    private long publisher;
+    private int refund;
 
     @NotNull
-    private long genre;
+    private LocalDate purchaseDate;
 
 }

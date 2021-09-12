@@ -13,16 +13,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.assertj.core.util.DateUtil.now;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class GameServiceTest {
@@ -38,6 +34,8 @@ public class GameServiceTest {
     GameDto updatedGame;
     GamePagingDto paging;
 
+    LocalDate date = LocalDate.of(2021,8,6);
+
     @BeforeEach
     void setUp() {
         game = GameDto
@@ -46,7 +44,7 @@ public class GameServiceTest {
                 .title("게임명")
                 .genre("장르")
                 .description("설명")
-                .releaseDate(now())
+                .releaseDate(date)
                 .price(10000)
                 .developer(1)
                 .publisher(1)
@@ -65,7 +63,7 @@ public class GameServiceTest {
                 .title("게임명")
                 .genre("장르")
                 .description("설명")
-                .releaseDate(now())
+                .releaseDate(date)
                 .price(10000)
                 .developer(1)
                 .publisher(1)

@@ -14,17 +14,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Date;
+import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /*
  * Service 클래스의 Unit Test
@@ -50,6 +44,8 @@ public class UserServiceTest {
     UserDto encryptedUser;
     UserDto wrongUser;
 
+    LocalDate date = LocalDate.of(2021,8,6);
+
     @BeforeEach
     void setup() {
         user = UserDto
@@ -58,7 +54,7 @@ public class UserServiceTest {
                 .name("홍길동")
                 .password("aaa")
                 .email("user@mail.com")
-                .dateOfBirth(new Date())
+                .dateOfBirth(date)
                 .phoneNo("01011112222")
                 .role("3")
                 .build();
@@ -68,7 +64,7 @@ public class UserServiceTest {
                 .name("홍길동")
                 .password(BCryptEncryptor.encrypt("aaa"))
                 .email("user@mail.com")
-                .dateOfBirth(new Date())
+                .dateOfBirth(date)
                 .phoneNo("01011112222")
                 .role("3")
                 .build();
@@ -79,7 +75,7 @@ public class UserServiceTest {
                 .name("홍길동")
                 .password(BCryptEncryptor.encrypt("bbb"))
                 .email("user@mail.com")
-                .dateOfBirth(new Date())
+                .dateOfBirth(date)
                 .phoneNo("01011112222")
                 .role("3")
                 .build();

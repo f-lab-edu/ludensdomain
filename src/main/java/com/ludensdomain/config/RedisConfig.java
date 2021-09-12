@@ -45,7 +45,7 @@ public class RedisConfig {
      * LettuceConnectionFacotory : Lettuce(Redis client) 기반의 ConnectionFactory 객체
      * Lettuce는 Jedis에 비교해 CPU 활용도와 응답 속도가 월등함으로 LettuceConnectionFactory를 사용함
      */
-    @Bean
+    @Bean("redisSessionConnectionFactory")
     @Primary
     public RedisConnectionFactory redisSessionConnectionFactory() {
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();

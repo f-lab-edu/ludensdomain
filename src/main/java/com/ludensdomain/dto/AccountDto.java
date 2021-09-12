@@ -9,21 +9,12 @@ import javax.validation.constraints.NotNull;
 @Value
 @Builder
 @AllArgsConstructor
-public class GamePagingDto {
+public class AccountDto {
 
     @NotNull
-    private int lastGameId;
+    private long id;
 
     @NotNull
-    private int size;
-
-    @NotNull
-    private long developer;
-
-    @NotNull
-    private long publisher;
-
-    @NotNull
-    private long genre;
+    private int amount;
 
 }
