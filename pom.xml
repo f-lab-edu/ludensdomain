@@ -110,6 +110,11 @@
             <version>3.0.0-M5</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.iamport</groupId>
+            <artifactId>iamport-rest-client-java</artifactId>
+            <version>0.2.15</version>
+        </dependency>
     </dependencies>
     <build>
         <resources>
@@ -146,4 +151,10 @@
             </properties>
         </profile>
     </profiles>
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
 </project>

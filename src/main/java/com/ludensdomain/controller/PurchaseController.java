@@ -1,26 +1,28 @@
 package com.ludensdomain.controller;
 
+import com.ludensdomain.dto.PurchaseDto;
 import com.ludensdomain.service.ChargeService;
 import com.ludensdomain.service.PurchaseService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 
 @Controller
 @RequestMapping("/purchase")
 @RequiredArgsConstructor
+@Log4j2
 public class PurchaseController {
 
     private final PurchaseService purchaseService;
     private final ChargeService chargeService;
 
-    @PostMapping("/{gameId}")
-    public void buy(@PathVariable long gameId, long userId) {
+    @PostMapping("/game")
+    public void buy(@RequestParam long purchaseId, long userId, long gameId) {
 
-        purchaseService.buy(gameId, userId);
+        purchaseService.buy(purchaseId, userId, gameId);
     }
 
     @PostMapping("/{userId}")

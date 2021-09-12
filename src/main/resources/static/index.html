@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>결제 페이지</title>
+</head>
+    <body>
+        <h4>결제</h4>
+        <div>
+            <button onclick="requestPay()">결제 버튼</button>
+        </div>
+    </body>
+</html>
+
+<script>
+    function requestPay() {
+        let IMP = window.IMP;
+        IMP.init("imp30084709");
+
+        IMP.request_pay({
+            pg : 'kakao',
+            pay_method : 'card',
+            merchant_uid : new Date().getTime(),
+            name : 1,
+            amount : 100,
+            buyer_name : 1,
+        }, function(response) {
+            if (response.success) {
+                jQuery.ajax({
+                    url: "/purchase/game",
+                    method: "POST",
+                    data: {
+                        purchaseId : response.merchant_uid,
+                        userId : response.buyer_name,
+                        gameId : response.name
+                    }
+                }).done(function () {
+                    alert('결제 성공!');
+                })
+            } else {
+                alert('결제 실패!');
+            }
+        });
+    }
+</script>
